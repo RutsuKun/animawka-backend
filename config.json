@@ -1,0 +1,17 @@
+{
+	"port": 2137,
+	"debug": true,
+	"favicon": false,
+	"database": {
+		"type": "sqlite",
+		"sqlite": {
+			"file": "animawka.db"
+		},
+		"mysql": {
+			"host": "localhost",
+			"port": 3306,
+			"username": "debug",
+			"password": "debug"
+		}
+	}
+}

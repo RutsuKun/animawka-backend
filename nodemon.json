@@ -1,0 +1,9 @@
+{
+    "verbose": false,
+    "ignore": [
+    	"public/*",
+    	"public/*.*",
+    	"public/**/*",
+    	"public/**/*.*"
+    ]
+}

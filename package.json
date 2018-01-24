@@ -1,0 +1,23 @@
+{
+  "name": "animawka-backend",
+  "version": "1.0.0",
+  "description": "Nowy backend animawki (project Ayano)",
+  "main": "index.js",
+  "scripts": {
+    "test": "exit 0"
+  },
+  "author": "gabixdev",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
+    "ejs": "^2.5.7",
+    "express": "^4.16.2",
+    "lru-cache": "^4.1.1",
+    "morgan": "^1.9.0",
+    "mysql2": "^1.5.1",
+    "sequelize": "^4.32.1",
+    "serve-favicon": "^2.4.5",
+    "sqlite3": "^3.1.13"
+  }
+}
