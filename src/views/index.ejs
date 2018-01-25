@@ -1,12 +1,85 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-    <script src="/test.js"></script>
-  </body>
-</html>
+<% extend('layout') %>
+
+<main role="main" id="MainContent">
+	<div class="container">
+		<div class="row">
+			<div class="col s12 m12 l3 xl3 left hide-on-small-only" style="background:rgba(0,0,0,.3); margin: .5rem 0 1rem 0;">
+				<%# $anime->printAnimeCurrentlyTranslated(); %>
+				<div style="width:100%" class="fb-page" data-href="https://www.facebook.com/JakbedziewAnime/" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true" data-show-posts="true"><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/JakbedziewAnime/"><a href="https://www.facebook.com/JakbedziewAnime/">animawka.pl</a></blockquote></div></div>
+			</div>
+
+			<div class="col s12 m12 l9 xl9 right">
+				<div id="fb-root"></div>
+				<script>
+					(function(d, s, id) {
+						var js, fjs = d.getElementsByTagName(s)[0];
+						if (d.getElementById(id)) return;
+						js = d.createElement(s); js.id = id;
+						js.src = "//connect.facebook.net/pl_PL/sdk.js#xfbml=1&version=v2.5&appId=202375610098345";
+						fjs.parentNode.insertBefore(js, fjs);
+					}(document, 'script', 'facebook-jssdk'));
+				</script>
+
+
+				<div class="row">
+					<div class="col s12">
+						<div class="card <%= theme.accent %> <%= theme.modifiers.infocards %>">
+							<div class="card-content">
+								<span class="card-title">Informacja</span>
+								<p>Zapraszamy do oglądania anime na naszej stronie, mamy juz serie które tłumaczymy i są już dostępne na stronie</p>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="row">
+					<%# $anime->printLastEpisodes2(); %>
+
+					<div class="col s12">
+						<div class="card blue-grey darken-4">
+							<div class="card-content white-text">
+								<span class="card-title">Czat</span>
+								<iframe style="border: 0px none;width:100%; height:500px;overflow:hidden;" src="https://animawka.pl/chat">
+									Trochę stara przeglądarka, nie? :p
+								</iframe>
+							</div>
+							<div class="card-action">
+							  <a href="https://discord.gg/wB3kEGQ">Dołącz do discorda AnimePolska</a>
+							</div>
+						</div>
+					</div>
+					<div class="col s12">
+						<div class="card <%= theme.accent %> <%= theme.modifiers.infocards %>">
+							<div class="card-content">
+								<span class="card-title">Legalność serwisu</span>
+								<p>Nasz serwis nie hostuje odcinków, lecz gromadzi linki do zewnętrznych uploaderów umieszczone przez uzytkownikow strony - wszelkie roszczenia dotyczące praw autorskich powinny być przekazywane do nich.</p>
+								<p>Opieramy się na ustawie z dnia 4 lutego 1994 r. o prawie autorskim i prawach pokrewnych (tekst jednolity: Dz. U. 2000 r. Nr 80 poz. 904), Art. 71. W swoim orzeczeniu Sąd Najwyższy – Izba Cywilna, z dnia 23 stycznia 2003 r. II CKN 1399/2000 stwierdził, że dokonanie tłumaczenia warstwy słownej utworu audiowizualnego nie stanowi jego opracowania jako całości.
+								<p>Łączne zezwolenie producenta i twórców filmów na opracowanie utworu jest potrzebne tylko wtedy, gdy przekształcenie prowadzi do opracowania nowego dzieła. Tak więc, tłumaczenie list dialogowych jest zgodne z prawem, ponieważ nie zmienia w sposób zasadniczy istoty filmu</p>
+								<p></p>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<!--
+					<div class="col s12 m12 l4">
+						<div>
+							<h5 style="color:#FFF;">Facebook</h2>
+							<div class="toc-wrapper">
+							 <div class="fb-page" data-href="https://www.facebook.com/JakbedziewAnime/" width="100%" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true" data-show-posts="true"><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/JakbedziewAnime/"><a href="https://www.facebook.com/JakbedziewAnime/">animawka.pl</a></blockquote></div></div>
+						</div>
+					</div>
+
+					<div>
+						<h5 style="color:#FFF;">Discord</h2>
+						<div class="toc-wrapper">
+							<iframe src="https://discordapp.com/widget?id=399703189479358465&theme=dark" width="100%" allowtransparency="true" frameborder="0"></iframe>
+						</div>
+					</div>-->	
+				</div>
+			</div>
+		</div>
+	</div>
+</main>

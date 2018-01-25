@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pl">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="keywords" content="Animawka, Anime, Manga, Odcinki, Online">
+		<meta name="description" content="Animawka to nowy serwis poświęcony udostępnianiem polskich odcinków anime online.">
+		<link type="text/css" rel="stylesheet" href="/less/theme/styles.less" media="screen,projection"/>
+		<link type="text/css" rel="stylesheet" href="/less/theme/theme-<%= theme.id %>.less" media="screen,projection"/>
+
+		<link type="text/css" rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+		<script src="/javascript/jquery-2.1.4.min.js" type="text/javascript"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0-rc.0/angular.min.js" type="text/javascript"></script>
+		<script src="/javascript/slick.min.js" type="text/javascript"></script>
+		<script src="/javascript/script.js" type="text/javascript"></script>
+		<script src='https://www.google.com/recaptcha/api.js'></script>
+		<link rel="icon" type="image/png" href="/img/icons/animawka-icon32x32.png" sizes="32x32">
+		<link rel="icon" type="image/png" href="/img/icons/animawka-icon192x192.png" sizes="192x192">
+		<link rel="icon" type="image/png" href="/img/icons/animawka-icon96x96.png" sizes="96x96">
+		<link rel="icon" type="image/png" href="/img/icons/animawka-icon16x16.png" sizes="16x16">
+		<link rel="manifest" href="/icons/manifest.json?0.8.0">
+		<link rel="shortcut icon" href="/icons/favicon.ico?0.8.0">
+		<meta name="msapplication-TileColor" content="#3f51b5">
+		<meta name="msapplication-TileImage" content="/img/icons/animawka-icon144x144.png">
+		<meta name="msapplication-config" content="/icons/browserconfig.xml">
+		<meta name="theme-color" content="<%= theme.color %>">
+
+		<title><%= title %></title>
+		<script type="application/ld+json">
+			{
+				"@context": "http://schema.org",
+				"@type": "WebSite",
+				"url": "https://animawka.pl",
+				"potentialAction": {
+					"@type": "SearchAction",
+					"target": "https://animawka.pl/szukaj/{search_term_string}",
+					"query-input": "required name=search_term_string"
+				}
+			}
+		</script>
+		<!-- Google Tag Manager -->
+		<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+		new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+		j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+		'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+		})(window,document,'script','dataLayer','GTM-NQBT6QH');</script>
+		<!-- End Google Tag Manager -->
+		<script src="https://www.google.com/recaptcha/api.js" type="text/javascript"></script>
+		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+		<script>
+			(adsbygoogle = window.adsbygoogle || []).push({
+				google_ad_client: "ca-pub-8567176078866941",
+				enable_page_level_ads: true
+			});
+		</script>
+	</head>
+	<body class="<%= theme.primary %> <%= theme.modifiers.bg %>">
+		<%- include('header') %>
+		<%- content %>
+		<%- include('footer') %>
+	</body>
+</html>
