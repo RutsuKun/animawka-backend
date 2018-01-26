@@ -18,6 +18,17 @@ exports.dbConnect = cfg => {
 					storage: cfg.database.sqlite.file,
 				});
 				break;
+			case "mysql":
+				db = new Sequelize(cfg.database.mysql.database, cfg.database.mysql.username, cfg.database.mysql.password, {
+					dialect: "mysql",
+					pool: {
+						max: 5,
+						min: 0,
+						acquire: 30000,
+						idle: 10000
+					},
+				});
+				break;
 			default:
 				throw new Error("Nieznany typ bazy danych!");
 		}
