@@ -35,3 +35,21 @@ exports.dbConnect = cfg => {
 	}
 
 }
+
+exports.getLastEpisodes = async () => {
+	var data = await db.query("SELECT * FROM episodes ORDER BY ID DESC LIMIT 6");
+	var animes = [];
+
+	for (var i = 0; i < data[0].length; i++) {
+		var anime = await db.query("SELECT * FROM anime WHERE ID = '" + data[0][i].anime + "'");
+		if (anime[0] && anime[0][0]) {
+			anime[0][0].episode = data[0][i].episode;
+			animes.push(anime[0][0]);
+		}
+	}
+	return animes;
+}
+
+exports.name2url = name => {
+	return name.replace(/\s/g, '_');
+}

@@ -34,10 +34,10 @@ NotFound.prototype.__proto__ = Error.prototype;
 
 function registerRoutes(cfg, app) {
 	var normalizedPath = path.join(__dirname, "routes");
-	fs.readdirSync(normalizedPath).forEach(file => {
+	/*fs.readdirSync(normalizedPath).forEach(file => {
 		if (cfg.debug) console.log("Load route: " + file);
 		routes[file] = require("./routes/" + file);
-	});
+	});*/
 	
 	app.use(logger('dev'));
 	app.use(bodyParser.json());
@@ -46,13 +46,6 @@ function registerRoutes(cfg, app) {
 	app.use(session({
 		secret: cfg['session-secret']
 	}));
-	
-	/*if (cfg.debug) {
-		app.use(errorHandler({ dumpExceptions: true, showStack: true }));
-	} else {
-		app.use(errorHandler());
-	}*/
-	//app.use(methodOverride());
 
 	if (cfg.favicon)
 		app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -73,7 +66,7 @@ function registerRoutes(cfg, app) {
 	}));
 	app.use(express.static(path.join(__dirname, '../public')));
 
-	app.use('/', routes["index.js"]);
+	app.use('/', require("./routes"));
 
 	app.get('/*', (req, res) => {
 		throw new NotFound('Page not found.');
@@ -81,9 +74,9 @@ function registerRoutes(cfg, app) {
 
 	app.use((err, req, res, next) => {
 		if (err instanceof NotFound) {
-			res.render('404', { status: 404 });
+			res.status(404).render('404', { status: 404 });
 		} else {
-			res.render('error', { status: 500, message: "Error!", error: err });
+			res.status(500).render('error', { status: 500, message: "Error!", error: err });
 			console.log(err);
 		}
 	});

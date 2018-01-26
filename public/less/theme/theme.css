@@ -1799,7 +1799,3 @@ body:not(.gallery-dark-theme) .col .gallery-overlay{
 .spr-badge .spr-badge-caption{
 	display:none
 }
-
-input, textarea, select, option, .material-icons {
-color:white !important;
-}

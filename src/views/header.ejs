@@ -10,7 +10,17 @@
 
 	<div class="nav-header center animawka-header" style="height:auto">
 		<div class="container">
-			<a href="https://animawka.pl"><img class="center" src="/img/animawka-logo.png" style="width:300px;margin-top:5px; margin-bottom:5px"/></a>
+			<div class="row right">
+				<a class='themebtn dropdown-button btn btn-floating btn-large <%= theme.primary %>' href='#'data-constrainWidth="false" data-activates='themes'><i class="material-icons">brush</i></a>
+				<ul id='themes' class='seltheme dropdown-content'>
+					<% for (var i = 0; i < themes.length; i++) {%>
+						<li><a href="javascript:{document.cookie='theme=<%= i %>';location.reload();}"><%= themes[i].name %></a></li>
+					<%}%>
+				</ul>
+			</div>
+			<div class="row">
+				<a href="https://animawka.pl"><img class="center" src="/img/animawka-logo.png" style="width:300px;margin-top:5px; margin-bottom:5px"/></a>
+			</div>
 			<!--<img src="/img/daily/KurisuCzwartek.png" style="width:300px;margin-bottom:-8px"/>-->
 		</div>
 	</div>
