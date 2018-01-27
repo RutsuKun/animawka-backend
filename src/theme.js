@@ -38,19 +38,20 @@ const themes = [
 		logo: "asuna",
 		light: false,
 		modifiers: {
-			bg: "grey lighten-4",
+			bg: "abrown",
 			nav: "",
-			infocards: "lighten-1 white-text"
+			infocards: "white-text"
 		}
 	}
 ];
 
 exports.themes = themes;
 exports.getTheme = id => {
-	if (!id)
+	if (!id) {
 		id = 0;
-	else if
-		(id > id.length || id < 0) id = 0;
+	} else {
+		if (id > themes.length || id < 0) id = 0;
+	}
 	
 	return themes[id];
 }
