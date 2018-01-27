@@ -10,7 +10,9 @@
 						Zostałeś zalogowany!
 					</span>
 					<script>
-						window.location.replace("https://animawka.pl");
+						setTimeout(function() {
+							window.location.href = "/";
+						}, 1000);
 					</script>
 				</div>
 				<% } else { %>
@@ -38,7 +40,7 @@
 							</div>
 						</div>
 						<div class="card-action">
-							<a href=""javascript:$("#log").submit()"">Zaloguj</a>
+							<a href='javascript:$("#log").submit()'>Zaloguj</a>
 						</div>
 					</div>
 				</form>

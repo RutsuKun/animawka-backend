@@ -1,7 +1,10 @@
-const Sequelize = require('sequelize');
+const Sequelize = require('sequelize'),
+	crypto = require('crypto'),
+	scrypt = require('scryptsy');
 
 var exports = module.exports = {};
 var db = {};
+var convertPasswords = false;
 
 exports.dbConnect = cfg => {
 	try {
@@ -45,21 +48,35 @@ exports.dbConnect = cfg => {
 		process.exit(1);
 	}
 
-}
+};
 
 exports.getLastEpisodes = async () => {
 	var data = await db.query("SELECT * FROM episodes ORDER BY ID DESC LIMIT 6");
 	var animes = [];
 
 	for (var i = 0; i < data[0].length; i++) {
-		var anime = await db.query("SELECT * FROM anime WHERE ID = '" + data[0][i].anime + "'");
+		var anime = await db.query("SELECT * FROM anime WHERE ID = '" + db.escape(data[0][i].anime) + "'");
 		if (anime[0] && anime[0][0]) {
 			anime[0][0].episode = data[0][i].episode;
 			animes.push(anime[0][0]);
 		}
 	}
 	return animes;
-}
+};
+
+exports.authenticate = async (user, pass) => {
+	var u = await db.query("SELECT * FROM users WHERE email=" + db.escape(user) + " OR login="+ db.escape(user));
+	if (u[0] && u[0][0]) {
+		if (u.password.length === 32) { // bo kurwa henicz uzyl jebanego MD5
+			var hash = crypto.createHash('md5').update(pass.normalize('NFKC')).digest("hex");
+			if (u[0][0].password === hash) return true;
+		} else {
+			var hash = scrypt(pass.normalize('NFKC'), "animawka", 16384, 8, 1, 64).toString('hex');
+			if (u[0][0].password === hash) return true;
+		}
+	}
+	return false;
+};
 
 exports.name2url = name => {
 	return name.replace(/\s/g, '_');

@@ -2,13 +2,13 @@ var exports = module.exports = {};
 
 const themes = [
 	{
-		name: "Domyślny (Purpura)",
+		name: "Purpura (Nepka)",
 		id: "purple",
 		color: "#e040fb",
 		primary: "deep-purple",
 		accent: "purple",
-		logo: "asuna",
-		light: false,
+		logo: "nep",
+		light: true,
 		modifiers: {
 			bg: "lighten-4",
 			nav: "accent-1",
@@ -16,16 +16,30 @@ const themes = [
 		}
 	},
 	{
-		name: "Niebieski",
+		name: "Niebieski (Aqua)",
 		id: "blue",
 		color: "#e040fb",
 		primary: "light-blue",
 		accent: "blue",
+		logo: "aqua",
+		light: true,
+		modifiers: {
+			bg: "grey lighten-4",
+			nav: "",
+			infocards: "lighten-1 white-text"
+		}
+	},
+	{
+		name: "Brązowy (Asuna)",
+		id: "brown",
+		color: "#5B3A2E",
+		primary: "brown",
+		accent: "brown",
 		logo: "asuna",
 		light: false,
 		modifiers: {
 			bg: "grey lighten-4",
-			nav: "lighten-1",
+			nav: "",
 			infocards: "lighten-1 white-text"
 		}
 	}

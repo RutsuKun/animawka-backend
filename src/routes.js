@@ -18,8 +18,17 @@ router.get('/', function(req, res, next) {
 	});
 });
 
-router.post('/konto/zaloguj', function(req, res, next) {
-	console.log(res.body);
+router.post('/konto/zaloguj', async function(req, res, next) {
+	console.log(req.body);
+	var suc = false;
+	try {
+		if (req.body.login && req.body.login != '' && req.body.password && req.body.password != '')
+			suc = await db.authenticate(req.body.login, req.body.password);
+	} catch (e) {
+		suc = false;
+	}
+
+	console.log("Login success: " + suc);
 
 	res.render('login', {
 		theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
@@ -28,7 +37,7 @@ router.post('/konto/zaloguj', function(req, res, next) {
 		db: db,
 		session: req.session,
 		login: true,
-		success: true
+		success: suc
 	});
 });
 
