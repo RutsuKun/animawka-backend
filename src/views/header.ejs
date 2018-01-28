@@ -14,7 +14,7 @@
 				<a class='themebtn dropdown-button btn btn-floating btn-large <%= theme.primary %>' href='#'data-constrainWidth="false" data-activates='themes'><i class="material-icons">brush</i></a>
 				<ul id='themes' class='seltheme dropdown-content'>
 					<% for (var i = 0; i < themes.length; i++) {%>
-						<li><a href="javascript:{document.cookie='theme=<%= i %>';location.reload();}"><%= themes[i].name %></a></li>
+						<li><a href="javascript:{document.cookie='theme=<%= i %>;path=/';location.reload();}"><%= themes[i].name %></a></li>
 					<%}%>
 				</ul>
 			</div>
