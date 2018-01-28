@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>AnimawkaBot Chat</title>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="/less/chat.css">
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="/javascript/jquery-2.1.4.min.js"></script>
+	</head>
+	<body>
+		<div id="container">
+			<% for (var i = 0; i < messages.length; i++) { %>
+			<div class="message">
+				<div class="avatar">
+					<img alt="<%= messages[i].name %>" src="https://cdn.discordapp.com/avatars/<%= messages[i].id %>/<%= messages[i].avatar %>.png?size=128" />
+				</div>
+				<div class="box">
+					<div class="username">
+						<span class="name" style="color: <%= messages[i].rolecolor %>"><%= messages[i].name %></span>
+					</div>
+					<div class="message">
+						<%- messages[i].content %>
+					</div>
+				</div>
+			</div>
+			<% } %>
+		</div>
+		<div id="btm"></div>
+		<script>
+			$(function() {
+				var socket = io();
+				socket.on('message', function(msg){
+					var data = JSON.parse(msg);
+					$('#container').append('<div class="message"><div class="avatar">' + '<img alt="' + data.name + '" src="https://cdn.discordapp.com/avatars/' + data.id + '/' + data.avatar + '.png?size=128" /></div><div class="box"><div class="username"><span class="name" style="color: ' + data.rolecolor + '">' + data.name + '</span></div><div class="message">' + data.content + '</div></div></div');
+					$('html, body').animate({
+						scrollTop: $("#btm").offset().top
+					}, 1000);
+				});
+			});
+		</script>
+	</body>
+</html>

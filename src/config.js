@@ -9,6 +9,11 @@ exports.loadConfig = () => {
 			port: c.port || 2137,
 			debug: c.debug || true,
 			'convert-passwords': c['convert-passwords'] || false,
+			discord: {
+				enable: c.discord.enable || false,
+				token: c.discord.token || "",
+				channelid: c.discord.channelid || ""
+			},
 			recaptcha: {
 				enable: c.recaptcha.enable || false,
 				site: c.recaptcha.site || "",
