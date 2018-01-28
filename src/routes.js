@@ -19,12 +19,13 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/konto/zaloguj', async function(req, res, next) {
-	console.log(req.body);
+	//console.log(req.body);
 	var suc = false;
 	try {
 		if (req.body.login && req.body.login != '' && req.body.password && req.body.password != '')
 			suc = await db.authenticate(req.body.login, req.body.password);
 	} catch (e) {
+		console.log(e);
 		suc = false;
 	}
 

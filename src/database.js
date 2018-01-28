@@ -66,13 +66,16 @@ exports.getLastEpisodes = async () => {
 
 exports.authenticate = async (user, pass) => {
 	var u = await db.query("SELECT * FROM users WHERE email=" + db.escape(user) + " OR login="+ db.escape(user));
+	console.log(u);
 	if (u[0] && u[0][0]) {
-		if (u.password.length === 32) { // bo kurwa henicz uzyl jebanego MD5
+		if (u[0][0].password.length === 32) { // bo kurwa henicz uzyl jebanego MD5
 			var hash = crypto.createHash('md5').update(pass.normalize('NFKC')).digest("hex");
-			if (u[0][0].password === hash) return true;
+			//console.log("MD5: " + hash + " (db: " + u[0][0].password + ")");
+			if (u[0][0].password == hash) return true;
 		} else {
 			var hash = scrypt(pass.normalize('NFKC'), "animawka", 16384, 8, 1, 64).toString('hex');
-			if (u[0][0].password === hash) return true;
+			//console.log("scrypt: " + hash + " (db: " + u[0][0].password + ")");
+			if (u[0][0].password == hash) return true;
 		}
 	}
 	return false;
