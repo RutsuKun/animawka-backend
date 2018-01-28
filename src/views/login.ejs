@@ -7,7 +7,7 @@
 				<% if (login && success) { %>
 				<div class="card-panel teal">
 					<span class="white-text">
-						Zostałeś zalogowany!
+						Zostałeś zalogowany.
 					</span>
 					<script>
 						setTimeout(function() {
@@ -16,13 +16,21 @@
 					</script>
 				</div>
 				<% } else { %>
-					<% if (login && !success) { %>
+					<% if (login && !success) { 
+						if (captcha) { %>
+						<div class="card-panel red">
+							<span class="white-text">
+								Proszę wypełnić CAPTCHĘ.
+							</span>
+						</div>
+						<% } else { %>
 						<div class="card-panel red">
 							<span class="white-text">
 								Nieprawidłowy login lub hasło
 							</span>
 						</div>
-					<% } %>
+					<%	} 
+					} %>
 				<form action="/konto/zaloguj" id="log" method="post">
 					<div class="card">
 						<div class="card-content">
@@ -34,10 +42,12 @@
 							<div class="input-field">
 								<label for="password">Hasło</label>
 								<input type="password" id="password" name="password" />
+							<% if (enableCaptcha) { %>
 							</div>
 								<div class="input-field">
 								<div class="g-recaptcha" data-sitekey="6Ld3mUAUAAAAAAq0nkoOXJ01XFw4neIv-LAai4Mk"></div>
 							</div>
+							<% } %>
 						</div>
 						<div class="card-action">
 							<a href='javascript:$("#log").submit()'>Zaloguj</a>

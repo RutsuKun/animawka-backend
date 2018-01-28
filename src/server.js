@@ -3,14 +3,14 @@ const express = require('express'),
 	LRU = require('lru-cache'),
 	fs = require("fs"),
 	path = require('path'),
-	favicon = require('serve-favicon'),
 	logger = require('morgan'),
 	cookieParser = require('cookie-parser'),
 	bodyParser = require('body-parser'),
 	methodOverride = require('method-override'),
 	minify = require('express-minify'),
 	compression = require('compression'),
-	session = require('express-session');
+	session = require('express-session'),
+	reCAPTCHA = require('recaptcha2');
 
 ejs.cache = LRU(100);
 
@@ -18,6 +18,14 @@ var routes = {};
 var exports = module.exports = {};
 
 exports.start = cfg => {
+	if (cfg.recaptcha.enable)
+		exports.recaptcha=new reCAPTCHA({
+			siteKey: cfg.recaptcha.site,
+			secretKey: cfg.recaptcha.secret
+		});
+	else
+		exports.recaptcha = null;
+
 	exports.app = express();
 	registerRoutes(cfg, exports.app);
 	exports.app.listen(cfg.port, () => {
@@ -46,9 +54,6 @@ function registerRoutes(cfg, app) {
 	app.use(session({
 		secret: cfg['session-secret']
 	}));
-
-	if (cfg.favicon)
-		app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
 	app.engine('ejs', require('express-ejs-extend')); // add this line
 	app.set('view engine', 'ejs');

@@ -77,7 +77,7 @@ window.location.replace("https://animawka.pl");
 					<i class="material-icons right">arrow_drop_down</i>
 				</a>
 				<ul id="account-dropdown" class="site-nav__submenu dropdown-content">
-					<% if (!session || !session.authenticated) { %>
+					<% if (!session || !session.authorized) { %>
 						<li>
 							<a href="/konto/zaloguj" class="site-nav__link">Zaloguj</a>
 						</li>
@@ -95,7 +95,7 @@ window.location.replace("https://animawka.pl");
 					<% } %>
 				</ul>
 			</li>
-			<%#if($user->checkPermission(@$_SESSION['uid']) == true):%>
+			<% if (session && session.admin) { %>
 			<li class="site-nav--has-submenu">
 				<a href="#" class="site-nav__link dropdown-button" data-activates="admin-dropdown" data-belowOrigin="true" data-constrainWidth="false" data-hover="true">
 					<i class="material-icons left">dns</i>
@@ -108,9 +108,7 @@ window.location.replace("https://animawka.pl");
 					</li>
 				</ul>
 			</li>
-			<%#
-			endif;
-			%>
+			<% } %>
 
 			<li>
 				<a class="fullscreen-search" href="#">

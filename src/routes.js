@@ -1,11 +1,12 @@
 const express = require('express'),
 	db = require('./database'),
 	theme = require('./theme');
+	server = require('./server');
 var router = express.Router();
 
 router.get('/', function(req, res, next) {
 	db.getLastEpisodes().then(eps => {
-		console.log(eps);
+		//console.log(eps);
 		if (eps === undefined) eps = [];
 		res.render('index', {
 			theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
@@ -18,18 +19,53 @@ router.get('/', function(req, res, next) {
 	});
 });
 
+router.get('/konto/wyloguj', function(req, res, next) {
+	req.session.destroy();
+	
+	res.render('logout', {
+		theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+		themes: theme.themes,
+		title: 'Strona główna',
+		db: db, 
+		session: req.session
+	});
+});
+
 router.post('/konto/zaloguj', async function(req, res, next) {
-	//console.log(req.body);
-	var suc = false;
-	try {
-		if (req.body.login && req.body.login != '' && req.body.password && req.body.password != '')
-			suc = await db.authenticate(req.body.login, req.body.password);
-	} catch (e) {
-		console.log(e);
-		suc = false;
+	var captcha = false;
+	var ss = {success: false, admin: false, uid: -1};
+
+	if (server.recaptcha != null) {
+		try {
+			await server.recaptcha.validateRequest(req);
+			try {
+				if (req.body.login && req.body.login != '' && req.body.password && req.body.password != '') {
+					ss = await db.authenticate(req.body.login, req.body.password);
+				}
+			} catch (e) {
+				console.log(e);
+				ss.success = false;
+			}
+		} catch (e) {
+			ss.success = false;
+			captcha = true;
+		}
+		
+	} else {
+		try {
+			if (req.body.login && req.body.login != '' && req.body.password && req.body.password != '')
+				ss = await db.authenticate(req.body.login, req.body.password);
+		} catch (e) {
+			console.log(e);
+			ss.success = false;
+		}
 	}
 
-	console.log("Login success: " + suc);
+	if (ss.success) {
+		req.session.authorized = true;
+		req.session.uid = ss.uid;
+		req.session.admin = ss.admin;
+	}
 
 	res.render('login', {
 		theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
@@ -38,7 +74,9 @@ router.post('/konto/zaloguj', async function(req, res, next) {
 		db: db,
 		session: req.session,
 		login: true,
-		success: suc
+		success: ss.success,
+		captcha: captcha,
+		enableCaptcha: server.captcha != null
 	});
 });
 
@@ -50,7 +88,9 @@ router.get('/konto/zaloguj', function(req, res, next) {
 		db: db,
 		session: req.session,
 		login: false,
-		success: false
+		success: false,
+		captcha: false,
+		enableCaptcha: server.captcha != null
 	});
 });
 

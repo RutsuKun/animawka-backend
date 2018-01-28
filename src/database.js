@@ -71,14 +71,26 @@ exports.authenticate = async (user, pass) => {
 		if (u[0][0].password.length === 32) { // bo kurwa henicz uzyl jebanego MD5
 			var hash = crypto.createHash('md5').update(pass.normalize('NFKC')).digest("hex");
 			//console.log("MD5: " + hash + " (db: " + u[0][0].password + ")");
-			if (u[0][0].password == hash) return true;
+			if (u[0][0].password == hash) return {
+				uid: u[0][0].uid,
+				success: true,
+				admin: u[0][0].rank == 1
+			};
 		} else {
 			var hash = scrypt(pass.normalize('NFKC'), "animawka", 16384, 8, 1, 64).toString('hex');
 			//console.log("scrypt: " + hash + " (db: " + u[0][0].password + ")");
-			if (u[0][0].password == hash) return true;
+			if (u[0][0].password == hash) return {
+				uid: u[0][0].uid,
+				success: true,
+				admin: u[0][0].rank == 1
+			};
 		}
 	}
-	return false;
+	return {
+		uid: -1,
+		success: false,
+		admin: false
+	};
 };
 
 exports.name2url = name => {
