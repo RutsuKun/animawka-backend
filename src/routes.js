@@ -1,7 +1,8 @@
 const express = require('express'),
 	db = require('./database'),
-	theme = require('./theme');
-	server = require('./server');
+	theme = require('./theme'),
+	server = require('./server'),
+	config = require('./config');
 var router = express.Router();
 
 router.get('/', function(req, res, next) {
@@ -21,7 +22,7 @@ router.get('/', function(req, res, next) {
 
 router.get('/konto/wyloguj', function(req, res, next) {
 	req.session.destroy();
-	
+
 	res.render('logout', {
 		theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
 		themes: theme.themes,
@@ -76,7 +77,7 @@ router.post('/konto/zaloguj', async function(req, res, next) {
 		login: true,
 		success: ss.success,
 		captcha: captcha,
-		enableCaptcha: server.captcha != null
+		enableCaptcha: config.cfg.recaptcha.enable
 	});
 });
 
@@ -90,7 +91,7 @@ router.get('/konto/zaloguj', function(req, res, next) {
 		login: false,
 		success: false,
 		captcha: false,
-		enableCaptcha: server.captcha != null
+		enableCaptcha: config.cfg.recaptcha.enable
 	});
 });
 
