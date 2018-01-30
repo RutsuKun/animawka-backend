@@ -4,7 +4,11 @@ const Sequelize = require('sequelize'),
 
 var exports = module.exports = {};
 var db = {};
+
 var convertPasswords = false;
+const itemsPerPage = 10; // liczba stron
+
+exports.itemsPerPage = itemsPerPage;
 
 exports.dbConnect = cfg => {
 	try {
@@ -64,6 +68,30 @@ exports.getLastEpisodes = async () => {
 	return animes;
 };
 
+// https://mariadb.com/kb/en/library/pagination-optimization/
+exports.getAnimeList = async page => {
+	var c = [];
+	var data = [];
+
+	if (page == 1) {
+		data = await db.query("SELECT * FROM anime ORDER BY name ASC LIMIT " + itemsPerPage);
+	} else {
+		data = await db.query("SELECT * FROM anime ORDER BY name ASC LIMIT " + ((page - 1) * itemsPerPage) + "," + (page * itemsPerPage));
+	}
+
+	cnt = await db.query("SELECT COUNT(ID) AS num FROM anime;");
+	var pc = Math.floor(cnt[0][0].num / itemsPerPage);
+	if (data[0].length != 0 && pc == 0) pc = 1;
+
+	if (data[0] && cnt[0]) {
+		return {
+			animes: data[0],
+			pagecount: pc,
+			itemcount: cnt[0][0].num
+		};
+	}
+}
+
 exports.authenticate = async (user, pass) => {
 	var u = await db.query("SELECT * FROM users WHERE email=" + db.escape(user) + " OR login="+ db.escape(user));
 	console.log(u);
@@ -93,6 +121,17 @@ exports.authenticate = async (user, pass) => {
 	};
 };
 
+// utilsy
+
+exports.isInt = x => {
+   var y = parseInt(x, 10);
+   return !isNaN(y) && x == y && x.toString() == y.toString();
+}
+
 exports.name2url = name => {
 	return name.replace(/\s/g, '_');
+}
+
+exports.nl2br = text => {
+	return text.replace(/\\r/g, '').replace(/\\n/g, '<br/>');
 }

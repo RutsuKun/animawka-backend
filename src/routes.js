@@ -20,6 +20,36 @@ router.get('/', function(req, res, next) {
 	});
 });
 
+router.get('/lista', function(req, res, next) {
+	db.getAnimeList(1).then(animelist => {
+		res.render('animelist', {
+			theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+			themes: theme.themes,
+			title: 'Lista anime',
+			page: 1,
+			animelist: animelist,
+			db: db, 
+			session: req.session
+		});
+	});
+});
+
+router.get('/lista/:page', function(req, res, next) {
+	if (!db.isInt(req.params.page)) req.params.page = 1;
+
+	db.getAnimeList(req.params.page).then(animelist => {
+		res.render('animelist', {
+			theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+			themes: theme.themes,
+			title: 'Lista anime',
+			page: req.params.page,
+			animelist: animelist,
+			db: db, 
+			session: req.session
+		});
+	});
+});
+
 router.get('/konto/wyloguj', function(req, res, next) {
 	req.session.destroy();
 
