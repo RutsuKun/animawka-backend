@@ -94,7 +94,7 @@ exports.getAnimeList = async page => {
 
 exports.authenticate = async (user, pass) => {
 	var u = await db.query("SELECT * FROM users WHERE email=" + db.escape(user) + " OR login="+ db.escape(user));
-	console.log(u);
+	//console.log(u);
 	if (u[0] && u[0][0]) {
 		if (u[0][0].password.length === 32) { // bo kurwa henicz uzyl jebanego MD5
 			var hash = crypto.createHash('md5').update(pass.normalize('NFKC')).digest("hex");
