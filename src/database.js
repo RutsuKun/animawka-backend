@@ -79,7 +79,7 @@ exports.getAnimeList = async page => {
 		data = await db.query("SELECT * FROM anime ORDER BY name ASC LIMIT " + ((page - 1) * itemsPerPage) + "," + (page * itemsPerPage));
 	}
 
-	cnt = await db.query("SELECT COUNT(ID) AS num FROM anime;");
+	var cnt = await db.query("SELECT COUNT(ID) AS num FROM anime;");
 	var pc = Math.ceil(cnt[0][0].num / itemsPerPage);
 	if (data[0].length != 0 && pc == 0) pc = 1;
 
