@@ -1,6 +1,9 @@
 const Sequelize = require('sequelize'),
 	crypto = require('crypto'),
-	scrypt = require('scryptsy');
+	scrypt = require('scryptsy'),
+	primid = require('primid');
+
+var generator = primid(0x1337, 0x2137, 0xdead);
 
 var exports = module.exports = {};
 var db = {};
@@ -9,6 +12,34 @@ var convertPasswords = false;
 const itemsPerPage = 10; // liczba stron
 
 exports.itemsPerPage = itemsPerPage;
+
+// cache zrodel, nie zmienia sie czesto a lista nie jest dluga.
+var sources = [];
+
+exports.getSourceName = source => {
+	if (!exports.isInt(source)) return "Nieznane źródło";
+
+	try {
+		for (var i = 0; i < sources.length; i++) {
+			if (sources[i].id == source) {
+				return sources[i].name;
+			}
+		}
+	} catch (e) {
+		return "Nieznane źródło";
+	}
+}
+
+exports.loadData = async () => {
+	sources = [];
+	try {
+		var data = await db.query("SELECT * FROM settings WHERE name = 'sources'");
+		sources = JSON.parse(data[0][0].value).players;
+	} catch (e) {
+		console.error("Wystapił błąd podczas ładowania ustawień!");
+		console.error(e);
+	}
+}
 
 exports.dbConnect = cfg => {
 	try {
@@ -42,6 +73,7 @@ exports.dbConnect = cfg => {
 		db.authenticate()
 			.then(() => {
 				console.log("Połączono z bazą danych!");
+				exports.loadData();
 			})
 			.catch(err => {
 				throw err;
@@ -68,9 +100,70 @@ exports.getLastEpisodes = async () => {
 	return animes;
 };
 
+exports.getAnimeEpisode = async (page, epnum) => {
+	if (page === undefined || epnum === undefined || !exports.isInt(epnum)) {
+		return {
+			title: "Błąd",
+			data: null,
+			episodes: [],
+			error: "Nie znaleziono odcinka"
+		};
+	}
+
+	var name = exports.url2name(page);
+	var u = await db.query("SELECT * FROM anime WHERE name=" + db.escape(name) + " OR namejap="+ db.escape(name));
+
+	if (u[0] && u[0][0]) {
+		var episode = await db.query("SELECT * FROM episodes WHERE anime = '" + db.escape(u[0][0].ID) + "' AND episode = " + db.escape(epnum));
+		if (episode[0] && episode[0][0]) {
+			var plrs = await db.query("SELECT * FROM players WHERE anime = '" + db.escape(u[0][0].ID) + "' AND episode = " + db.escape(epnum));
+			console.log(plrs);
+
+			if (plrs[0] && plrs[0][0]) {
+				return {
+					title: u[0][0].name + " - Odcinek " + epnum,
+					data: u[0][0],
+					episode: episode[0][0],
+					players: plrs[0],
+					error: ""
+				};
+			} else {
+				return {
+					title: u[0][0].name + " - Odcinek " + epnum,
+					data: u[0][0],
+					episode: episode[0][0],
+					players: null,
+					error: "Nie zuploadowano"
+				};
+			}
+		} else {
+			return {
+				title: u[0][0].name + " - Odcinek " + epnum,
+				data: u[0][0],
+				episode: null,
+				players: null,
+				error: "Nie znaleziono odcinka"
+			};
+		}
+	} else {
+		return {
+			title: "Błąd",
+			data: null,
+			episode: null,
+			players: [],
+			error: "Nie znaleziono anime"
+		};
+	}
+}
+
 exports.getAnime = async page => {
 	if (page === undefined) {
-		return null;
+		return {
+			title: "Błąd",
+			data: null,
+			episodes: [],
+			error: "Nie znaleziono anime"
+		};
 	}
 
 	var name = exports.url2name(page);
@@ -159,6 +252,10 @@ exports.getStatus = status => {
 		default:
 			return "Emitowany";
 	}
+}
+
+exports.obfuscateId = x => {
+	return generator.encode(x);
 }
 
 exports.isInt = x => {

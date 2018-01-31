@@ -73,7 +73,10 @@ exports.start = cfg => {
 			}
 		});
 
-		client.login(cfg.discord.token);
+		client.login(cfg.discord.token).catch(e => {
+			console.error("Nie można połączyć się z Discordem!");
+			console.error(e);
+		});
 	}
 
 	exports.server.listen(cfg.port, () => {

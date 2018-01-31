@@ -20,6 +20,22 @@ router.get('/', function(req, res, next) {
 	});
 });
 
+router.get('/anime/:name/:episode', function(req, res, next) {
+	db.getAnimeEpisode(req.params.name, req.params.episode).then(anime => {
+		res.render('animewatch', {
+			theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+			themes: theme.themes,
+			title: anime.title,
+			data: anime.data,
+			episode: anime.episode,
+			players: anime.players,
+			error: anime.error,
+			db: db, 
+			session: req.session
+		});
+	});
+});
+
 router.get('/anime/:name', function(req, res, next) {
 	db.getAnime(req.params.name).then(anime => {
 		res.render('animeinfo', {

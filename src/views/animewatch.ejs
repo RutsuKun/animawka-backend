@@ -1,0 +1,110 @@
+<% extend('layout') %>
+
+<main>
+	<div class="container">
+		<div class="row">
+			<% if (data == null) {%>
+				<div class="col s12 offset-m3 m6">
+					<div class="card-panel red">
+						<span class="white-text">
+							Nie mamy tego odcinka w bazie danych.
+						</span>
+					</div>
+				</div>
+			<% } else if (players == null) {%>
+				<div class="col s12 offset-m3 m6">
+					<div class="card-panel red">
+						<span class="white-text">
+							Ten odcinek nie został jeszcze zuploadowany
+						</span>
+					</div>
+				</div>
+			<% } else { %>
+				<div class="col s12">
+					<div class="card medium hide-on-large-only">
+						<div class="card-image waves-effect waves-block waves-light">
+							<img class="activator" src="<%= data.image %>"/>
+							<span class="card-title boldtitle activator"><%= data.name %> - Odcinek <%= episode.episode %></span>
+						</div>
+						<div class="card-content">
+							<p>
+								<% if (episode.name != null && episode.name != "") {%>
+								<strong>Tytuł odcinka: </strong><%= episode.name %><br/>
+								<% } %>
+								<strong>Tłumacz: </strong><%= data.translate %><br/>
+								<strong>Korektor: </strong><%= data.corrector %><br/>
+								<strong>Dodano: </strong><%= data.date %>
+							</p>
+						</div>
+						<div class="card-reveal">
+							<span class="card-title grey-text text-darken-4">Akcje<i class="material-icons right">close</i></span>
+						</div>
+					</div>
+
+					<div class="card horizontal hide-on-med-and-down">
+						<div class="card-image waves-effect waves-block waves-light">
+							<img class="activator" height="300px" src="<%= data.image %>">
+						</div>
+						<div class="card-stacked">
+							<div class="card-content">
+								<span class="card-title grey-text text-darken-4"><%= data.name %> - Odcinek <%= episode.episode %>
+									<% if (session && session.admin) { %>
+										<a class='dropdown-button waves-effect waves-gray btn-floating btn-flat white right' href='#' data-activates='animemenu' data-constrainwidth='false'><i class="material-icons black-text">more_vert</i></a>
+									<% } %>
+								</span>
+								<% if (session && session.admin) { %>
+								<ul id='animemenu' class='seltheme dropdown-content'>
+									<li><a href="/admin/editepisode/<%= data.ID %>">Edytuj odcinek</a></li>
+								</ul>
+								<% } %>
+								
+								<p>
+									<% if (episode.name != null && episode.name != "") {%>
+									<strong>Tytuł odcinka: </strong><%= episode.name %><br/>
+									<% } %>
+									<strong>Tłumacz: </strong><%= data.translate %><br/>
+									<strong>Korektor: </strong><%= data.corrector %><br/>
+									<strong>Dodano: </strong><%= data.date %>
+								</p>
+							</div>
+						</div>
+					</div>
+
+					<div class="card <%= theme.accent %>">
+						<div class="card-content white-text">
+							<span class="card-title">Oglądaj</span>
+						</div>
+
+						<div class="card-tabs">
+							<ul class="tabs tabs-fixed-width tabs-transparent">
+								<% for (var i = 0; i < players.length; i++) {%>
+									<li class="tab">
+										<a <% if (i == 0) {%> class="active" <% } %> href="#player<%= db.obfuscateId(i) %>">
+											<%= db.getSourceName(players[i].type) %>
+										</a>
+									</li>
+								<%}%>
+							</ul>
+						</div>
+
+						<div class="card-content <%= theme.accent %> lighten-5">
+							<% for (var i = 0; i < players.length; i++) {%>
+								<div id="player<%= db.obfuscateId(i) %>">
+									<div class="video-container">
+										<iframe width="854" height="480" src="<%= players[i].url %>" frameborder="0" allowfullscreen></iframe>
+									</div>
+								</div>
+							<%}%>
+						</div>
+					</div>
+
+					<div class="card-panel red">
+						<span class="white-text">
+							<strong>Uwaga: </strong>Jeśli twój antywirus wyświetla komunikat o potencjalnie niebezpiecznym skrypcie - koparce (Miner) na którymś z powyższych odtwarzaczy zainstaluj dodatek Coinhive Blocker dla swojej przeglądarki (<a class="light-blue-text" href="https://addons.mozilla.org/pl/firefox/addon/coinhive-blocker/">Firefox</a>, <a class="light-blue-text" href="https://chrome.google.com/webstore/detail/coin-hive-blocker/ccagdbjcbhmcdcbbknfebhhdbolnfimo">Chrome</a>).
+						</span>
+					</div>
+				</div>
+			<% } %>
+		</div>
+	</div>
+</main>
