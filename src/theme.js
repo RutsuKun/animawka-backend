@@ -2,23 +2,9 @@ var exports = module.exports = {};
 
 const themes = [
 	{
-		name: "Purpura (Nepka)",
-		id: "purple",
-		color: "#e040fb",
-		primary: "deep-purple",
-		accent: "purple",
-		logo: "nep",
-		light: true,
-		modifiers: {
-			bg: "lighten-4",
-			nav: "accent-1",
-			infocards: "deep-purple lighten-3 white-text"
-		}
-	},
-	{
 		name: "Niebieski (Aqua)",
 		id: "blue",
-		color: "#e040fb",
+		color: "#03a9f4",
 		primary: "light-blue",
 		accent: "blue",
 		logo: "aqua",
@@ -41,6 +27,20 @@ const themes = [
 			bg: "abrown",
 			nav: "",
 			infocards: "white-text"
+		}
+	},
+	{
+		name: "Purpura (Nepka)",
+		id: "purple",
+		color: "#e040fb",
+		primary: "deep-purple",
+		accent: "purple",
+		logo: "nep",
+		light: true,
+		modifiers: {
+			bg: "lighten-4",
+			nav: "accent-1",
+			infocards: "deep-purple lighten-3 white-text"
 		}
 	}
 ];

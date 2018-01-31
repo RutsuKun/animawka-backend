@@ -47,7 +47,7 @@ window.location.replace("https://animawka.pl");
 				<a href="/" class="site-nav__link"><i class="material-icons left">home</i> Strona główna</a>
 			</li>
 			<li>
-				<a href="/lista" class="site-nav__link"><i class="material-icons left">list</i> Lista anime</a>
+				<a href="/anime" class="site-nav__link"><i class="material-icons left">list</i> Lista anime</a>
 			</li>
 			<li class="site-nav--has-submenu">
 				<a href="#" class="site-nav__link dropdown-button" data-activates="more-dropdown" data-belowOrigin="true" data-constrainWidth="false" data-hover="true">
@@ -79,18 +79,18 @@ window.location.replace("https://animawka.pl");
 				<ul id="account-dropdown" class="site-nav__submenu dropdown-content">
 					<% if (!session || !session.authorized) { %>
 						<li>
-							<a href="/konto/zaloguj" class="site-nav__link">Zaloguj</a>
+							<a href="/zaloguj" class="site-nav__link">Zaloguj</a>
 						</li>
 
 						<li>
-							<a href="/konto/zarejestruj" class="site-nav__link">Zarejestruj</a>
+							<a href="/zarejestruj" class="site-nav__link">Zarejestruj</a>
 						</li>
 					<% } else { %>
 						<li>
 							<a href="/konto" class="site-nav__link">Konto</a>
 						</li>
 						<li>
-							<a href="/konto/wyloguj" class="site-nav__link">Wyloguj</a>
+							<a href="/wyloguj" class="site-nav__link">Wyloguj</a>
 						</li>
 					<% } %>
 				</ul>
@@ -149,30 +149,24 @@ window.location.replace("https://animawka.pl");
 	<li>
 		<a href="/konto" class="site-nav__link">Moje konto</a>
 	</li>
+	<li>
+		<a href="/wyloguj" class="site-nav__link">Wyloguj</a>
+	</li>
 <% } else { %>
 	<li>
-		<a href="/konto/zaloguj" class="site-nav__link">Zaloguj</a>
+		<a href="/zaloguj" class="site-nav__link">Zaloguj</a>
 	</li>
 
 	<li>
-		<a href="/konto/zarejestruj" class="site-nav__link">Zarejestruj</a>
+		<a href="/zarejestruj" class="site-nav__link">Zarejestruj</a>
 	</li>
 <% } %>
-	<%#
-	if($user->checkPermission($_SESSION['uid']) == true):
-		%>
+
+<% if (session && session.admin) { %>
 	<li>
-		<a href="/anime/dodaj" class="site-nav__link">Dodaj anime</a>
+		<a href="/admin/anime/dodaj" class="site-nav__link">Dodaj anime</a>
 	</li>
-	<%#
-	endif;
-	%>
-	<li>
-		<a href="/konto/wyloguj" class="site-nav__link">Wyloguj</a>
-	</li>
-	<%#
-	endif;
-	%>
+<% } %>
 </ul>
 
 

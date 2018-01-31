@@ -37,21 +37,35 @@ router.get('/anime/:name/:episode', function(req, res, next) {
 });
 
 router.get('/anime/:name', function(req, res, next) {
-	db.getAnime(req.params.name).then(anime => {
-		res.render('animeinfo', {
-			theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
-			themes: theme.themes,
-			title: anime.title,
-			data: anime.data,
-			episodes: anime.episodes,
-			error: anime.error,
-			db: db, 
-			session: req.session
+	if (db.isInt(req.params.name)) {
+		db.getAnimeList(req.params.name).then(animelist => {
+			res.render('animelist', {
+				theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+				themes: theme.themes,
+				title: 'Lista anime',
+				page: req.params.name,
+				animelist: animelist,
+				db: db, 
+				session: req.session
+			});
 		});
-	});
+	} else {
+		db.getAnime(req.params.name).then(anime => {
+			res.render('animeinfo', {
+				theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+				themes: theme.themes,
+				title: anime.title,
+				data: anime.data,
+				episodes: anime.episodes,
+				error: anime.error,
+				db: db, 
+				session: req.session
+			});
+		});
+	}
 });
 
-router.get('/lista', function(req, res, next) {
+router.get('/anime', function(req, res, next) {
 	db.getAnimeList(1).then(animelist => {
 		res.render('animelist', {
 			theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
@@ -65,23 +79,7 @@ router.get('/lista', function(req, res, next) {
 	});
 });
 
-router.get('/lista/:page', function(req, res, next) {
-	if (!db.isInt(req.params.page)) req.params.page = 1;
-
-	db.getAnimeList(req.params.page).then(animelist => {
-		res.render('animelist', {
-			theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
-			themes: theme.themes,
-			title: 'Lista anime',
-			page: req.params.page,
-			animelist: animelist,
-			db: db, 
-			session: req.session
-		});
-	});
-});
-
-router.get('/konto/wyloguj', function(req, res, next) {
+router.get('/wyloguj', function(req, res, next) {
 	req.session.destroy();
 
 	res.render('logout', {
@@ -93,7 +91,7 @@ router.get('/konto/wyloguj', function(req, res, next) {
 	});
 });
 
-router.post('/konto/zaloguj', async function(req, res, next) {
+router.post('/zaloguj', async function(req, res, next) {
 	var captcha = false;
 	var ss = {success: false, admin: false, uid: -1};
 
@@ -142,7 +140,7 @@ router.post('/konto/zaloguj', async function(req, res, next) {
 	});
 });
 
-router.get('/konto/zaloguj', function(req, res, next) {	
+router.get('/zaloguj', function(req, res, next) {	
 	res.render('login', {
 		theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
 		title: 'Logowanie',
