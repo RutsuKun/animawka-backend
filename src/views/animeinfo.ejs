@@ -1,0 +1,110 @@
+<% extend('layout') %>
+
+<main>
+	<div class="container">
+		<div class="row">
+			<% if (data == null) {%>
+				<div class="col s12 offset-m3 m6">
+					<div class="card-panel red">
+						<span class="white-text">
+							Nie mamy tego anime w bazie danych.
+						</span>
+					</div>
+				</div>
+			<% } else { %>
+				<div class="col s12">
+					<div class="card medium hide-on-large-only">
+						<div class="card-image waves-effect waves-block waves-light">
+							<img class="activator" src="<%= data.image %>"/>
+							<span class="card-title boldtitle activator"><%= data.name %></span>
+						</div>
+						<div class="card-content">
+							<p>
+								<strong>Tytuł alternatywny: </strong> <%= data.namejap %><br/>
+								<strong>Liczba odcinków: </strong><%= data.episodes %><br/>
+								<strong>Status: </strong><%= db.getStatus(data.status) %><br/>
+								<strong>Data emisji: </strong><br/>
+
+								<strong>Tłumacz: </strong><%= data.translate %><br/>
+								<strong>Korektor: </strong><%= data.corrector %><br/>
+								<strong>Dodano: </strong><%= data.date %>
+							</p>
+						</div>
+						<div class="card-reveal">
+							<span class="card-title grey-text text-darken-4">Akcje<i class="material-icons right">close</i></span>
+						</div>
+					</div>
+
+					<div class="card horizontal hide-on-med-and-down">
+						<div class="card-image waves-effect waves-block waves-light">
+							<img class="activator" height="300px" src="<%= data.image %>">
+						</div>
+						<div class="card-stacked">
+							<div class="card-content">
+								<span class="card-title grey-text text-darken-4"><%= data.name %>
+									<% if (session && session.admin) { %>
+										<a class='dropdown-button waves-effect waves-gray btn-floating btn-flat white right' href='#' data-activates='animemenu' data-constrainwidth='false'><i class="material-icons black-text">more_vert</i></a>
+									<% } %>
+								</span>
+								<% if (session && session.admin) { %>
+								<ul id='animemenu' class='seltheme dropdown-content'>
+									<li><a href="/admin/editanime/<%= data.ID %>">Edytuj</a></li>
+									<li><a href="/admin/addepisode/<%= data.ID %>">Dodaj odcinek</a></li>
+								</ul>
+								<% } %>
+								
+								<p>
+									<strong>Tytuł alternatywny: </strong> <%= data.namejap %><br/>
+									<strong>Liczba odcinków: </strong><%= data.episodes %><br/>
+									<strong>Status: </strong><%= db.getStatus(data.status) %><br/>
+									<strong>Data emisji: </strong><br/>
+
+									<strong>Tłumacz: </strong><%= data.translate %><br/>
+									<strong>Korektor: </strong><%= data.corrector %><br/>
+									<strong>Dodano: </strong><%= data.date %>
+								</p>
+							</div>
+						</div>
+
+						<div class="card-reveal">
+							<span class="card-title grey-text text-darken-4"><%= data.name %><i class="material-icons right">close</i></span>
+							<p><%- db.nl2br(data.description) %></p>
+						</div>
+					</div>
+				</div>
+				
+				<div class="col s12 m6">
+					<div class="card">
+						<div class="card-content">
+							<span class="card-title">Opis</span>
+							<p><%- db.nl2br(data.description) %></p>
+						</div>
+					</div>
+				</div>
+
+				<div class="col s12 m6">
+					<div class="card">
+						<div class="card-content">
+							<span class="card-title">Lista odcinków</span>
+						<% if (episodes.length == 0) {%>
+							<span class="red-text">Odcinki nie zostały jeszcze przetłumaczone/zuploadowane.</span>
+						</div>
+						<% } else { %>
+						</div>
+						<div class="collection">
+							<% for (var i = 0; i < episodes.length; i++) {%>
+								<a href="#!" class="collection-item black-text">
+									Odcinek <%- episodes[i].episode %>
+									<% if (episodes[i].name != null && episodes[i].name != "") { %>
+									- <%- episodes[i].name %>
+									<% } %>
+								</a>
+							<% } %>
+						</div>
+						<% } %>
+					</div>
+				</div>
+			<% } %>
+		</div>
+	</div>
+</main>

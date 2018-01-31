@@ -68,6 +68,33 @@ exports.getLastEpisodes = async () => {
 	return animes;
 };
 
+exports.getAnime = async page => {
+	if (page === undefined) {
+		return null;
+	}
+
+	var name = exports.url2name(page);
+	var u = await db.query("SELECT * FROM anime WHERE name=" + db.escape(name) + " OR namejap="+ db.escape(name));
+	//console.log(u);
+	if (u[0] && u[0][0]) {
+		var eps = await db.query("SELECT * FROM episodes WHERE anime = '" + db.escape(u[0][0].ID) + "'");
+		//console.log(eps[0]);
+		return {
+			title: u[0][0].name,
+			data: u[0][0],
+			episodes: eps[0],
+			error: ""
+		};
+	} else {
+		return {
+			title: "Błąd",
+			data: null,
+			episodes: [],
+			error: "Nie znaleziono anime"
+		};
+	}
+}
+
 // https://mariadb.com/kb/en/library/pagination-optimization/
 exports.getAnimeList = async page => {
 	var c = [];
@@ -123,6 +150,17 @@ exports.authenticate = async (user, pass) => {
 
 // utilsy
 
+exports.getStatus = status => {
+	switch (status) {
+		case 1:
+			return "Zakończony";
+		case 2:
+			return "Zapowiedziany";
+		default:
+			return "Emitowany";
+	}
+}
+
 exports.isInt = x => {
    var y = parseInt(x, 10);
    return !isNaN(y) && x == y && x.toString() == y.toString();
@@ -130,6 +168,10 @@ exports.isInt = x => {
 
 exports.name2url = name => {
 	return name.replace(/\s/g, '_');
+}
+
+exports.url2name = name => {
+	return name.replace(/_/g, ' ');
 }
 
 exports.nl2br = text => {

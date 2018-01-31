@@ -44,6 +44,10 @@ exports.start = cfg => {
 			console.log('Bot is ready!');
 		});
 
+		client.on('error', error => {
+			console.log(error);
+		})
+
 		/*io.on('connection', function(socket){
 			console.log('User connected.');
 			socket.on('disconnect', function(){
