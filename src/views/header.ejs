@@ -96,17 +96,8 @@ window.location.replace("https://animawka.pl");
 				</ul>
 			</li>
 			<% if (session && session.admin) { %>
-			<li class="site-nav--has-submenu">
-				<a href="#" class="site-nav__link dropdown-button" data-activates="admin-dropdown" data-belowOrigin="true" data-constrainWidth="false" data-hover="true">
-					<i class="material-icons left">dns</i>
-					Admin
-					<i class="material-icons right">arrow_drop_down</i>
-				</a>
-				<ul id="admin-dropdown" class="site-nav__submenu dropdown-content">
-					<li>
-						<a href="/anime/dodaj" class="site-nav__link">Dodaj anime</a>
-					</li>
-				</ul>
+			<li>
+				<a href="/admin" class="site-nav__link"><i class="material-icons left">dns</i> Admin</a>
 			</li>
 			<% } %>
 

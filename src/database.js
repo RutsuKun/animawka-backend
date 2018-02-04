@@ -212,6 +212,72 @@ exports.getAnimeList = async page => {
 	}
 }
 
+exports.getUser = async user => {
+	if (user === undefined) {
+		return {
+			data: null,
+			error: "Nie znaleziono użytkownika"
+		};
+	}
+
+	var u = await db.query("SELECT * FROM users WHERE ID=" + db.escape(user));
+	if (u[0] && u[0][0]) {
+		return {
+			data: u[0][0],
+			error: ""
+		};
+	} else {
+		return {
+			data: null,
+			error: "Nie znaleziono użytkownika"
+		};
+	}
+}
+
+exports.delUser = async user => {
+	if (user === undefined) {
+		return {
+			success: false
+		};
+	}
+	try {
+		var u = await db.query("DELETE FROM users WHERE ID=" + db.escape(user));
+		console.log(u);
+		return {
+			success: true
+		};
+	} catch (e) {
+		console.error(e.stack);
+		return {
+			success: false
+		};
+	}
+}
+
+
+exports.getUserList = async page => {
+	var c = [];
+	var data = [];
+
+	if (page == 1) {
+		data = await db.query("SELECT * FROM users ORDER BY login ASC LIMIT " + itemsPerPage);
+	} else {
+		data = await db.query("SELECT * FROM users ORDER BY login ASC LIMIT " + ((page - 1) * itemsPerPage) + "," + (page * itemsPerPage));
+	}
+
+	var cnt = await db.query("SELECT COUNT(ID) AS num FROM users;");
+	var pc = Math.ceil(cnt[0][0].num / itemsPerPage);
+	if (data[0].length != 0 && pc == 0) pc = 1;
+
+	if (data[0] && cnt[0]) {
+		return {
+			users: data[0],
+			pagecount: pc,
+			itemcount: cnt[0][0].num
+		};
+	}
+}
+
 exports.authenticate = async (user, pass) => {
 	var u = await db.query("SELECT * FROM users WHERE email=" + db.escape(user) + " OR login="+ db.escape(user));
 	//console.log(u);
@@ -220,7 +286,7 @@ exports.authenticate = async (user, pass) => {
 			var hash = crypto.createHash('md5').update(pass.normalize('NFKC')).digest("hex");
 			//console.log("MD5: " + hash + " (db: " + u[0][0].password + ")");
 			if (u[0][0].password == hash) return {
-				uid: u[0][0].uid,
+				uid: u[0][0].ID,
 				success: true,
 				admin: u[0][0].rank == 1
 			};
@@ -228,7 +294,7 @@ exports.authenticate = async (user, pass) => {
 			var hash = scrypt(pass.normalize('NFKC'), "animawka", 16384, 8, 1, 64).toString('hex');
 			//console.log("scrypt: " + hash + " (db: " + u[0][0].password + ")");
 			if (u[0][0].password == hash) return {
-				uid: u[0][0].uid,
+				uid: u[0][0].ID,
 				success: true,
 				admin: u[0][0].rank == 1
 			};

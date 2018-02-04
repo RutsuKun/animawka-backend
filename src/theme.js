@@ -42,6 +42,20 @@ const themes = [
 			nav: "accent-1",
 			infocards: "deep-purple lighten-3 white-text"
 		}
+	},
+	{
+		name: "Żółty (Shinobu)",
+		id: "yellow",
+		color: "#03a9f4",
+		primary: "yellow",
+		accent: "orange",
+		logo: "shinobu",
+		light: true,
+		modifiers: {
+			bg: "lighten-4",
+			nav: "darken-1",
+			infocards: "lighten-1 white-text"
+		}
 	}
 ];
 
