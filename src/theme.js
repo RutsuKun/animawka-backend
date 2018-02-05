@@ -30,7 +30,7 @@ const themes = [
 		}
 	},
 	{
-		name: "Purpura (Nepka)",
+		name: "Fioletowy (Nepka)",
 		id: "purple",
 		color: "#e040fb",
 		primary: "deep-purple",
