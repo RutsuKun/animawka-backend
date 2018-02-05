@@ -212,6 +212,112 @@ exports.getAnimeList = async page => {
 	}
 }
 
+exports.delAnime = async anime => {
+	if (anime === undefined) {
+		return {
+			success: false
+		};
+	}
+	try {
+		var u = await db.query("DELETE FROM anime WHERE ID=" + db.escape(anime));
+		return {
+			success: true
+		};
+	} catch (e) {
+		console.error(e.stack);
+		return {
+			success: false
+		};
+	}
+}
+
+exports.editAnime = async animedata => {
+	if (animedata === undefined) {
+		return {
+			success: false
+		};
+	}
+	try {
+		var translators = "";
+		if (Array.isArray(animedata.translators))
+			translators = animedata.translators.join(", ");
+		else
+			translators = animedata.translators;
+		var correctors = "";
+		if (Array.isArray(animedata.correctors))
+			correctors = animedata.correctors.join(", ");
+		else
+			correctors = animedata.correctors;
+
+		if (!animedata.nsfw) animedata.nsfw = 0;
+		if (!animedata.image) animedata.image = "";
+
+		var u = await db.query("UPDATE anime SET name=" + db.escape(animedata.name)
+								+ ", namejap=" + db.escape(animedata.namejap)
+								+ ", episodes=" + db.escape(animedata.episodes)
+								+ ", translate=" + db.escape(translators)
+								+ ", corrector=" + db.escape(correctors)
+								+ ", description=" + db.escape(animedata.description)
+								+ ", image=" + db.escape(animedata.image)
+								+ ", tags=" + db.escape(animedata.tags)
+								+ ", nsfw=" + db.escape(animedata.nsfw)
+								+ ", status=" + db.escape(animedata.status)
+								+ " WHERE ID=" + db.escape(animedata.ID));
+		return {
+			success: true
+		};
+	} catch (e) {
+		console.error(e.stack);
+		return {
+			success: false
+		};
+	}
+}
+
+exports.newAnime = async animedata => {
+	if (animedata === undefined) {
+		return {
+			success: false
+		};
+	}
+	try {
+		var translators = "";
+		if (Array.isArray(animedata.translators))
+			translators = animedata.translators.join(", ");
+		else
+			translators = animedata.translators;
+		var correctors = "";
+		if (Array.isArray(animedata.correctors))
+			correctors = animedata.correctors.join(", ");
+		else
+			correctors = animedata.correctors;
+
+		if (!animedata.nsfw) animedata.nsfw = 0;
+		if (!animedata.image) animedata.image = "";
+
+		var u = await db.query("INSERT INTO anime (name, user, namejap, episodes, translate, corrector, description, image, tags, nsfw, status) VALUES"
+								+ "(" + db.escape(animedata.name)
+								+ ", " + db.escape(animedata.user)
+								+ ", " + db.escape(animedata.namejap)
+								+ ", " + db.escape(animedata.episodes)
+								+ ", " + db.escape(translators)
+								+ ", " + db.escape(correctors)
+								+ ", " + db.escape(animedata.description)
+								+ ", " + db.escape(animedata.image)
+								+ ", " + db.escape(animedata.tags)
+								+ ", " + db.escape(animedata.nsfw)
+								+ ", " + db.escape(animedata.status) + ")");
+		return {
+			success: true
+		};
+	} catch (e) {
+		console.error(e.stack);
+		return {
+			success: false
+		};
+	}
+}
+
 exports.getUser = async user => {
 	if (user === undefined) {
 		return {
@@ -234,6 +340,32 @@ exports.getUser = async user => {
 	}
 }
 
+exports.getUsersByRank = async (rank, includeadmins) => {
+	if (rank === undefined) {
+		return {
+			data: [],
+			error: "Nie znaleziono użytkowników"
+		};
+	}
+	var u = {};
+	if (includeadmins) 
+		u = await db.query("SELECT * FROM users WHERE rank=" + db.escape(rank) + " OR rank='1'");
+	else
+		u = await db.query("SELECT * FROM users WHERE rank=" + db.escape(rank));
+
+	if (u[0]) {
+		return {
+			data: u[0],
+			error: ""
+		};
+	} else {
+		return {
+			data: [],
+			error: "Nie znaleziono użytkowników"
+		};
+	}
+}
+
 exports.delUser = async user => {
 	if (user === undefined) {
 		return {
@@ -242,7 +374,6 @@ exports.delUser = async user => {
 	}
 	try {
 		var u = await db.query("DELETE FROM users WHERE ID=" + db.escape(user));
-		console.log(u);
 		return {
 			success: true
 		};
@@ -312,11 +443,11 @@ exports.authenticate = async (user, pass) => {
 exports.getStatus = status => {
 	switch (status) {
 		case 1:
-			return "Zakończony";
+			return "Zakończone";
 		case 2:
-			return "Zapowiedziany";
+			return "Zapowiedziane";
 		default:
-			return "Emitowany";
+			return "Emitowane";
 	}
 }
 

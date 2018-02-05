@@ -10,6 +10,7 @@ const express = require('express'),
 	minify = require('express-minify'),
 	compression = require('compression'),
 	session = require('express-session'),
+	FileStore = require('session-file-store')(session),
 	reCAPTCHA = require('recaptcha2'),
 	Discord = require('discord.js'),
 	markdown = require( "markdown" ).markdown,
@@ -109,6 +110,7 @@ function registerRoutes(cfg, app) {
 	app.use(bodyParser.urlencoded({ extended: true }));
 	app.use(cookieParser());
 	app.use(session({
+		store: new FileStore({}),
 		secret: cfg['session-secret']
 	}));
 
@@ -145,15 +147,18 @@ function registerRoutes(cfg, app) {
 		}
 	});*/
 	app.use(function(err, req, res, next) {
-		if (err.status == 404) {
-			res.status(404).render('404', { status: 404 });
-		} else {
-			res.status(err.status || 500);
-			res.render('error', {
-				status: err.status || 500,
-				message: err.message,
-				error: {}
-			});
+		if (!res.headersSent) {
+			if (err.status == 404) {
+				res.status(404);
+				res.render('404', { status: 404 });
+			} else {
+				//res.status(err.status || 500);
+				res.render('error', {
+					status: err.status || 500,
+					message: err.message,
+					error: {}
+				});
+			}
 		}
 	});
 }

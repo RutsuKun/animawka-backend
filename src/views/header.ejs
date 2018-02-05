@@ -1,5 +1,6 @@
+<% if (!debug) { %>
 <script> (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','https://www.google-analytics.com/analytics.js','ga'); ga('create', 'UA-112020649-1', 'auto'); ga('require', 'GTM-TBWC67Z'); ga('send', 'pageview'); </script>
-
+<% } %>
 <style>.async-hide { opacity: 0 !important} </style> <script>(function(a,s,y,n,c,h,i,d,e){s.className+=' '+y;h.start=1*new Date; h.end=i=function(){s.className=s.className.replace(RegExp(' ?'+y),'')}; (a[n]=a[n]||[]).hide=h;setTimeout(function(){i();h.end=null},c);h.timeout=c; })(window,document.documentElement,'async-hide','dataLayer',4000, {'GTM-TBWC67Z':true});</script>
 
 <!-- Google Tag Manager (noscript) -->
@@ -97,12 +98,12 @@ window.location.replace("https://animawka.pl");
 			</li>
 			<% if (session && session.admin) { %>
 			<li>
-				<a href="/admin" class="site-nav__link"><i class="material-icons left">dns</i> Admin</a>
+				<a href="/admin" class="site-nav__link"><i class="material-icons left">dashboard</i> Admin</a>
 			</li>
 			<% } %>
 
 			<li>
-				<a class="fullscreen-search" href="#">
+				<a href="/szukaj">
 					<i class="material-icons">search</i>
 				</a>
 			</li>
@@ -127,7 +128,7 @@ window.location.replace("https://animawka.pl");
 		<a href="https://www.paypal.com/pools/c/80UJveVpu9" class="site-nav__link"><i class="material-icons">attach_money</i> Wesprzyj nas</a>
 	</li>
 	<li>
-		<a class="fullscreen-search" href="#"><i class="material-icons">search</i>Szukaj</a>
+		<a href="/szukaj"><i class="material-icons">search</i>Szukaj</a>
 	</li>
 
 	<li>
@@ -136,7 +137,12 @@ window.location.replace("https://animawka.pl");
     <li>
     	<a class="subheader">Konto</a>
     </li>
-<% if (!session || session.authenticated) { %>
+<% if (session && session.authenticated) { %>
+	<% if (session && session.admin) { %>
+	<li>
+		<a href="/admin" class="site-nav__link"><i class="material-icons">dashboard</i>Panel administracyjny</a>
+	</li>
+	<% } %>
 	<li>
 		<a href="/konto" class="site-nav__link">Moje konto</a>
 	</li>
@@ -152,16 +158,12 @@ window.location.replace("https://animawka.pl");
 		<a href="/zarejestruj" class="site-nav__link">Zarejestruj</a>
 	</li>
 <% } %>
-
-<% if (session && session.admin) { %>
-	<li>
-		<a href="/admin/anime/dodaj" class="site-nav__link">Dodaj anime</a>
-	</li>
-<% } %>
 </ul>
 
+<div style="height: 30px"></div>
 
-<div data-section-id="header" data-section-type="header-section">
+
+<!--<div data-section-id="header" data-section-type="header-section">
 	<header role="banner">
 		<div class="popup-search-wrapper">
 			<form action="/szukaj" method="get" role="search">
@@ -177,4 +179,4 @@ window.location.replace("https://animawka.pl");
 			<i class="popup-close material-icons">close</i>
 		</div>
 	</header>
-</div>
+</div>-->

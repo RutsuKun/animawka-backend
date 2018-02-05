@@ -1,0 +1,90 @@
+<% extend('../layout') %>
+
+<main>
+	<div class="container">
+		<%- include('menu',{cp:"anime"}) %>
+		<div class="col s12 m12">
+			<div class="card">
+				<div class="card-content">
+					<span class="card-title">Nowe anime</span>
+					<form id="save" method="POST" action="/admin/newanime" class="col s12">
+						<div class="row">
+							<div class="input-field col s12 m12">
+								<input name="name" id="name" type="text">
+								<label for="name">Tytuł</label>
+							</div>
+							<div class="input-field col s12 m12">
+								<input name="namejap" id="namejap" type="text">
+								<label for="namejap">Tytuł originalny</label>
+							</div>
+							<div class="input-field col s12 m6">
+								<input name="userxxxx" id="userxxxx" type="text" disabled value="<%= user.data.name %>">
+								<label for="userxxxx">Dodany przez</label>
+							</div>
+							<div class="input-field col s12 m6">
+								<input name="episodes" id="episodes" type="number">
+								<label for="episodes">Liczba odcinków</label>
+							</div>
+							<div class="input-field col s12 m6">
+								<select name="translators" multiple>
+									<% for (var i = 0; i < translators.data.length; i++) { %>
+										<option value="<%= translators.data[i].login %>"><%= translators.data[i].name %> (<%= translators.data[i].login %>)</option>
+									<% } %>
+								</select>
+								<label>Tłumacz</label>
+							</div>
+							<div class="input-field col s12 m6">
+								<select name="correctors" multiple>
+									<% for (var i = 0; i < correctors.data.length; i++) { %>
+										<option value="<%= correctors.data[i].login %>"><%= correctors.data[i].name %> (<%= correctors.data[i].login %>)</option>
+									<% } %>
+								</select>
+								<label>Korektor</label>
+							</div>
+							<div class="input-field col s12 m6">
+								<select name="status">
+									<option value="0">Emitowane</option>
+									<option value="1">Zakończone</option>
+									<option value="2">Zapowiedziane</option>
+								</select>
+								<label>Status</label>
+							</div>
+							<div class="input-field col s12 m6">
+								<input name="tags" id="tags" type="text">
+								<label for="tags">Tagi (rozdziel "," i spacją!)</label>
+							</div>
+							<div class="input-field col s12 m12">
+								<textarea id="description" name="description" class="materialize-textarea"></textarea>
+								<label for="description">Opis</label>
+							</div>
+							<div class="input-field col s12 m12">
+								<input name="image" id="image" type="text">
+								<label for="image">URL obrazka</label>
+							</div>
+							<div class="col s12 m6">
+								<p>
+									<input type="checkbox" id="nsfw" />
+									<label for="nsfw">NSFW / +18</label>
+								</p>
+							</div>
+						</div>
+						<input type="hidden" name="user" value="<%= user.data.ID %>"/>
+					</form>
+				</div>
+				<div class="card-action">
+					<a class="blue-text" href="javascript:save()">Zapisz</a>
+					<a href="/admin/anime">Anuluj</a>
+				</div>
+			</div>
+		</div>
+		<script>
+			$(document).ready(function() {
+
+			});
+
+			function save() {
+				$("#save").submit();
+			}
+		</script>
+	</div>
+</main>

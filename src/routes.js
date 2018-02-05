@@ -162,7 +162,7 @@ router.get('/chat', function(req, res, next) {
 
 //////////////////////////////////////////////////////////////////////////////////
 
-router.get('/admin', function(req, res, next) {
+router.get('/admin', (req, res, next) => {
 	if (req.session && req.session.admin) {
 		res.render('admin/home', {
 			theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
@@ -176,10 +176,10 @@ router.get('/admin', function(req, res, next) {
 	}
 });
 
-router.get('/admin/accounts', function(req, res, next) {
+router.get('/admin/accounts', (req, res, next) => {
 	if (req.session && req.session.admin) {
 		db.getUserList(1).then(userlist => {
-			res.render('admin/accounts', {
+			res.render('admin/accountlist', {
 				theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
 				themes: theme.themes,
 				title: 'Konta',
@@ -195,10 +195,10 @@ router.get('/admin/accounts', function(req, res, next) {
 	}
 });
 
-router.get('/admin/accounts/:page', function(req, res, next) {
+router.get('/admin/accounts/:page', (req, res, next) => {
 	if (req.session && req.session.admin) {
 		db.getUserList(req.params.page).then(userlist => {
-			res.render('admin/accounts', {
+			res.render('admin/accountlist', {
 				theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
 				themes: theme.themes,
 				title: 'Konta',
@@ -214,7 +214,46 @@ router.get('/admin/accounts/:page', function(req, res, next) {
 	}
 });
 
-router.get('/admin/editaccount/:id', function(req, res, next) {
+
+router.get('/admin/anime', (req, res, next) => {
+	if (req.session && req.session.admin) {
+		db.getAnimeList(1).then(animelist => {
+			res.render('admin/animelist', {
+				theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+				themes: theme.themes,
+				title: 'Anime',
+				page: 1,
+				animelist: animelist,
+				db: db,
+				session: req.session,
+				message: undefined
+			});
+		});
+	} else {
+		noPerm(req, res, next);
+	}
+});
+
+router.get('/admin/anime/:page', (req, res, next) => {
+	if (req.session && req.session.admin) {
+		db.getAnimeList(req.params.page).then(animelist => {
+			res.render('admin/animelist', {
+				theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+				themes: theme.themes,
+				title: 'Anime',
+				page: req.params.page,
+				animelist: animelist,
+				db: db,
+				session: req.session,
+				message: undefined
+			});
+		});
+	} else {
+		noPerm(req, res, next);
+	}
+});
+
+router.get('/admin/editaccount/:id', (req, res, next) => {
 	if (req.session && req.session.admin) {
 		db.getUser(req.params.id).then(user => {
 			res.render('admin/editaccount', {
@@ -232,12 +271,12 @@ router.get('/admin/editaccount/:id', function(req, res, next) {
 	}
 });
 
-router.post('/admin/editaccount/:id', function(req, res, next) {
+router.post('/admin/editaccount/:id', (req, res, next) => {
 	if (req.session && req.session.admin) {
 		if (req.body.action === "delete") {
 			if (req.session.uid == req.params.id) {
 				db.getUserList(1).then(userlist => {
-					res.render('admin/accounts', {
+					res.render('admin/accountlist', {
 						theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
 						themes: theme.themes,
 						title: 'Konta',
@@ -253,7 +292,7 @@ router.post('/admin/editaccount/:id', function(req, res, next) {
 				console.log(req.params.id);
 				db.delUser(req.params.id).then(user => {
 					db.getUserList(1).then(userlist => {
-						res.render('admin/accounts', {
+						res.render('admin/accountlist', {
 							theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
 							themes: theme.themes,
 							title: 'Konta',
@@ -267,6 +306,160 @@ router.post('/admin/editaccount/:id', function(req, res, next) {
 				});
 			}
 		}
+	} else {
+		noPerm(req, res, next);
+	}
+});
+
+router.get('/admin/editanime/:id', (req, res, next) => {
+	if (req.session && req.session.admin) {
+		db.getAnime(req.params.id).then(anime => {
+			db.getUser(anime.data.user).then(async user => {
+				var translators = await db.getUsersByRank(2, true);
+				var correctors = await db.getUsersByRank(3, true);
+				res.render('admin/editanime', {
+					theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+					themes: theme.themes,
+					title: 'Edycja anime',
+					page: req.params.page,
+					anime: anime,
+					user: user,
+					db: db, 
+					session: req.session,
+					translators: translators,
+					correctors: correctors
+				});
+			});
+		});
+	} else {
+		noPerm(req, res, next);
+	}
+});
+
+
+router.post('/admin/editanime/:id', (req, res, next) => {
+	if (req.session && req.session.admin) {
+		//console.log(req.body);
+		if (req.body.action === "delete") {
+			db.delAnime(req.params.id).then(data => {
+				if (data.success) {
+					db.getAnimeList(1).then(animelist => {
+						res.render('admin/animelist', {
+							theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+							themes: theme.themes,
+							title: 'Anime',
+							page: 1,
+							animelist: animelist,
+							db: db,
+							session: req.session,
+							message: "Anime zostało usunięte!"
+						});
+					});
+				} else {
+					db.getAnimeList(1).then(animelist => {
+						res.render('admin/animelist', {
+							theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+							themes: theme.themes,
+							title: 'Anime',
+							page: 1,
+							animelist: animelist,
+							db: db,
+							session: req.session,
+							message: "Wystąpił błąd podczas usuwania anime!"
+						});
+					});
+				}
+			});
+		} else if (req.body.action == "edit") {
+			db.editAnime(req.body).then(data => {
+				if (data.success) {
+					db.getAnimeList(1).then(animelist => {
+						res.render('admin/animelist', {
+							theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+							themes: theme.themes,
+							title: 'Anime',
+							page: 1,
+							animelist: animelist,
+							db: db,
+							session: req.session,
+							message: "Zmiany zostały zapisane!"
+						});
+					});
+				} else {
+					db.getAnimeList(1).then(animelist => {
+						res.render('admin/animelist', {
+							theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+							themes: theme.themes,
+							title: 'Anime',
+							page: 1,
+							animelist: animelist,
+							db: db,
+							session: req.session,
+							message: "Wystąpił błąd podczas edytowania anime!"
+						});
+					});
+				}
+			});
+		}
+	} else {
+		noPerm(req, res, next);
+	}
+});
+
+router.get('/admin/newanime', (req, res, next) => {
+	if (req.session && req.session.admin) {
+		db.getUser(req.session.uid).then(async user => {
+			var translators = await db.getUsersByRank(2, true);
+			var correctors = await db.getUsersByRank(3, true);
+			res.render('admin/newanime', {
+				theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+				themes: theme.themes,
+				title: 'Nowe anime',
+				page: req.params.page,
+				user: user,
+				db: db, 
+				session: req.session,
+				translators: translators,
+				correctors: correctors
+			});
+		});
+	} else {
+		noPerm(req, res, next);
+	}
+});
+
+router.post('/admin/newanime', (req, res, next) => {
+	if (req.session && req.session.admin) {
+		console.log(req.body);
+		db.newAnime(req.body).then(data => {
+			if (data.success) {
+				db.getAnimeList(1).then(animelist => {
+					res.render('admin/animelist', {
+						theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+						themes: theme.themes,
+						title: 'Anime',
+						page: 1,
+						animelist: animelist,
+						db: db,
+						session: req.session,
+						message: "Zmiany zostały zapisane!"
+					});
+				});
+			} else {
+				db.getAnimeList(1).then(animelist => {
+					res.render('admin/animelist', {
+						theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+						themes: theme.themes,
+						title: 'Anime',
+						page: 1,
+						animelist: animelist,
+						db: db,
+						session: req.session,
+						message: "Wystąpił błąd podczas edytowania anime!"
+					});
+				});
+			}
+		});
 	} else {
 		noPerm(req, res, next);
 	}

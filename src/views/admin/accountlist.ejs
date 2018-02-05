@@ -42,7 +42,7 @@
 						<div class="card medium hide-on-large-only">
 							<div class="card-image waves-effect waves-block waves-light">
 								<img class="activator" src="<%= userlist.users[i].avatar %>">
-								<span class="card-title boldtitle activator"><%= userlist.users[i].name %></span>
+								<span class="card-title boldtitle activator"><%= userlist.users[i].name %> (<%= userlist.users[i].login %>)</span>
 							</div>
 							<div class="card-content">
 
@@ -58,7 +58,7 @@
 							</div>
 							<div class="card-stacked">
 								<div class="card-content">
-									<span class="card-title grey-text text-darken-4"><%= userlist.users[i].name %></span>
+									<span class="card-title grey-text text-darken-4"><%= userlist.users[i].name %> (<%= userlist.users[i].login %>)</span>
 								</div>
 								<div class="card-action">
 									<a href="/admin/editaccount/<%= userlist.users[i].ID %>">Edytuj</a>
