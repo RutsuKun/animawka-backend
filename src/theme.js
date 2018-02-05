@@ -58,6 +58,7 @@ const themes = [
 		}
 	}
 ];
+
 exports.themes = themes;
 exports.getTheme = id => {
 	if (!id) {
