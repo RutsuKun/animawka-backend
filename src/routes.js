@@ -335,7 +335,33 @@ router.get('/admin/editanime/:id', (req, res, next) => {
 		noPerm(req, res, next);
 	}
 });
+router.get('/admin/listepisodes/:id', (req, res, next) => {
+	/*if(req.session && req.session.admin) {
+		res.render('admin/listepisodes', {
+            theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+            themes: theme.themes,
+			title: 'Lista odcinków',
+			page: req.params.page,
+            session: req.session
+        });
+	} else {
+		noPerm(req, res, next);
+	}*/
+    db.getAnime(req.params.id).then(anime => {
+    	res.render('admin/listepisodes', {
+    		theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+    		themes: theme.themes,
+    		title: anime.title,
+    		data: anime.data,
+    		episodes: anime.episodes,
+    		error: anime.error,
+    		db: db,
+			anime: anime,
+    		session: req.session
+		});
+	});
 
+});
 
 router.post('/admin/editanime/:id', (req, res, next) => {
 	if (req.session && req.session.admin) {
