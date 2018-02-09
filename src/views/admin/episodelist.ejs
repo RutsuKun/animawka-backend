@@ -1,0 +1,27 @@
+<% extend('../layout') %>
+<main>
+	<div class="container">
+		<%- include('menu',{cp:"anime"}) %>
+		<div class="col s12 m12">
+			<div class="card">
+				<div class="card-content">
+					<span class="card-title">Lista odcinków dla <%= title %></span>
+				</div>
+				<div class="collection">
+					<% for (var i = 0; i < episodes.length; i++) {%>
+					<a href="/admin/editepisode/<%- db.name2url(data.name) %>/<%- episodes[i].episode %>" class="collection-item black-text">
+						Odcinek <%- episodes[i].episode %>
+						<% if (episodes[i].name != null && episodes[i].name != "") { %>
+						- <%- episodes[i].name %>
+						<% } %>
+					</a>
+					<% } %>
+				</div>
+				<div class="card-action">
+					<a class="blue-text" href="#">Nowy odcinek</a>
+					<a href="/admin/anime/">Anuluj</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
