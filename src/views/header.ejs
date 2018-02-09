@@ -137,7 +137,7 @@ window.location.replace("https://animawka.pl");
     <li>
     	<a class="subheader">Konto</a>
     </li>
-<% if (session && session.authenticated) { %>
+<% if (session && session.authorized) { %>
 	<% if (session && session.admin) { %>
 	<li>
 		<a href="/admin" class="site-nav__link"><i class="material-icons">dashboard</i>Panel administracyjny</a>
