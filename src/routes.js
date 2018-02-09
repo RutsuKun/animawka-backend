@@ -160,6 +160,17 @@ router.get('/chat', function(req, res, next) {
 	});
 });
 
+
+router.get('/kontakt', (req, res, next) => {
+		res.render('contact', {
+			theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+			themes: theme.themes,
+			title: 'Kontakt',
+			db: db, 
+			session: req.session
+		});
+});
+
 //////////////////////////////////////////////////////////////////////////////////
 
 router.get('/admin', (req, res, next) => {
