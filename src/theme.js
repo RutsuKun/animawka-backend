@@ -12,7 +12,8 @@ const themes = [
 		modifiers: {
 			bg: "grey lighten-4",
 			nav: "",
-			infocards: "lighten-1 white-text"
+			infocards: "lighten-1 white-text",
+			text: "black-text"
 		}
 	},
 	{
@@ -26,7 +27,8 @@ const themes = [
 		modifiers: {
 			bg: "abrown",
 			nav: "",
-			infocards: "white-text"
+			infocards: "white-text",
+			text: "black-text"
 		}
 	},
 	{
@@ -40,7 +42,8 @@ const themes = [
 		modifiers: {
 			bg: "lighten-4",
 			nav: "accent-1",
-			infocards: "deep-purple lighten-3 white-text"
+			infocards: "deep-purple lighten-3 white-text",
+			text: "black-text"
 		}
 	},
 	{
@@ -54,7 +57,23 @@ const themes = [
 		modifiers: {
 			bg: "lighten-4",
 			nav: "darken-1",
-			infocards: "lighten-1 white-text"
+			infocards: "lighten-1 white-text",
+			text: "black-text"
+		}
+	},
+	{
+		name: "Ciemny (Rika)",
+		id: "dark",
+		color: "#FFF",
+		primary: "blue-grey",
+		accent: "blue-grey darken-1",
+		logo: "misaki",
+		light: true,
+		modifiers: {
+			bg: "darken-4",
+			nav: "darken-1",
+			infocards: "darken-1 white-text",
+			text: "white-text"
 		}
 	}
 ];
