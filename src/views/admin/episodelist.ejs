@@ -10,7 +10,7 @@
 				<div class="collection">
 					<% for (var i = 0; i < episodes.length; i++) {%>
 					<a href="/admin/editepisode/<%- db.name2url(data.name) %>/<%- episodes[i].episode %>" class="collection-item black-text">
-						Odcinek <%- episodes[i].episode %>
+						Odcinek <%- db.getAnimeType(episodes[i].type) %> <%- (episodes[i].override != null && episodes[i].override > 0) ? episodes[i].override : episodes[i].episode %>
 						<% if (episodes[i].name != null && episodes[i].name != "") { %>
 						- <%- episodes[i].name %>
 						<% } %>
@@ -18,7 +18,7 @@
 					<% } %>
 				</div>
 				<div class="card-action">
-					<a class="blue-text" href="#">Nowy odcinek</a>
+					<a class="blue-text" href="/admin/newepisode/<%= anime.data.name %>">Nowy odcinek</a>
 					<a href="/admin/anime/">Anuluj</a>
 				</div>
 			</div>
