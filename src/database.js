@@ -33,6 +33,7 @@ exports.getSourceName = source => {
 exports.getAnimeType = type => {
 	if (type == null || type == undefined) return "";
 	switch (type) {
+		case 0: return "";
 		case 1: return "Specjalny";
 		case 2: return "OVA";
 		case 3: return "ONA";
