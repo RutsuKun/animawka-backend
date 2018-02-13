@@ -24,7 +24,7 @@ locals.header_extend_css = `
 						<span class="card-title"><%- anime.data.name %> - Odcinek <%- anime.episode.episode %></span>
 						<form id="save" method="POST" action="/admin/editepisode/<%= anime.data.ID %>/<%- anime.episode.episode %>" class="col s12">
 							<div class="row">
-								<div class="input-field col s12 m12">
+								<div class="input-field col s12 m6">
 									<input name="name" id="name" type="text" value="<%- anime.episode.name %>">
 									<label for="name">Tytuł odcinka</label>
 								</div>
@@ -62,6 +62,10 @@ locals.header_extend_css = `
 										</select>
 										<label>Typ odcinka</label>
 									</div>
+								</div>
+								<div class="input-field col s12 m6">
+									<input name="override" id="override" min="0" type="number" value="<%= (anime.episode.override == null) ? 0 : anime.episode.override %>">
+									<label for="override">Nadpisany numer odcinka (np. Odcinek 14 -> OVA 2)</label>
 								</div>
 								<div class="input-field col s12 m6">
 									<select name="translators" multiple>
@@ -115,7 +119,7 @@ locals.header_extend_css = `
 </main>
 <script>
 	var grid;
-	players = <%- JSON.stringify(anime.players) %>;
+	players = <%- (anime.players == null) ? "[]" : JSON.stringify(anime.players) %>;
 	sources = <%- JSON.stringify(db.sources); %>;
 
 	$(document).ready(function() {
@@ -170,7 +174,11 @@ locals.header_extend_css = `
 		} else {
 			$("#type").val($("#typestd").val());
 		}
-		$("#playersdata").val(JSON.stringify(grid.jsGrid("option", "data")));
+		$("#playersdata").val(JSON.stringify(
+			{
+				players: grid.jsGrid("option", "data")
+			}
+		));
 		$("#save").submit();
 	}
 </script>

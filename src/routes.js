@@ -536,9 +536,10 @@ router.get('/admin/editepisode/:id/:num', (req, res, next) => {
 
 router.post('/admin/editepisode/:id/:num', (req, res, next) => {
 	if (req.session && req.session.admin) {
+		req.body.user = req.session.uid;
 		console.log(req.body);
-		/*db.editEpisode(req.params.id, req.params.num, req.body).then(data => {
-			if (data.success) {*/
+		db.editAnimeEpisode(req.params.id, req.params.num, req.body).then(data => {
+			if (data.success) {
 				db.getAnimeList(1).then(animelist => {
 					res.render('admin/animelist', {
 						theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
@@ -551,7 +552,7 @@ router.post('/admin/editepisode/:id/:num', (req, res, next) => {
 						message: "Zmiany zostały zapisane!"
 					});
 				});
-			/*} else {
+			} else {
 				db.getAnimeList(1).then(animelist => {
 					res.render('admin/animelist', {
 						theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
@@ -565,7 +566,7 @@ router.post('/admin/editepisode/:id/:num', (req, res, next) => {
 					});
 				});
 			}
-		});*/
+		});
 	} else {
 		noPerm(req, res, next);
 	}
