@@ -7,7 +7,7 @@ exports.loadConfig = () => {
 		var c = require("../config.json");
 		exports.cfg = {
 			port: c.port || 2137,
-			debug: c.debug || true,
+			debug: c.debug || false,
 			'convert-passwords': c['convert-passwords'] || false,
 			discord: {
 				enable: c.discord.enable || false,

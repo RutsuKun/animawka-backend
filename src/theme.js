@@ -28,13 +28,13 @@ const themes = [
 			bg: "abrown",
 			nav: "",
 			infocards: "white-text",
-			text: "black-text"
+			text: "white-text"
 		}
 	},
 	{
 		name: "Fioletowy (Nepka)",
 		id: "purple",
-		color: "#e040fb",
+		color: "#B388FF",
 		primary: "deep-purple",
 		accent: "purple",
 		logo: "nep",

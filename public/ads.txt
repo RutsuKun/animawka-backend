@@ -1,0 +1,5 @@
+rtbnow.com, 1322, DIRECT
+smartadserver.com, 2301, RESELLER
+google.com, pub-9655409891876729, DIRECT, f08c47fec0942fa0
+
+#contact: contact@rtbnow.com

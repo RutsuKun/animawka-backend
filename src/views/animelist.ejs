@@ -77,16 +77,16 @@
 
 				<div class="col s12">
 					<ul class="pagination">
-						<li <% if (page == 1) {%>class="disabled"><a href="#!"><% } else { %>class="waves-effect"><a href="/lista/<%= page - 1 %>"><% } %><i class="material-icons">chevron_left</i></a></li>
+						<li <% if (page == 1) {%>class="disabled"><a href="#!"><% } else { %>class="waves-effect"><a href="/anime/<%= page - 1 %>"><% } %><i class="material-icons">chevron_left</i></a></li>
 						<% for (var pc = 1; pc <= animelist.pagecount; pc++) { %>
 							<% if (pc == page) { %>
-								<li class="active"><a href="/lista/<%= pc %>"><%= pc %></a></li>
+								<li class="active"><a href="/anime/<%= pc %>"><%= pc %></a></li>
 							<% } else { %>
-								<li class="waves-effect"><a href="/lista/<%= pc %>"><%= pc %></a></li>
+								<li class="waves-effect"><a href="/anime/<%= pc %>"><%= pc %></a></li>
 							<% } %>
 						<% } %>
 						
-						<li <% if (page == animelist.pagecount) {%>class="disabled"><a href="#!"><% } else { %>class="waves-effect"><a href="/lista/<%= page + 1 %>"><% } %><i class="material-icons">chevron_right</i></a></li>
+						<li <% if (page == animelist.pagecount) {%>class="disabled"><a href="#!"><% } else { %>class="waves-effect"><a href="/anime/<%= page + 1 %>"><% } %><i class="material-icons">chevron_right</i></a></li>
 					</ul>
 				</div>
 			<%}%>

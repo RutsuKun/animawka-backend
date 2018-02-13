@@ -128,6 +128,7 @@ function registerRoutes(cfg, app) {
 		cssMatch: /css/,
 		jsonMatch: /json/,
 		lessMatch: /less/,
+		dataMatch: /data/,
 	}));
 	app.use(express.static(path.join(__dirname, '../public')));
 	app.use('/', require("./routes"));

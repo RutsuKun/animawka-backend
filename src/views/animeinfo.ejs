@@ -48,7 +48,7 @@
 								</span>
 								<% if (session && session.admin) { %>
 								<ul id='animemenu' class='seltheme dropdown-content'>
-									<li><a href="/admin/editanime/<%= data.ID %>">Edytuj</a></li>
+									<li><a href="/admin/editanime/<%- db.name2url(data.name) %>">Edytuj</a></li>
 									<li><a href="/admin/newepisode/<%= data.ID %>">Dodaj odcinek</a></li>
 								</ul>
 								<% } %>
