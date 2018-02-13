@@ -2,7 +2,7 @@ var exports = module.exports = {};
 
 const themes = [
 	{
-		name: "Niebieski (Aqua)",
+		name: "Niebieski (Konosuba - Aqua)",
 		id: "blue",
 		color: "#03a9f4",
 		primary: "light-blue",
@@ -17,7 +17,7 @@ const themes = [
 		}
 	},
 	{
-		name: "Brązowy (Asuna)",
+		name: "Brązowy (SAO - Asuna)",
 		id: "brown",
 		color: "#5B3A2E",
 		primary: "brown",
@@ -62,12 +62,12 @@ const themes = [
 		}
 	},
 	{
-		name: "Ciemny (Rika)",
+		name: "Ciemny niebieski (Rikka)",
 		id: "dark",
 		color: "#FFF",
 		primary: "blue-grey",
 		accent: "blue-grey darken-1",
-		logo: "misaki",
+		logo: "rikka",
 		light: true,
 		modifiers: {
 			bg: "darken-4",
@@ -75,7 +75,22 @@ const themes = [
 			infocards: "darken-1 white-text",
 			text: "white-text"
 		}
-	}
+	},
+	{
+		name: "Jasny róż (Nekopara - Vanilla)",
+		id: "lightpink",
+		color: "black",
+		primary: "pink",
+		accent: "pink lighten-3",
+		logo: "nekopara-vanilla",
+		light: true,
+		modifiers: {
+			bg: "lighten-5",
+			nav: "",
+			infocards: "white-text",
+			text: "black-text"
+		}
+	},
 ];
 
 exports.themes = themes;
