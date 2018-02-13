@@ -15,7 +15,7 @@ const express = require('express'),
 	Discord = require('discord.js'),
 	markdown = require( "markdown" ).markdown,
 	escape = require("html-escape"),
-	http = require("http");
+	http = require("http"), theme = require('./theme'), db = require('./database');
 
 ejs.cache = LRU(100);
 
@@ -151,7 +151,13 @@ function registerRoutes(cfg, app) {
 		if (!res.headersSent) {
 			if (err.status == 404) {
 				res.status(404);
-				res.render('404', { status: 404 });
+				res.render('404', {
+				status: 404,
+				theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+			themes: theme.themes,
+			title: 'Podana strona nie istnieje',
+			db: db, 
+			session: req.session});
 			} else {
 				//res.status(err.status || 500);
 				res.render('error', {
