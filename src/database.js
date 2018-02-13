@@ -20,12 +20,13 @@ exports.getSourceName = source => {
 	if (!exports.isInt(source)) return "Nieznane źródło";
 
 	try {
-		for (var i = 0; i < sources.length; i++) {
-			if (sources[i].id == source) {
-				return sources[i].name;
+		for (var i = 0; i < exports.sources.length; i++) {
+			if (exports.sources[i].id == source) {
+				return exports.sources[i].name;
 			}
 		}
 	} catch (e) {
+		console.error(e.stack);
 		return "Nieznane źródło";
 	}
 }
@@ -46,7 +47,7 @@ exports.loadData = async () => {
 		exports.sources = JSON.parse(data[0][0].value).players;
 	} catch (e) {
 		console.error("Wystapił błąd podczas ładowania ustawień!");
-		console.error(e);
+		console.error(e.stack);
 	}
 }
 
