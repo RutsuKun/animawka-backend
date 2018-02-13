@@ -125,6 +125,9 @@ router.post('/zaloguj', async function(req, res, next) {
 		req.session.authorized = true;
 		req.session.uid = ss.uid;
 		req.session.admin = ss.admin;
+		var time = 2592000000;
+		req.session.cookie.expires = new Date(Date.now() + time);
+		req.session.cookie.maxAge = time;
 	}
 
 	res.render('login', {
@@ -356,6 +359,7 @@ router.get('/admin/editanime/:id', (req, res, next) => {
 		noPerm(req, res, next);
 	}
 });
+
 router.get('/admin/listepisodes/:id', (req, res, next) => {
 	if(req.session && req.session.admin) {
 		db.getAnime(req.params.id).then(anime => {
@@ -495,6 +499,70 @@ router.post('/admin/newanime', (req, res, next) => {
 						db: db,
 						session: req.session,
 						message: "Wystąpił błąd podczas dodawania anime!"
+					});
+				});
+			}
+		});
+	} else {
+		noPerm(req, res, next);
+	}
+});
+
+router.get('/admin/editepisode/:id/:num', (req, res, next) => {
+	if (req.session && req.session.admin) {
+		db.getAnimeEpisode(req.params.id, req.params.num).then(anime => {
+			db.getUser(anime.data.user).then(async user => {
+				var translators = await db.getUsersByRank(2, true);
+				var correctors = await db.getUsersByRank(3, true);
+				res.render('admin/editepisode', {
+					theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+					themes: theme.themes,
+					title: 'Edycja anime',
+					page: req.params.page,
+					anime: anime,
+					user: user,
+					db: db, 
+					session: req.session,
+					translators: translators,
+					correctors: correctors
+				});
+			});
+		});
+	} else {
+		noPerm(req, res, next);
+	}
+});
+
+
+router.post('/admin/editepisode/:id/:num', (req, res, next) => {
+	if (req.session && req.session.admin) {
+		req.body.user = req.session.uid;
+		console.log(req.body);
+		db.editAnimeEpisode(req.params.id, req.params.num, req.body).then(data => {
+			if (data.success) {
+				db.getAnimeList(1).then(animelist => {
+					res.render('admin/animelist', {
+						theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+						themes: theme.themes,
+						title: 'Anime',
+						page: 1,
+						animelist: animelist,
+						db: db,
+						session: req.session,
+						message: "Zmiany zostały zapisane!"
+					});
+				});
+			} else {
+				db.getAnimeList(1).then(animelist => {
+					res.render('admin/animelist', {
+						theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+						themes: theme.themes,
+						title: 'Anime',
+						page: 1,
+						animelist: animelist,
+						db: db,
+						session: req.session,
+						message: "Wystąpił błąd podczas edytowania odcinka!"
 					});
 				});
 			}

@@ -8,7 +8,7 @@
 		"channelid": "401809619200114688"
 	},
 	"recaptcha": {
-		"enable": true,
+		"enable": false,
 		"site": "6Ld3mUAUAAAAAAq0nkoOXJ01XFw4neIv-LAai4Mk",
 		"secret": "6Ld3mUAUAAAAAPg0MX0FduqGslYp588SZQDWmxLc"
 	},

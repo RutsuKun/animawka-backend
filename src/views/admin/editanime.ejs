@@ -1,3 +1,24 @@
+<% 
+locals.header_extend_js = `
+<script>
+$(document).ready(function() {
+	$('#delwarn').modal();
+});
+
+function delwarn() {
+	$('#delwarn').modal('open');
+}
+
+function confirmdel() {
+	$("#delete").submit();
+}
+
+function save() {
+	$("#save").submit();
+}
+</script>
+`
+%>
 <% extend('../layout') %>
 
 <main>
@@ -92,50 +113,6 @@
 					</div>
 				</div>
 			</div>
-			<script>
-				$(document).ready(function() {
-					/*var pre = "<%- anime.data.tags %>";
-					$("#tags").val(pre);
-					var el = pre.split(", ");
-					var data = [];
-					for (var i = 0; i < el.length; i++) {
-						data.push({
-							tag: el[i]
-						});
-					}*/
-					$('#delwarn').modal();
-					/*$('.chips-placeholder').material_chip({
-						data: data,
-						placeholder: 'tag',
-						secondaryPlaceholder: 'Dodaj tagi'
-					});*/
-				});
-
-				function delwarn() {
-					$('#delwarn').modal('open');
-				}
-
-				function confirmdel() {
-					$("#delete").submit();
-				}
-
-				function save() {
-					/*var chipdata = $("#tagselect").material_chip('data');
-					var tags = [];
-					for (var i = 0; i < chipdata.length; i++) {
-						tags.push(chipdata[i].tag);
-					}
-					//alert(tags.join(", "));
-					var x = "";
-					if (tags.length == 1) {
-						x = tags[0];
-					} else if (tags.length != 0) {
-						x = tags.join(", ");
-					}
-					$("#tags").val(x);*/
-					$("#save").submit();
-				}
-			</script>
 			
 			<form id="delete" method="POST" action="/admin/editanime/<%= anime.data.ID %>">
 				<input type="hidden" name="action" value="delete"/>

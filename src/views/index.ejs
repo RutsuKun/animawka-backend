@@ -1,3 +1,17 @@
+<% locals.header_extend_css = `
+	<script type="application/ld+json">
+		{
+			"@context": "http://schema.org",
+			"@type": "WebSite",
+			"url": "https://animawka.pl",
+			"potentialAction": {
+				"@type": "SearchAction",
+				"target": "https://animawka.pl/szukaj/{search_term_string}",
+				"query-input": "required name=search_term_string"
+			}
+		}
+	</script>
+`%>
 <% extend('layout') %>
 
 <main role="main" id="MainContent">

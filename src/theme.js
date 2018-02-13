@@ -64,7 +64,7 @@ const themes = [
 	{
 		name: "Ciemny niebieski (Rikka)",
 		id: "dark",
-		color: "#FFF",
+		color: "black",
 		primary: "blue-grey",
 		accent: "blue-grey darken-1",
 		logo: "rikka",
@@ -79,7 +79,7 @@ const themes = [
 	{
 		name: "Jasny róż (Nekopara - Vanilla)",
 		id: "lightpink",
-		color: "black",
+		color: "#E91E63",
 		primary: "pink",
 		accent: "pink lighten-3",
 		logo: "nekopara-vanilla",

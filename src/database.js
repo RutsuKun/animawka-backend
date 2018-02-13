@@ -14,7 +14,7 @@ const itemsPerPage = 10; // liczba stron
 exports.itemsPerPage = itemsPerPage;
 
 // cache zrodel, nie zmienia sie czesto a lista nie jest dluga.
-var sources = [];
+exports.sources = [];
 
 exports.getSourceName = source => {
 	if (!exports.isInt(source)) return "Nieznane źródło";
@@ -30,11 +30,19 @@ exports.getSourceName = source => {
 	}
 }
 
+exports.getAnimeType = type => {
+	if (type == null || type == undefined) return "";
+	switch (type) {
+		case 1: return "Specjalny";
+		case 2: return "OVA";
+		case 3: return "ONA";
+	}
+}
+
 exports.loadData = async () => {
-	sources = [];
 	try {
 		var data = await db.query("SELECT * FROM settings WHERE name = 'sources'");
-		sources = JSON.parse(data[0][0].value).players;
+		exports.sources = JSON.parse(data[0][0].value).players;
 	} catch (e) {
 		console.error("Wystapił błąd podczas ładowania ustawień!");
 		console.error(e);
@@ -100,8 +108,8 @@ exports.getLastEpisodes = async () => {
 	return animes;
 };
 
-exports.getAnimeEpisode = async (page, epnum) => {
-	if (page === undefined || epnum === undefined || !exports.isInt(epnum)) {
+exports.getAnimeEpisode = async (anime, epnum) => {
+	if (anime === undefined || epnum === undefined || !exports.isInt(epnum)) {
 		return {
 			title: "Błąd",
 			data: null,
@@ -110,15 +118,16 @@ exports.getAnimeEpisode = async (page, epnum) => {
 		};
 	}
 
-	var name = exports.url2name(page);
+	var name = exports.url2name(anime);
 	var u = await db.query("SELECT * FROM anime WHERE name=" + db.escape(name) + " OR namejap="+ db.escape(name));
 
 	if (u[0] && u[0][0]) {
 		var episode = await db.query("SELECT * FROM episodes WHERE anime = '" + db.escape(u[0][0].ID) + "' AND episode = " + db.escape(epnum));
 		if (episode[0] && episode[0][0]) {
+			if (episode[0][0].override) {
+				epnum = exports.getAnimeType(episode[0][0].type) + " " + episode[0][0].override;
+			}
 			var plrs = await db.query("SELECT * FROM players WHERE anime = '" + db.escape(u[0][0].ID) + "' AND episode = " + db.escape(epnum));
-			console.log(plrs);
-
 			if (plrs[0] && plrs[0][0]) {
 				return {
 					title: u[0][0].name + " - Odcinek " + epnum,
@@ -155,6 +164,53 @@ exports.getAnimeEpisode = async (page, epnum) => {
 		};
 	}
 }
+
+
+exports.editAnimeEpisode = async (anime, episode, body) => {
+	if (anime === undefined || episode === undefined || !exports.isInt(episode)) {
+		return {
+			success: false
+		};
+	}
+	try {
+		var name = exports.url2name(anime);
+		var date = new Date().toISOString().substring(0, 10);
+		var u = await db.query("SELECT * FROM anime WHERE name=" + db.escape(name) + " OR namejap=" + db.escape(name) + " OR ID=" + db.escape(anime));
+		if (u[0] && u[0][0]) {
+			await db.query("UPDATE episodes SET episode=" + db.escape(body.episodenum) + ", name=" + db.escape(body.name) + ", override=" + db.escape(body.override) + ", type=" + db.escape(body.type) + " WHERE anime = '" + db.escape(u[0][0].ID) + "' AND episode = " + db.escape(episode));
+			if (body.players) {
+				var players = JSON.parse(body.players).players;
+				if (players) {
+					console.log(players);
+					var oldplrs = await db.query("SELECT * FROM players WHERE anime = '" + db.escape(u[0][0].ID) + "' AND episode = " + db.escape(body.episodenum));
+					await db.query("DELETE FROM players WHERE anime = '" + db.escape(u[0][0].ID) + "' AND episode = " + db.escape(body.episodenum));
+					var cnt = await db.query("SELECT MAX(ID) AS num FROM players;");
+					var id = cnt[0][0].num + 1;
+					for (var i = 0; i < players.length; i++) {
+						if (players[i].ID) {
+							await db.query("INSERT INTO players (ID, user, anime, episode, url, type, date) VALUES (" + db.escape(players[i].ID) + ", " + db.escape(players[i].user) + ", " + db.escape(u[0][0].ID) + ", " + db.escape(body.episodenum) + ", " + db.escape(players[i].url) + ", " +  db.escape(players[i].type) + ", " + db.escape(players[i].date) + ");");
+						} else {
+							await db.query("INSERT INTO players (ID, user, anime, episode, url, type, date) VALUES (" + db.escape(id) + ", " + db.escape(body.user) + ", " + db.escape(u[0][0].ID) + ", " + db.escape(body.episodenum) + ", " + db.escape(players[i].url) + ", " +  db.escape(players[i].type) + ", " + db.escape(date) + ");");
+							id++;
+						}
+					}
+				}
+			}
+			return {
+				success: true
+			};
+		} else {
+			return {
+				success: false
+			};
+		}
+	} catch (e) {
+		console.error(e.stack);
+		return {
+			success: false
+		};
+	}
+};
 
 exports.getAnime = async page => {
 	if (page === undefined) {
