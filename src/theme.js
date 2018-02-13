@@ -91,6 +91,21 @@ const themes = [
 			text: "black-text"
 		}
 	},
+	{
+		name: "Dr. Pepper (Steins;Gate - Kurisu)",
+		id: "drpepper",
+		color: "#7A170B",
+		primary: "red",
+		accent: "accent-4",
+		logo: "kurisu",
+		light: false,
+		modifiers: {
+			bg: "darken-4",
+			nav: "",
+			infocards: "black-text",
+			text: "white-text"
+		}
+	}
 ];
 
 exports.themes = themes;

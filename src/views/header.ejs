@@ -113,7 +113,7 @@ window.location.replace("https://animawka.pl");
 <ul class="side-nav" id="nav-mobile">
 	<li>
 		<div class="user-view">
-			<h3 class="text-center <%= theme.primary %>-text">Animawka.pl</h3>
+			<h3 class="center <%= theme.primary %>-text">Animawka</h3>
 		</div>
     </li>
 
@@ -143,18 +143,18 @@ window.location.replace("https://animawka.pl");
 	</li>
 	<% } %>
 	<li>
-		<a href="/konto" class="site-nav__link">Moje konto</a>
+		<a href="/konto" class="site-nav__link"><i class="material-icons">account_circle</i> Moje konto</a>
 	</li>
 	<li>
-		<a href="/wyloguj" class="site-nav__link">Wyloguj</a>
+		<a href="/wyloguj" class="site-nav__link"><i class="material-icons">lock_open</i> Wyloguj</a>
 	</li>
 <% } else { %>
 	<li>
-		<a href="/zaloguj" class="site-nav__link">Zaloguj</a>
+		<a href="/zaloguj" class="site-nav__link"><i class="material-icons">lock_outline</i> Zaloguj</a>
 	</li>
 
 	<li>
-		<a href="/zarejestruj" class="site-nav__link">Zarejestruj</a>
+		<a href="/zarejestruj" class="site-nav__link"><i class="material-icons">person_add</i> Zarejestruj</a>
 	</li>
 <% } %>
 </ul>
