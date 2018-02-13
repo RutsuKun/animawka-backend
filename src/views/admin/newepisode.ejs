@@ -21,23 +21,19 @@ locals.header_extend_css = `
 			<div class="col s12 m12">
 				<div class="card">
 					<div class="card-content">
-						<span class="card-title"><%- anime.data.name %> - Odcinek <%- anime.episode.episode %></span>
+						<span class="card-title"><%- anime.data.name %> - Nowy odcinek</span>
 						<form id="save" method="POST" action="/admin/editepisode/<%= anime.data.ID %>/<%- anime.episode.episode %>" class="col s12">
 							<div class="row">
-								<div class="input-field col s12 m6">
-									<input name="name" id="name" type="text" value="<%- anime.episode.name %>">
+								<div class="input-field col s12 m12">
+									<input name="name" id="name" type="text" value="">
 									<label for="name">Tytuł odcinka</label>
-								</div>
-								<div class="input-field col s12 m6">
-									<input name="id" id="id" type="text" disabled value="<%= anime.episode.ID %>">
-									<label for="id">ID</label>
 								</div>
 								<div class="input-field col s12 m6">
 									<input name="user" id="user" type="text" disabled value="<%= user.data.name %>">
 									<label for="user">Dodany przez</label>
 								</div>
 								<div class="input-field col s12 m6">
-									<input name="episodenum" id="episodenum" min="0" type="number" value="<%= anime.episode.episode %>">
+									<input name="episodenum" id="episodenum" min="0" type="number" value="">
 									<label for="episodenum">Numer odcinka</label>
 								</div>
 								<div class="input-field col s12 m6">
@@ -50,13 +46,13 @@ locals.header_extend_css = `
 											<option value="0">
 												Standardowy
 											</option>
-											<option value="1" <% if (anime.episode.type == 1) { %> selected <% } %>>
+											<option value="1">
 												Specjalny
 											</option>
-											<option value="2" <% if (anime.episode.type == 2) { %> selected <% } %>>
+											<option value="2">
 												OVA
 											</option>
-											<option value="3" <% if (anime.episode.type == 3) { %> selected <% } %>>
+											<option value="3">
 												ONA
 											</option>
 										</select>
@@ -64,7 +60,7 @@ locals.header_extend_css = `
 									</div>
 								</div>
 								<div class="input-field col s12 m6">
-									<input name="override" id="override" min="0" type="number" value="<%= (anime.episode.override == null) ? 0 : anime.episode.override %>">
+									<input name="override" id="override" min="0" type="number">
 									<label for="override">Nadpisany numer odcinka (np. Odcinek 14 -> OVA 2)</label>
 								</div>
 								<div class="input-field col s12 m6">
