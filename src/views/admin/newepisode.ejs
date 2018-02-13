@@ -1,0 +1,184 @@
+<% 
+locals.header_extend_css = `
+<link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
+<link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
+`
+%>
+<% extend('../layout') %>
+
+<main>
+	<div class="container">
+		<%- include('menu',{cp:"anime"}) %>
+		<% if (anime.data === null) { %>				
+			<div class="col s12 offset-m3 m6">
+				<div class="card-panel red">
+					<span class="white-text">
+						Nie ma tego anime w bazie!
+					</span>
+				</div>
+			</div>
+		<% } else { %>
+			<div class="col s12 m12">
+				<div class="card">
+					<div class="card-content">
+						<span class="card-title"><%- anime.data.name %> - Odcinek <%- anime.episode.episode %></span>
+						<form id="save" method="POST" action="/admin/editepisode/<%= anime.data.ID %>/<%- anime.episode.episode %>" class="col s12">
+							<div class="row">
+								<div class="input-field col s12 m6">
+									<input name="name" id="name" type="text" value="<%- anime.episode.name %>">
+									<label for="name">Tytuł odcinka</label>
+								</div>
+								<div class="input-field col s12 m6">
+									<input name="id" id="id" type="text" disabled value="<%= anime.episode.ID %>">
+									<label for="id">ID</label>
+								</div>
+								<div class="input-field col s12 m6">
+									<input name="user" id="user" type="text" disabled value="<%= user.data.name %>">
+									<label for="user">Dodany przez</label>
+								</div>
+								<div class="input-field col s12 m6">
+									<input name="episodenum" id="episodenum" min="0" type="number" value="<%= anime.episode.episode %>">
+									<label for="episodenum">Numer odcinka</label>
+								</div>
+								<div class="input-field col s12 m6">
+									<div style="display: none" id="typeannounement">
+										<input name="typeann" id="typeann" type="text" disabled value="Zapowiedź">
+										<label for="typeann">Typ odcinka</label>
+									</div>
+									<div style="display: none" id="typeepisode">
+										<select id="typestd">
+											<option value="0">
+												Standardowy
+											</option>
+											<option value="1" <% if (anime.episode.type == 1) { %> selected <% } %>>
+												Specjalny
+											</option>
+											<option value="2" <% if (anime.episode.type == 2) { %> selected <% } %>>
+												OVA
+											</option>
+											<option value="3" <% if (anime.episode.type == 3) { %> selected <% } %>>
+												ONA
+											</option>
+										</select>
+										<label>Typ odcinka</label>
+									</div>
+								</div>
+								<div class="input-field col s12 m6">
+									<input name="override" id="override" min="0" type="number" value="<%= (anime.episode.override == null) ? 0 : anime.episode.override %>">
+									<label for="override">Nadpisany numer odcinka (np. Odcinek 14 -> OVA 2)</label>
+								</div>
+								<div class="input-field col s12 m6">
+									<select name="translators" multiple>
+										<% for (var i = 0; i < translators.data.length; i++) { %>
+											<option value="<%= translators.data[i].login %>" <% if ((anime.data.translate.indexOf(translators.data[i].name) !== -1) || (anime.data.translate.indexOf(translators.data[i].login) !== -1)) { %> selected <% } %>><%= translators.data[i].name %> (<%= translators.data[i].login %>)</option>
+										<% } %>
+									</select>
+									<label>Tłumacz</label>
+								</div>
+								<div class="input-field col s12 m6">
+									<select name="correctors" multiple>
+										<% for (var i = 0; i < correctors.data.length; i++) { %>
+											<option value="<%= correctors.data[i].login %>" <% if ((anime.data.corrector.indexOf(correctors.data[i].name) !== -1) || (anime.data.corrector.indexOf(correctors.data[i].login) !== -1)) { %> selected <% } %>><%= correctors.data[i].name %> (<%= correctors.data[i].login %>)</option>
+										<% } %>
+									</select>
+									<label>Korektor</label>
+								</div>
+							</div>
+							<input type="hidden" name="action" value="edit"/>
+							<input type="hidden" id="type" name="type" value="0"/>
+							<input type="hidden" id="playersdata" name="players" value="{}"/>
+						</form>
+						<div class="col s12 m12">
+							<div id="jsGrid" class="browser-default"></div>
+						</div>
+					</div>
+					<div class="card-action">
+						<a class="blue-text" href="javascript:save()">Zapisz</a>
+						<a class="red-text modal-trigger" href="javascript:delwarn();">Usuń</a>
+						<a href="/admin/anime">Anuluj</a>
+					</div>
+				</div>
+			</div>
+			
+			<form id="delete" method="POST" action="/admin/editepisode/<%= anime.data.ID %>/<%- anime.episode.episode %>">
+				<input type="hidden" name="action" value="delete"/>
+			</form>
+
+			<div id="delwarn" class="modal">
+				<div class="modal-content">
+					<h4>Usuń anime</h4>
+					<p>Czy na pewno chcesz usunąc anime <strong><%= anime.data.name %></strong>?</p>
+				</div>
+				<div class="modal-footer">
+					<a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Nie</a>
+					<a href="javascript:confirmdel()" class="modal-action modal-close waves-effect waves-green btn-flat">Tak</a>
+				</div>
+			</div>
+		<% } %>
+	</div>
+</main>
+<script>
+	var grid;
+	players = <%- (anime.players == null) ? "[]" : JSON.stringify(anime.players) %>;
+	sources = <%- JSON.stringify(db.sources); %>;
+
+	$(document).ready(function() {
+		$('select').material_select();
+		$('#delwarn').modal();
+		$('#episodenum').bind('input', function() { 
+			if ($(this).val() == 0) {
+				$("#typeannounement").css({display:"block"});
+				$("#typeepisode").css({display:"none"});
+			} else {
+				$("#typeannounement").css({display:"none"});
+				$("#typeepisode").css({display:"block"});
+			}
+		});
+		if ($('#episodenum').val() == 0) {
+			$("#typeannounement").css({display:"block"});
+			$("#typeepisode").css({display:"none"});
+		} else {
+			$("#typeannounement").css({display:"none"});
+			$("#typeepisode").css({display:"block"});
+		}
+		grid = $("#jsGrid").jsGrid({
+			width: "100%",
+			height: "400px",
+
+			inserting: true,
+			editing: true,
+			sorting: true,
+			paging: true,
+
+			data: players,
+
+			fields: [
+				{ name: "url", title: "Adres URL", type: "text", validate: "required" },
+				{ name: "type", title: "Źródło", type: "select", valueType: "number", items: sources, valueField: "id", textField: "name" },
+				{ type: "control" }
+			]
+		});
+	});
+
+	function delwarn() {
+		$('#delwarn').modal('open');
+	}
+
+	function confirmdel() {
+		$("#delete").submit();
+	}
+
+	function save() {
+		if ($('#episodenum').val() == 0) {
+			$("#type").val(-1);
+		} else {
+			$("#type").val($("#typestd").val());
+		}
+		$("#playersdata").val(JSON.stringify(
+			{
+				players: grid.jsGrid("option", "data")
+			}
+		));
+		$("#save").submit();
+	}
+</script>

@@ -30,6 +30,15 @@ exports.getSourceName = source => {
 	}
 }
 
+exports.getAnimeType = type => {
+	if (type == null || type == undefined) return "";
+	switch (type) {
+		case 1: return "Specjalny";
+		case 2: return "OVA";
+		case 3: return "ONA";
+	}
+}
+
 exports.loadData = async () => {
 	try {
 		var data = await db.query("SELECT * FROM settings WHERE name = 'sources'");
@@ -115,6 +124,9 @@ exports.getAnimeEpisode = async (anime, epnum) => {
 	if (u[0] && u[0][0]) {
 		var episode = await db.query("SELECT * FROM episodes WHERE anime = '" + db.escape(u[0][0].ID) + "' AND episode = " + db.escape(epnum));
 		if (episode[0] && episode[0][0]) {
+			if (episode[0][0].override) {
+				epnum = exports.getAnimeType(episode[0][0].type) + " " + episode[0][0].override;
+			}
 			var plrs = await db.query("SELECT * FROM players WHERE anime = '" + db.escape(u[0][0].ID) + "' AND episode = " + db.escape(epnum));
 			if (plrs[0] && plrs[0][0]) {
 				return {
@@ -165,7 +177,7 @@ exports.editAnimeEpisode = async (anime, episode, body) => {
 		var date = new Date().toISOString().substring(0, 10);
 		var u = await db.query("SELECT * FROM anime WHERE name=" + db.escape(name) + " OR namejap=" + db.escape(name) + " OR ID=" + db.escape(anime));
 		if (u[0] && u[0][0]) {
-			await db.query("UPDATE episodes SET episode=" + db.escape(body.episodenum) + ", name=" + db.escape(body.name) + " WHERE anime = '" + db.escape(u[0][0].ID) + "' AND episode = " + db.escape(episode));
+			await db.query("UPDATE episodes SET episode=" + db.escape(body.episodenum) + ", name=" + db.escape(body.name) + ", override=" + db.escape(body.override) + ", type=" + db.escape(body.type) + " WHERE anime = '" + db.escape(u[0][0].ID) + "' AND episode = " + db.escape(episode));
 			if (body.players) {
 				var players = JSON.parse(body.players).players;
 				if (players) {
