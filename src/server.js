@@ -109,6 +109,7 @@ function registerRoutes(cfg, app) {
 	app.use(bodyParser.json());
 	app.use(bodyParser.urlencoded({ extended: true }));
 	app.use(cookieParser());
+	app.set('trust proxy', 1)
 	app.use(session({
 		store: new FileStore({}),
 		secret: cfg['session-secret']
