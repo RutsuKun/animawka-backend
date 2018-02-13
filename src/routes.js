@@ -85,7 +85,7 @@ router.get('/wyloguj', function(req, res, next) {
 	res.render('logout', {
 		theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
 		themes: theme.themes,
-		title: 'Strona główna',
+		title: 'Wylogowano',
 		db: db, 
 		session: req.session
 	});
@@ -156,6 +156,18 @@ router.get('/zaloguj', function(req, res, next) {
 		enableCaptcha: config.cfg.recaptcha.enable
 	});
 });
+
+
+router.get('/zarejestruj', function(req, res, next) {
+	res.render('register', {
+		theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+		themes: theme.themes,
+		title: 'Rejestracja',
+		db: db, 
+		session: req.session
+	});
+});
+
 
 router.get('/chat', function(req, res, next) {	
 	res.render('chat', {
