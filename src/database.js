@@ -165,6 +165,33 @@ exports.getAnimeEpisode = async (anime, epnum) => {
 	}
 }
 
+exports.delAnimeEpisode = async (anime, episode) => {
+	if (anime === undefined || episode === undefined || !exports.isInt(episode)) {
+		return {
+			success: false
+		};
+	}
+	try {
+		var name = exports.url2name(anime);
+		var date = new Date().toISOString().substring(0, 10);
+		var u = await db.query("SELECT * FROM anime WHERE name=" + db.escape(name) + " OR namejap=" + db.escape(name) + " OR ID=" + db.escape(anime));
+		if (u[0] && u[0][0]) {
+			await db.query("DELETE FROM episodes WHERE anime = '" + db.escape(u[0][0].ID) + "' AND episode = " + db.escape(episode));
+			return {
+				success: true
+			};
+		} else {
+			return {
+				success: false
+			};
+		}
+	} catch (e) {
+		console.error(e.stack);
+		return {
+			success: false
+		};
+	}
+}
 
 exports.editAnimeEpisode = async (anime, episode, body) => {
 	if (anime === undefined || episode === undefined || !exports.isInt(episode)) {
@@ -181,7 +208,6 @@ exports.editAnimeEpisode = async (anime, episode, body) => {
 			if (body.players) {
 				var players = JSON.parse(body.players).players;
 				if (players) {
-					console.log(players);
 					var oldplrs = await db.query("SELECT * FROM players WHERE anime = '" + db.escape(u[0][0].ID) + "' AND episode = " + db.escape(body.episodenum));
 					await db.query("DELETE FROM players WHERE anime = '" + db.escape(u[0][0].ID) + "' AND episode = " + db.escape(body.episodenum));
 					var cnt = await db.query("SELECT MAX(ID) AS num FROM players;");
@@ -193,6 +219,47 @@ exports.editAnimeEpisode = async (anime, episode, body) => {
 							await db.query("INSERT INTO players (ID, user, anime, episode, url, type, date) VALUES (" + db.escape(id) + ", " + db.escape(body.user) + ", " + db.escape(u[0][0].ID) + ", " + db.escape(body.episodenum) + ", " + db.escape(players[i].url) + ", " +  db.escape(players[i].type) + ", " + db.escape(date) + ");");
 							id++;
 						}
+					}
+				}
+			}
+			return {
+				success: true
+			};
+		} else {
+			return {
+				success: false
+			};
+		}
+	} catch (e) {
+		console.error(e.stack);
+		return {
+			success: false
+		};
+	}
+};
+
+
+exports.newAnimeEpisode = async (anime, body) => {
+	if (anime === undefined) {
+		return {
+			success: false
+		};
+	}
+	try {
+		var name = exports.url2name(anime);
+		var date = new Date().toISOString().substring(0, 10);
+		var u = await db.query("SELECT * FROM anime WHERE name=" + db.escape(name) + " OR namejap=" + db.escape(name) + " OR ID=" + db.escape(anime));
+		if (u[0] && u[0][0]) {
+			var epid = await db.query("SELECT MAX(ID) AS num FROM episodes;");
+			await db.query("INSERT INTO episodes (ID, episode, name, user, anime, date, type, override) VALUES (" + db.escape(epid[0][0].num) + ", " + db.escape(body.episodenum) + ", " + db.escape(body.name) + ", " + db.escape(body.user) + ", " + db.escape(u[0][0].ID) + ", " + db.escape(date) + ", " + db.escape(body.type) + ", " + db.escape(body.override) + ")");
+			if (body.players) {
+				var players = JSON.parse(body.players).players;
+				if (players) {
+					var cnt = await db.query("SELECT MAX(ID) AS num FROM players;");
+					var id = cnt[0][0].num + 1;
+					for (var i = 0; i < players.length; i++) {
+						await db.query("INSERT INTO players (ID, user, anime, episode, url, type, date) VALUES (" + db.escape(id) + ", " + db.escape(body.user) + ", " + db.escape(u[0][0].ID) + ", " + db.escape(body.episodenum) + ", " + db.escape(players[i].url) + ", " +  db.escape(players[i].type) + ", " + db.escape(date) + ");");
+						id++;
 					}
 				}
 			}

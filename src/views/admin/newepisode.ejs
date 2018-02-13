@@ -22,7 +22,7 @@ locals.header_extend_css = `
 				<div class="card">
 					<div class="card-content">
 						<span class="card-title"><%- anime.data.name %> - Nowy odcinek</span>
-						<form id="save" method="POST" action="/admin/editepisode/<%= anime.data.ID %>/<%- anime.episode.episode %>" class="col s12">
+						<form id="save" method="POST" action="/admin/newepisode/<%= anime.data.ID %>" class="col s12">
 							<div class="row">
 								<div class="input-field col s12 m12">
 									<input name="name" id="name" type="text" value="">
@@ -66,7 +66,7 @@ locals.header_extend_css = `
 								<div class="input-field col s12 m6">
 									<select name="translators" multiple>
 										<% for (var i = 0; i < translators.data.length; i++) { %>
-											<option value="<%= translators.data[i].login %>" <% if ((anime.data.translate.indexOf(translators.data[i].name) !== -1) || (anime.data.translate.indexOf(translators.data[i].login) !== -1)) { %> selected <% } %>><%= translators.data[i].name %> (<%= translators.data[i].login %>)</option>
+											<option value="<%= translators.data[i].login %>"><%= translators.data[i].name %> (<%= translators.data[i].login %>)</option>
 										<% } %>
 									</select>
 									<label>Tłumacz</label>
@@ -74,15 +74,14 @@ locals.header_extend_css = `
 								<div class="input-field col s12 m6">
 									<select name="correctors" multiple>
 										<% for (var i = 0; i < correctors.data.length; i++) { %>
-											<option value="<%= correctors.data[i].login %>" <% if ((anime.data.corrector.indexOf(correctors.data[i].name) !== -1) || (anime.data.corrector.indexOf(correctors.data[i].login) !== -1)) { %> selected <% } %>><%= correctors.data[i].name %> (<%= correctors.data[i].login %>)</option>
+											<option value="<%= correctors.data[i].login %>"><%= correctors.data[i].name %> (<%= correctors.data[i].login %>)</option>
 										<% } %>
 									</select>
 									<label>Korektor</label>
 								</div>
 							</div>
-							<input type="hidden" name="action" value="edit"/>
 							<input type="hidden" id="type" name="type" value="0"/>
-							<input type="hidden" id="playersdata" name="players" value="{}"/>
+							<input type="hidden" id="playersdata" name="players" value='{"players":[]}'/>
 						</form>
 						<div class="col s12 m12">
 							<div id="jsGrid" class="browser-default"></div>
@@ -90,24 +89,8 @@ locals.header_extend_css = `
 					</div>
 					<div class="card-action">
 						<a class="blue-text" href="javascript:save()">Zapisz</a>
-						<a class="red-text modal-trigger" href="javascript:delwarn();">Usuń</a>
 						<a href="/admin/anime">Anuluj</a>
 					</div>
-				</div>
-			</div>
-			
-			<form id="delete" method="POST" action="/admin/editepisode/<%= anime.data.ID %>/<%- anime.episode.episode %>">
-				<input type="hidden" name="action" value="delete"/>
-			</form>
-
-			<div id="delwarn" class="modal">
-				<div class="modal-content">
-					<h4>Usuń anime</h4>
-					<p>Czy na pewno chcesz usunąc anime <strong><%= anime.data.name %></strong>?</p>
-				</div>
-				<div class="modal-footer">
-					<a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Nie</a>
-					<a href="javascript:confirmdel()" class="modal-action modal-close waves-effect waves-green btn-flat">Tak</a>
 				</div>
 			</div>
 		<% } %>
@@ -115,12 +98,11 @@ locals.header_extend_css = `
 </main>
 <script>
 	var grid;
-	players = <%- (anime.players == null) ? "[]" : JSON.stringify(anime.players) %>;
+	players = [];
 	sources = <%- JSON.stringify(db.sources); %>;
 
 	$(document).ready(function() {
 		$('select').material_select();
-		$('#delwarn').modal();
 		$('#episodenum').bind('input', function() { 
 			if ($(this).val() == 0) {
 				$("#typeannounement").css({display:"block"});
@@ -155,14 +137,6 @@ locals.header_extend_css = `
 			]
 		});
 	});
-
-	function delwarn() {
-		$('#delwarn').modal('open');
-	}
-
-	function confirmdel() {
-		$("#delete").submit();
-	}
 
 	function save() {
 		if ($('#episodenum').val() == 0) {

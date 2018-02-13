@@ -517,7 +517,7 @@ router.get('/admin/editepisode/:id/:num', (req, res, next) => {
 				res.render('admin/editepisode', {
 					theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
 					themes: theme.themes,
-					title: 'Edycja anime',
+					title: 'Edycja odcinka',
 					page: req.params.page,
 					anime: anime,
 					user: user,
@@ -533,12 +533,105 @@ router.get('/admin/editepisode/:id/:num', (req, res, next) => {
 	}
 });
 
+router.get('/admin/newepisode/:id', (req, res, next) => {
+	if (req.session && req.session.admin) {
+		db.getAnime(req.params.id).then(anime => {
+			db.getUser(req.session.uid).then(async user => {
+				var translators = await db.getUsersByRank(2, true);
+				var correctors = await db.getUsersByRank(3, true);
+				res.render('admin/newepisode', {
+					theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+					themes: theme.themes,
+					title: 'Nowy odcinek',
+					page: req.params.page,
+					anime: anime,
+					user: user,
+					db: db, 
+					session: req.session,
+					translators: translators,
+					correctors: correctors
+				});
+			});
+		});
+	} else {
+		noPerm(req, res, next);
+	}
+});
 
 router.post('/admin/editepisode/:id/:num', (req, res, next) => {
 	if (req.session && req.session.admin) {
 		req.body.user = req.session.uid;
-		console.log(req.body);
-		db.editAnimeEpisode(req.params.id, req.params.num, req.body).then(data => {
+		if (req.body.action == "edit") {
+			db.editAnimeEpisode(req.params.id, req.params.num, req.body).then(data => {
+				if (data.success) {
+					db.getAnimeList(1).then(animelist => {
+						res.render('admin/animelist', {
+							theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+							themes: theme.themes,
+							title: 'Anime',
+							page: 1,
+							animelist: animelist,
+							db: db,
+							session: req.session,
+							message: "Zmiany zostały zapisane!"
+						});
+					});
+				} else {
+					db.getAnimeList(1).then(animelist => {
+						res.render('admin/animelist', {
+							theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+							themes: theme.themes,
+							title: 'Anime',
+							page: 1,
+							animelist: animelist,
+							db: db,
+							session: req.session,
+							message: "Wystąpił błąd podczas edytowania odcinka!"
+						});
+					});
+				}
+			});
+		} else if (req.body.action == "delete") {
+			db.delAnimeEpisode(req.params.id, req.params.num).then(data => {
+				if (data.success) {
+					db.getAnimeList(1).then(animelist => {
+						res.render('admin/animelist', {
+							theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+							themes: theme.themes,
+							title: 'Anime',
+							page: 1,
+							animelist: animelist,
+							db: db,
+							session: req.session,
+							message: "Odcinek został usunięty!"
+						});
+					});
+				} else {
+					db.getAnimeList(1).then(animelist => {
+						res.render('admin/animelist', {
+							theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+							themes: theme.themes,
+							title: 'Anime',
+							page: 1,
+							animelist: animelist,
+							db: db,
+							session: req.session,
+							message: "Wystąpił błąd podczas edytowania odcinka!"
+						});
+					});
+				}
+			});
+		}
+	} else {
+		noPerm(req, res, next);
+	}
+});
+
+
+router.post('/admin/newepisode/:id', (req, res, next) => {
+	if (req.session && req.session.admin) {
+		req.body.user = req.session.uid;
+		db.newAnimeEpisode(req.params.id, req.body).then(data => {
 			if (data.success) {
 				db.getAnimeList(1).then(animelist => {
 					res.render('admin/animelist', {
@@ -562,7 +655,7 @@ router.post('/admin/editepisode/:id/:num', (req, res, next) => {
 						animelist: animelist,
 						db: db,
 						session: req.session,
-						message: "Wystąpił błąd podczas edytowania odcinka!"
+						message: "Wystąpił błąd podczas dodawania odcinka!"
 					});
 				});
 			}
