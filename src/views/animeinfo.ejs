@@ -27,11 +27,21 @@
 
 								<strong>Tłumacz: </strong><%= data.translate %><br/>
 								<strong>Korektor: </strong><%= data.corrector %><br/>
-								<strong>Dodano: </strong><%= data.date %>
+								<strong>Dodano: </strong><%= data.date %><br/>
+								<% if (data.mal != null && data.mal != "") {%>
+								<strong>MyAnimeList: </strong><a href="<%= data.mal %>"><%= data.mal %></a>
+								<% } %>
 							</p>
 						</div>
 						<div class="card-reveal">
 							<span class="card-title grey-text text-darken-4">Akcje<i class="material-icons right">close</i></span>
+								<% if (session && session.admin) { %>
+								<ul>
+									<li><a href="/admin/editanime/<%- db.name2url(data.name) %>">Edytuj</a></li>
+									<li><a href="/admin/newepisode/<%= data.ID %>">Dodaj odcinek</a></li>
+								</ul>
+								<% } %>
+								
 						</div>
 					</div>
 
@@ -61,7 +71,10 @@
 
 									<strong>Tłumacz: </strong><%= data.translate %><br/>
 									<strong>Korektor: </strong><%= data.corrector %><br/>
-									<strong>Dodano: </strong><%= data.date %>
+									<strong>Dodano: </strong><%= data.date %><br/>
+									<% if (data.mal != null && data.mal != "") {%>
+									<strong>MyAnimeList: </strong><a href="<%= data.mal %>"><%= data.mal %></a>
+									<% } %>
 								</p>
 							</div>
 						</div>

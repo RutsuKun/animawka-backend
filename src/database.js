@@ -385,6 +385,7 @@ exports.editAnime = async animedata => {
 								+ ", description=" + db.escape(animedata.description)
 								+ ", image=" + db.escape(animedata.image)
 								+ ", tags=" + db.escape(animedata.tags)
+								+ ", mal=" + db.escape(animedata.mal)
 								+ ", nsfw=" + db.escape(animedata.nsfw)
 								+ ", status=" + db.escape(animedata.status)
 								+ " WHERE ID=" + db.escape(animedata.ID));

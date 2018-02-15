@@ -17,8 +17,8 @@
 <main role="main" id="MainContent">
 	<div class="container">
 		<div class="row">
-			<div class="col s12 m12 l3 xl3 left hide-on-small-only <%= theme.modifiers.text %>">				
-				<div class="card <%= theme.accent %> <%= theme.modifiers.infocards %>">
+			<div class="col s12 m12 l3 xl3 left hide-on-small-only">				
+				<div class="card <%= theme.accent %> <%= theme.modifiers.infocards %> <%= theme.modifiers.text %>">
 					<div class="card-content">
 						<span class="card-title">Polecamy</span>
 						<p>
@@ -34,8 +34,20 @@
 					</div>
 				</div>
 				
-				<div class="card <%= theme.accent %> <%= theme.modifiers.infocards %>">
+				<div class="card <%= theme.accent %> <%= theme.modifiers.infocards %> <%= theme.modifiers.text %>">
 					<div class="card-content">
+							<span class="card-title">Facebook</span>
+							<div style="width:100%; margin-bottom:25px;" class="fb-page" data-href="https://www.facebook.com/JakbedziewAnime/" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true" data-show-posts="true"><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/JakbedziewAnime/"><a href="https://www.facebook.com/JakbedziewAnime/">animawka.pl</a></blockquote></div></div>
+							<div id="fb-root"></div>
+							<script>
+								(function(d, s, id) {
+									var js, fjs = d.getElementsByTagName(s)[0];
+									if (d.getElementById(id)) return;
+									js = d.createElement(s); js.id = id;
+									js.src = "//connect.facebook.net/pl_PL/sdk.js#xfbml=1&version=v2.5&appId=202375610098345";
+									fjs.parentNode.insertBefore(js, fjs);
+								}(document, 'script', 'facebook-jssdk'));
+							</script>
 						<script src="https://rtbnowads.com/publisher/emit.php?page_id=68615&id=3"></script>
 					</div>					
 				</div>
@@ -44,7 +56,7 @@
 			<div class="col s12 m12 l9 xl9 left">
 				<div class="row">
 					<div class="col s12">
-						<div class="card <%= theme.accent %> <%= theme.modifiers.infocards %>">
+						<div class="card <%= theme.accent %> <%= theme.modifiers.infocards %> <%= theme.modifiers.text %>">
 							<div class="card-content">
 								<span class="card-title">Oceń naszą strone</span>
 								<p>Oceń nową wersje strony Animawka.pl w ankiecie dostępnej pod adresem <a href="https://goo.gl/forms/bYPuRct4QUYVQgzZ2">https://goo.gl/forms/bYPuRct4QUYVQgzZ2</a>.<br />
@@ -73,18 +85,19 @@ Za każde odpowiedzi serdecznie dziękujemy
 				<div class="row">
 					<h5 class="<%= theme.modifiers.text %>" style="padding-left:10px">Najnowsze odcinki</h5>
 					<% for (var i = 0; i < anime.length; i++) { %>
+					<a href="/anime/<%= db.name2url(anime[i].name) %>/<%= anime[i].episode %>">
 					<div class="col s12 m4">
 						<div class="card medium">
 							<div class="card-image">
 								<img src="<%= anime[i].image %>">
 							</div>
 							<div class="card-content">
-								<a href="/anime/<%= db.name2url(anime[i].name) %>/<%= anime[i].episode %>" class="btn-floating waves-effect waves-light red" style="position: absolute;right: 24px;transform: translateY(-100%);"><i class="material-icons">play_arrow</i></a>
 								<p style="text-overflow:ellipsis;overflow: hidden;white-space:nowrap;"><strong><%= anime[i].name %></strong></p>
 								<p>Odcinek <%= anime[i].episode %></p>
 							</div>
 						</div>
 					</div>
+					</a>
 					<% } %>
 
 					<div class="col s12">
@@ -102,7 +115,7 @@ Za każde odpowiedzi serdecznie dziękujemy
 					</div>
 					
 					<div class="col s12 m12">
-						<div class="card <%= theme.accent %> <%= theme.modifiers.infocards %>">
+						<div class="card <%= theme.accent %> <%= theme.modifiers.infocards %> <%= theme.modifiers.text %>">
 							<div class="card-content">
 								<span class="card-title">Legalność serwisu</span>
 								<p>Nasz serwis nie hostuje odcinków, lecz gromadzi linki do zewnętrznych uploaderów umieszczone przez uzytkownikow strony - wszelkie roszczenia dotyczące praw autorskich powinny być przekazywane do nich.</p>
@@ -117,18 +130,7 @@ Za każde odpowiedzi serdecznie dziękujemy
 				<div class="col s12 m6">
 					<div class="card <%= theme.accent %> <%= theme.modifiers.infocards %>">
 						<div class="card-content white-text">
-							<span class="card-title">Facebook</span>
-							<div style="width:100%; margin-bottom:25px;" class="fb-page" data-href="https://www.facebook.com/JakbedziewAnime/" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true" data-show-posts="true"><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/JakbedziewAnime/"><a href="https://www.facebook.com/JakbedziewAnime/">animawka.pl</a></blockquote></div></div>
-							<div id="fb-root"></div>
-							<script>
-								(function(d, s, id) {
-									var js, fjs = d.getElementsByTagName(s)[0];
-									if (d.getElementById(id)) return;
-									js = d.createElement(s); js.id = id;
-									js.src = "//connect.facebook.net/pl_PL/sdk.js#xfbml=1&version=v2.5&appId=202375610098345";
-									fjs.parentNode.insertBefore(js, fjs);
-								}(document, 'script', 'facebook-jssdk'));
-							</script>
+
 						</div>
 					</div>
 				</div>

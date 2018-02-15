@@ -94,6 +94,10 @@ function save() {
 									<input name="image" id="image" type="text" value="<%= anime.data.image %>">
 									<label for="image">URL obrazka</label>
 								</div>
+								<div class="input-field col s12 m12">
+									<input name="mal" id="mal" type="text" value="<%= anime.data.mal %>">
+									<label for="mal">URL MyAnimeList</label>
+								</div>
 								<div class="col s12 m6">
 									<p>
 										<input <% if (anime.data.nsfw) { %> checked <% } %> type="checkbox" id="nsfw" />

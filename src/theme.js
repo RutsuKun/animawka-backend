@@ -96,7 +96,7 @@ const themes = [
 		id: "drpepper",
 		color: "#7A170B",
 		primary: "red",
-		accent: "accent-4",
+		accent: "red accent-4",
 		logo: "kurisu",
 		light: false,
 		modifiers: {
