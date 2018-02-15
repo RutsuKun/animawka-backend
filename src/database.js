@@ -443,6 +443,138 @@ exports.newAnime = async animedata => {
 	}
 }
 
+// https://mariadb.com/kb/en/library/pagination-optimization/
+
+// NEWS SYSTEM BY HENIOOO //
+
+exports.getNewsList = async page => {
+	var c = [];
+	var data = [];
+
+	if (page == 1) {
+		data = await db.query("SELECT * FROM news ORDER BY ID DESC LIMIT " + itemsPerPage);
+	} else {
+		data = await db.query("SELECT * FROM news ORDER BY ID DESC LIMIT " + ((page - 1) * itemsPerPage) + "," + (page * itemsPerPage));
+	}
+
+	var cnt = await db.query("SELECT COUNT(ID) AS num FROM news;");
+	var pc = Math.ceil(cnt[0][0].num / itemsPerPage);
+	if (data[0].length != 0 && pc == 0) pc = 1;
+
+	if (data[0] && cnt[0]) {
+		return {
+			news: data[0],
+			pagecount: pc,
+			itemcount: cnt[0][0].num
+		};
+	}
+}
+
+exports.newNews = async newsdata => {
+	if (newsdata === undefined) {
+		return {
+			success: false
+		};
+	}
+	try {
+
+		if (!newsdata.image) newsdata.image = "";
+
+		var u = await db.query("INSERT INTO news (title, user, content, image, tags, type) VALUES"
+								+ "(" + db.escape(newsdata.title)
+								+ ", " + db.escape(newsdata.user)
+								+ ", " + db.escape(newsdata.content)
+								+ ", " + db.escape(newsdata.image)
+								+ ", " + db.escape(newsdata.tags)
+								+ ", " + db.escape(newsdata.type)+")");
+		return {
+			success: true
+		};
+	} catch (e) {
+		console.error(e.stack);
+		return {
+			success: false
+		};
+	}
+}
+
+exports.getNews = async id => {
+	if (id === undefined) {
+		return {
+			title: "Błąd",
+			data: null,
+			episodes: [],
+			error: "Nie znaleziono newsa"
+		};
+	}
+
+
+	var u = await db.query("SELECT * FROM news WHERE ID=" + db.escape(id));
+	console.log(u);
+	if (u[0] && u[0][0]) {
+
+		return {
+			title: u[0][0].title,
+			data: u[0][0],
+			error: ""
+		};
+	} else {
+		return {
+			title: "Błąd",
+			data: null,
+			episodes: [],
+			error: "Nie znaleziono newsa"
+		};
+	}
+}
+
+exports.editNews = async newsdata => {
+	if (newsdata === undefined) {
+		return {
+			success: false
+		};
+	}
+	try {
+
+		if (!newsdata.image) newsdata.image = "";
+
+		var u = await db.query("UPDATE news SET title=" + db.escape(newsdata.title)
+								+ ", content=" + db.escape(newsdata.content)
+								+ ", image=" + db.escape(newsdata.image)
+								+ ", tags=" + db.escape(newsdata.tags)
+								+ ", type=" + db.escape(newsdata.type));
+		return {
+			success: true
+		};
+	} catch (e) {
+		console.error(e.stack);
+		return {
+			success: false
+		};
+	}
+}
+
+exports.delNews = async news => {
+	if (news === undefined) {
+		return {
+			success: false
+		};
+	}
+	try {
+		var u = await db.query("DELETE FROM news WHERE ID=" + db.escape(news));
+		return {
+			success: true
+		};
+	} catch (e) {
+		console.error(e.stack);
+		return {
+			success: false
+		};
+	}
+}
+
+// NEWS SYSTEM BY HENIOOO //
+
 exports.getUser = async user => {
 	if (user === undefined) {
 		return {
@@ -516,9 +648,9 @@ exports.getUserList = async page => {
 	var data = [];
 
 	if (page == 1) {
-		data = await db.query("SELECT * FROM users ORDER BY login ASC LIMIT " + itemsPerPage);
+		data = await db.query("SELECT * FROM users ORDER BY ID ASC LIMIT " + itemsPerPage);
 	} else {
-		data = await db.query("SELECT * FROM users ORDER BY login ASC LIMIT " + ((page - 1) * itemsPerPage) + "," + (page * itemsPerPage));
+		data = await db.query("SELECT * FROM users ORDER BY ID ASC LIMIT " + ((page - 1) * itemsPerPage) + "," + (page * itemsPerPage));
 	}
 
 	var cnt = await db.query("SELECT COUNT(ID) AS num FROM users;");

@@ -1,0 +1,108 @@
+<% 
+locals.header_extend_js = `
+<script>
+$(document).ready(function() {
+	$('#delwarn').modal();
+});
+
+function delwarn() {
+	$('#delwarn').modal('open');
+}
+
+function confirmdel() {
+	$("#delete").submit();
+}
+
+function save() {
+	$("#save").submit();
+}
+</script>
+`
+%>
+<% extend('../layout') %>
+
+<main>
+	<div class="container">
+		<%- include('menu',{cp:"news"}) %>
+		<% if (news.data === null) { %>				
+			<div class="col s12 offset-m3 m6">
+				<div class="card-panel red">
+					<span class="white-text">
+						Nie ma tego newsa w bazie!
+					</span>
+				</div>
+			</div>
+		<% } else { %>
+			<div class="col s12 m12">
+				<div class="card">
+					<div class="card-content">
+						<span class="card-title">ID <%- news.data.ID %> - <%- news.data.title %></span>
+						<form id="save" method="POST" action="/admin/editnews/<%= news.data.ID %>" class="col s12">
+							<div class="row">
+								<div class="input-field col s12 m12">
+									<input name="title" id="title" type="text" value="<%- news.data.title %>">
+									<label for="title">Tytuł</label>
+								</div>
+
+								<div class="input-field col s12 m6">
+									<input name="user" id="user" type="text" disabled value="<%= user.data.name %>">
+									<label for="user">Dodany przez</label>
+								</div>
+
+
+								<div class="input-field col s12 m6">
+									<select name="type">
+										<option value="0">Aktualności</option>
+										<option <% if (news.data.type == 1) { %> selected <% } %> value="1">Ogłoszenie</option>
+										<option <% if (news.data.type == 2) { %> selected <% } %> value="2">Anime</option>
+										<option <% if (news.data.type == 3) { %> selected <% } %> value="3">Manga</option>
+										<option <% if (news.data.type == 4) { %> selected <% } %> value="4">Rekrutacja</option>
+									</select>
+									<label>Typ</label>
+								</div>
+								<!--<div class="input-field col s12 m6">
+									<div id="tagselect" class="chips chips-placeholder"></div>
+								</div>-->
+								<div class="input-field col s12 m6">
+									<input name="tags" id="tags" type="text" value="<%= news.data.tags %>">
+									<label for="tags">Tagi (rozdziel "," i spacją!)</label>
+								</div>
+								<div class="input-field col s12 m12">
+									<textarea id="content" name="content" class="materialize-textarea"><%= news.data.content %></textarea>
+									<label for="content">Opis</label>
+								</div>
+								<div class="input-field col s12 m12">
+									<input name="image" id="image" type="text" value="<%= news.data.image %>">
+									<label for="image">URL obrazka</label>
+								</div>
+							</div>
+							<input type="hidden" name="ID" value="<%= news.data.ID %>"/>
+							<input type="hidden" name="action" value="edit"/>
+							<!--<input type="hidden" id="tags" name="tags" value=""/>-->
+						</form>
+					</div>
+					<div class="card-action">
+						<a class="blue-text" href="javascript:save()">Zapisz</a>
+						<a class="red-text modal-trigger" href="javascript:delwarn();">Usuń</a>
+						<a href="/admin/news">Anuluj</a>
+					</div>
+				</div>
+			</div>
+			
+			<form id="delete" method="POST" action="/admin/editnews/<%= news.data.ID %>">
+				<input type="hidden" name="action" value="delete"/>
+			</form>
+
+			<div id="delwarn" class="modal">
+				<div class="modal-content">
+					<h4>Usuń anime</h4>
+					<p>Czy na pewno chcesz usunąc newsa <strong><%= news.data.title %></strong>?</p>
+				</div>
+				<div class="modal-footer">
+					<a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Nie</a>
+					<a href="javascript:confirmdel()" class="modal-action modal-close waves-effect waves-green btn-flat">Tak</a>
+				</div>
+			</div>
+		<% } %>
+	</div>
+</main>

@@ -1,0 +1,115 @@
+<% extend('../layout') %>
+
+<main>
+	<div class="container">
+		<%- include('menu',{cp:"news"}) %>
+		<div class="row">
+			<% if (newslist.news.length == 0) { %>
+				<% if (page == 1) { %>
+				<div class="col s12 m12">
+					<div class="card-panel red">
+						<span class="white-text">
+							Nie ma newsów w bazie danych!
+						</span>
+					</div>
+					<a class="waves-effect waves-light btn <%- theme.accent %>" href="/admin/newnews">
+						<i class="material-icons left">add</i>Dodaj newsa
+					</a>
+				</div>
+				<% } else { %>
+				<div class="col s12 m12">
+					<div class="card-panel red">
+						<span class="white-text">
+							Nieprawidlowy numer strony!
+						</span>
+					</div>
+				</div>
+				<% } %>
+			<% } else {%>
+				<% if (message) { %>
+				<div class="col s12 m12">
+					<div class="card-panel red">
+						<span class="white-text">
+							<%- message %>
+						</span>
+					</div>
+				</div>
+				<% } %>
+				<div class="col s12 m12">
+					<a class="waves-effect waves-light btn <%- theme.accent %>" href="/admin/newnews">
+						<i class="material-icons left">add</i>Dodaj newsa
+					</a>
+				</div>
+			</div>
+			<div class="row">
+				<% for (var i = 0; i < newslist.news.length; i++) {%>		
+					<div class="col s12">
+						<div class="card medium hide-on-large-only">
+							<div class="card-image waves-effect waves-block waves-light">
+								<img class="activator" src="<%= newslist.news[i].image %>">
+								<span class="card-title boldtitle activator"><%= newslist.news[i].title %></span>
+							</div>
+							<div class="card-content">
+								<p><strong>Treść: </strong><%= newslist.news[i].content %></p>
+							</div>
+							<div class="card-action">
+								<a href="/admin/editnews/<%= newslist.news[i].ID %>">Edytuj</a>
+							</div>
+							<div class="card-reveal">
+								<span class="card-title grey-text text-darken-4"><%= newslist.news[i].title %><i class="material-icons right">close</i></span>
+								<p><%- db.nl2br(newslist.news[i].content) %></p>
+							</div>
+						</div>
+
+						<div class="card horizontal hide-on-med-and-down">
+							<div class="card-image waves-effect waves-block waves-light">
+								<img class="activator" width="128px" height="240px" src="<%= newslist.news[i].image %>">
+							</div>
+							<div class="card-stacked">
+								<div class="card-content">
+									<span class="card-title activator grey-text text-darken-4"><%= newslist.news[i].title %><i class="material-icons right">more_vert</i></span>
+									
+									<p><strong>Treść: </strong><%= newslist.news[i].content %></p>
+
+									<div class="right hide-on-med-and-down">
+									
+									<% if (newslist.news[i].tags != "") {
+										var tag = newslist.news[i].tags.split(",");
+
+										for (var a = 0; a < tag.length; a++) {%>
+											<span class="new badge blue left" data-badge-caption=""><%= tag[a] %></span>
+										<%}
+									}%>
+									</div>
+								</div>
+								<div class="card-action">
+									<a href="/admin/editnews/<%= newslist.news[i].ID %>">Edytuj</a>
+								</div>
+							</div>
+
+							<div class="card-reveal">
+								<span class="card-title grey-text text-darken-4"><%= newslist.news[i].name %><i class="material-icons right">close</i></span>
+								<p><%- db.nl2br(newslist.news[i].content) %></p>
+							</div>
+						</div>
+					</div>
+				<%}%>
+
+				<div class="col s12">
+					<ul class="pagination">
+						<li <% if (page == 1) {%>class="disabled"><a href="#!"><% } else { %>class="waves-effect"><a href="/admin/news/<%= page - 1 %>"><% } %><i class="material-icons">chevron_left</i></a></li>
+						<% for (var pc = 1; pc <= newslist.pagecount; pc++) { %>
+							<% if (pc == page) { %>
+								<li class="active"><a href="/admin/news/<%= pc %>"><%= pc %></a></li>
+							<% } else { %>
+								<li class="waves-effect"><a href="/admin/news/<%= pc %>"><%= pc %></a></li>
+							<% } %>
+						<% } %>
+						
+						<li <% if (page == newslist.pagecount) {%>class="disabled"><a href="#!"><% } else { %>class="waves-effect"><a href="/admin/news/<%= page + 1 %>"><% } %><i class="material-icons">chevron_right</i></a></li>
+					</ul>
+				</div>
+			<%}%>
+		</div>
+	</div>
+</main>
