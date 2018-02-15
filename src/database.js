@@ -10,10 +10,12 @@ var db = {};
 
 var convertPasswords = false;
 const itemsPerPage = 10; // liczba stron
-
+const itemsNewsPerPage = 3;
 exports.itemsPerPage = itemsPerPage;
+exports.itemsNewsPerPage = itemsNewsPerPage;
 
 // cache zrodel, nie zmienia sie czesto a lista nie jest dluga.
+
 exports.sources = [];
 
 exports.getSourceName = source => {
@@ -543,7 +545,8 @@ exports.editNews = async newsdata => {
 								+ ", content=" + db.escape(newsdata.content)
 								+ ", image=" + db.escape(newsdata.image)
 								+ ", tags=" + db.escape(newsdata.tags)
-								+ ", type=" + db.escape(newsdata.type));
+								+ ", type=" + db.escape(newsdata.type)
+								+ " WHERE ID = " + db.escape(newsdata.ID));
 		return {
 			success: true
 		};
@@ -570,6 +573,29 @@ exports.delNews = async news => {
 		console.error(e.stack);
 		return {
 			success: false
+		};
+	}
+}
+
+exports.getLastNews = async page => {
+	var c = [];
+	var data = [];
+
+	if (page == 1) {
+		data = await db.query("SELECT * FROM news ORDER BY ID DESC LIMIT " + itemsNewsPerPage);
+	} else {
+		data = await db.query("SELECT * FROM news ORDER BY ID DESC LIMIT " + ((page - 1) * itemsNewsPerPage) + "," + (page * itemsNewsPerPage));
+	}
+
+	var cnt = await db.query("SELECT COUNT(ID) AS num FROM news;");
+	var pc = Math.ceil(cnt[0][0].num / itemsPerPage);
+	if (data[0].length != 0 && pc == 0) pc = 1;
+
+	if (data[0] && cnt[0]) {
+		return {
+			news: data[0],
+			pagecount: pc,
+			itemcount: cnt[0][0].num
 		};
 	}
 }

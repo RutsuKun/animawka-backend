@@ -69,17 +69,22 @@ Za każde odpowiedzi serdecznie dziękujemy
 
 				<div class="row">
 					<h5 class="<%= theme.modifiers.text %>" style="padding-left:10px">Aktualności</h5>
+					
+					<% for (var i = 0; i < news.news.length; i++) { %>
 					<div class="col s12 m12">
 						<div class="card medium">
 							<div class="card-image">
-								<img src="https://3.bp.blogspot.com/-0uHNJvVC10s/VRov4jg7vTI/AAAAAAAAIOo/jiTv-ypnJIE/w800-h800/Shokugeki%2Bno%2BSouma.jpg">
-								<span class="card-title">Nowy wygląd serwisu</span>
+								<img src="<%= news.news[i].image %>">
+								<span class="card-title"><%= news.news[i].title %></span>
 							</div>
 							<div class="card-content">
-								<p>W Wtorek 13 Lutego na naszej stronie zagościł nowy wygląd</p>
+								<p>Autor: <%= user.data.name %></p>
+								<p><%= news.news[i].content %></p>
 							</div>
 						</div>
 					</div>
+					<% } %>
+					
 				</div>
 
 				<div class="row">
