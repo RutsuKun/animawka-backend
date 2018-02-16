@@ -28,6 +28,7 @@ router.get('/', function(req, res, next) {
 
 router.get('/anime/:name/:episode', function(req, res, next) {
 	db.getAnimeEpisode(req.params.name, req.params.episode).then(anime => {
+		console.log(anime.title);
 		res.render('animewatch', {
 			theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
 			themes: theme.themes,

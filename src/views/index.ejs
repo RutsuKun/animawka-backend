@@ -94,7 +94,12 @@ Za każde odpowiedzi serdecznie dziękujemy
 							</div>
 							<div class="card-content">
 								<p style="text-overflow:ellipsis;overflow: hidden;white-space:nowrap;"><strong><%= anime[i].name %></strong></p>
+								<% if (anime[i].episode == 0) { %> <p>Zapowiedź</p> <% } else {%>
 								<p>Odcinek <%= anime[i].episode %></p>
+								
+								<%
+								}
+								%>
 							</div>
 						</div>
 					</div>

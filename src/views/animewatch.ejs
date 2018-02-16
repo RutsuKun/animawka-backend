@@ -25,7 +25,13 @@
 						<div class="card medium hide-on-large-only">
 							<div class="card-image waves-effect waves-block waves-light">
 								<img class="activator" src="<%= data.image %>"/>
-								<span class="card-title boldtitle activator"><%= data.name %> - Odcinek <%= episode.episode %></span>
+								<span class="card-title boldtitle activator">
+								<% if (episode.episode == 0) { %> <p>Zapowiedź</p> <% } else {%>
+								<%= data.name %> - Odcinek <%= episode.episode %>
+								<% } %>
+								
+								
+								</span>
 							</div>
 							<div class="card-content">
 								<p>
@@ -55,7 +61,10 @@
 							</div>
 							<div class="card-stacked">
 								<div class="card-content">
-									<span class="card-title grey-text text-darken-4"><%= data.name %> - Odcinek <%= episode.episode %>
+									<span class="card-title grey-text text-darken-4">
+									<% if (episode.episode == 0) { %> <p>Zapowiedź</p> <% } else {%>
+									<%= data.name %> - Odcinek <%= episode.episode %>
+									<% } %>
 										<% if (session && session.admin) { %>
 											<a class='dropdown-button waves-effect waves-gray btn-floating btn-flat white right' href='#' data-activates='animemenu' data-constrainwidth='false'><i class="material-icons black-text">more_vert</i></a>
 										<% } %>
@@ -80,7 +89,7 @@
 					</div>
 					<div class="col m12 s12">
 						<div class="card <%= theme.accent %>">
-							<div class="card-content white-text">
+							<div class="card-content center white-text">
 								<span class="card-title">Oglądaj</span>
 							</div>
 

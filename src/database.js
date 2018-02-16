@@ -132,22 +132,43 @@ exports.getAnimeEpisode = async (anime, epnum) => {
 				epnum = exports.getAnimeType(episode[0][0].type) + " " + episode[0][0].override;
 			}
 			var plrs = await db.query("SELECT * FROM players WHERE anime = '" + db.escape(u[0][0].ID) + "' AND episode = " + db.escape(epnum));
-			if (plrs[0] && plrs[0][0]) {
-				return {
-					title: u[0][0].name + " - Odcinek " + epnum,
-					data: u[0][0],
-					episode: episode[0][0],
-					players: plrs[0],
-					error: ""
-				};
+			console.log(epnum);
+			if(epnum === '0'){
+				if (plrs[0] && plrs[0][0]) {
+					return {
+						title: u[0][0].name + " - Zapowiedź",
+						data: u[0][0],
+						episode: episode[0][0],
+						players: plrs[0],
+						error: ""
+					};
+				} else {
+					return {
+						title: u[0][0].name + " - Zapowiedź",
+						data: u[0][0],
+						episode: episode[0][0],
+						players: null,
+						error: "Nie zuploadowano"
+					};
+				}
 			} else {
-				return {
-					title: u[0][0].name + " - Odcinek " + epnum,
-					data: u[0][0],
-					episode: episode[0][0],
-					players: null,
-					error: "Nie zuploadowano"
-				};
+				if (plrs[0] && plrs[0][0]) {
+					return {
+						title: u[0][0].name + " - Odcinek " + epnum,
+						data: u[0][0],
+						episode: episode[0][0],
+						players: plrs[0],
+						error: ""
+					};
+				} else {
+					return {
+						title: u[0][0].name + " - Odcinek " + epnum,
+						data: u[0][0],
+						episode: episode[0][0],
+						players: null,
+						error: "Nie zuploadowano"
+					};
+				}
 			}
 		} else {
 			return {
@@ -297,10 +318,10 @@ exports.getAnime = async page => {
 	}
 
 	var name = exports.url2name(page);
-	var u = await db.query("SELECT * FROM anime WHERE name=" + db.escape(name) + " OR namejap="+ db.escape(name));
+	var u = await db.query("SELECT * FROM anime WHERE name=" + db.escape(name) + " OR namejap="+ db.escape(name) +" OR ID = "+ db.escape(name));
 	//console.log(u);
 	if (u[0] && u[0][0]) {
-		var eps = await db.query("SELECT * FROM episodes WHERE anime = '" + db.escape(u[0][0].ID) + "'");
+		var eps = await db.query("SELECT * FROM episodes WHERE anime = '" + db.escape(u[0][0].ID) + "' ORDER BY episode ASC");
 		//console.log(eps[0]);
 		return {
 			title: u[0][0].name,

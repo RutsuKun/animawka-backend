@@ -107,10 +107,14 @@
 						<div class="collection">
 							<% for (var i = 0; i < episodes.length; i++) {%>
 								<a href="/anime/<%- db.name2url(data.name) %>/<%- episodes[i].episode %>" class="collection-item black-text">
+								<% if (episodes[i].episode == 0) { %> Zapowiedź <% } else {%>
 									Odcinek <%- db.getAnimeType(episodes[i].type) %> <%- (episodes[i].override != null && episodes[i].override > 0) ? episodes[i].override : episodes[i].episode %>
 									<% if (episodes[i].name != null && episodes[i].name != "") { %>
 									- <%- episodes[i].name %>
 									<% } %>
+								<%
+								}
+								%>
 								</a>
 							<% } %>
 						</div>
