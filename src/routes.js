@@ -347,6 +347,36 @@ router.post('/admin/editaccount/:id', (req, res, next) => {
 					});
 				});
 			}
+		} else if (req.body.action == "edit") {
+			db.editUser(req.body).then(data => {
+				if (data.success) {
+					db.getUserList(1).then(userlist => {
+						res.render('admin/accountlist', {
+							theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+							themes: theme.themes,
+							title: 'Konta',
+							page: 1,
+							userlist: userlist,
+							db: db,
+							session: req.session,
+							message: "Konto zedytowane!"
+						});
+					});
+				} else {
+					db.getAnimeList(1).then(animelist => {
+						res.render('admin/accountlist', {
+							theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+							themes: theme.themes,
+							title: 'Konta',
+							page: 1,
+							userlist: userlist,
+							db: db,
+							session: req.session,
+							message: "Wystąpił błąd podczas edytowania konta!"
+						});
+					});
+				}
+			});
 		}
 	} else {
 		noPerm(req, res, next);
@@ -852,6 +882,84 @@ router.post('/admin/editnews/:id', (req, res, next) => {
 });
 
 // NEWS SYSTEM BY HENIOOO//
+
+// REVIEWS SYSTEM BY HENIOOO//
+
+router.get('/admin/reviews', (req, res, next) => {
+	if (req.session && req.session.admin) {
+		db.getReviewsList(1).then(reviewslist => {
+			res.render('admin/reviewslist', {
+				theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+				themes: theme.themes,
+				title: 'Recenzje',
+				page: 1,
+				reviewslist: reviewslist,
+				db: db,
+				session: req.session,
+				message: undefined
+			});
+		});
+	} else {
+		noPerm(req, res, next);
+	}
+});
+
+router.get('/admin/newreview', (req, res, next) => {
+	if (req.session && req.session.admin) {
+		db.getUser(req.session.uid).then(async user => {
+			res.render('admin/newreview', {
+				theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+				themes: theme.themes,
+				title: 'Nowa recenzja',
+				page: req.params.page,
+				user: user,
+				db: db, 
+				session: req.session
+			});
+		});
+	} else {
+		noPerm(req, res, next);
+	}
+});
+
+router.post('/admin/newreview', (req, res, next) => {
+	if (req.session && req.session.admin) {
+		console.log(req.body);
+		db.newReview(req.body).then(data => {
+			if (data.success) {
+				db.getReviewsList(1).then(reviewslist => {
+					res.render('admin/reviewslist', {
+						theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+						themes: theme.themes,
+						title: 'Recenzje',
+						page: 1,
+						reviewslist: reviewslist,
+						db: db,
+						session: req.session,
+						message: "Dodano recenzje!"
+					});
+				});
+			} else {
+				db.getReviewsList(1).then(reviewslist => {
+					res.render('admin/reviewslist', {
+						theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+						themes: theme.themes,
+						title: 'Recenzje',
+						page: 1,
+						reviewslist: reviewslist,
+						db: db,
+						session: req.session,
+						message: "Wystąpił błąd podczas dodawania recenzji!"
+					});
+				});
+			}
+		});
+	} else {
+		noPerm(req, res, next);
+	}
+});
+
+// REVIEWS SYSTEM BY HENIOOO//
 
 function noPerm(req, res, next) {
 	res.render('admin/noperm', {

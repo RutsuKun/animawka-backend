@@ -220,7 +220,7 @@ exports.editAnimeEpisode = async (anime, episode, body) => {
 						if (players[i].ID) {
 							await db.query("INSERT INTO players (ID, user, anime, episode, url, type, date) VALUES (" + db.escape(players[i].ID) + ", " + db.escape(players[i].user) + ", " + db.escape(u[0][0].ID) + ", " + db.escape(body.episodenum) + ", " + db.escape(players[i].url) + ", " +  db.escape(players[i].type) + ", " + db.escape(players[i].date) + ");");
 						} else {
-							await db.query("INSERT INTO players (ID, user, anime, episode, url, type, date) VALUES (" + db.escape(id) + ", " + db.escape(body.user) + ", " + db.escape(u[0][0].ID) + ", " + db.escape(body.episodenum) + ", " + db.escape(players[i].url) + ", " +  db.escape(players[i].type) + ", " + db.escape(date) + ");");
+							await db.query("INSERT INTO players (ID, user, anime, episode, url, type, date) VALUES (" + db.escape(id + 1) + ", " + db.escape(body.user) + ", " + db.escape(u[0][0].ID) + ", " + db.escape(body.episodenum) + ", " + db.escape(players[i].url) + ", " +  db.escape(players[i].type) + ", " + db.escape(date) + ");");
 							id++;
 						}
 					}
@@ -249,13 +249,16 @@ exports.newAnimeEpisode = async (anime, body) => {
 			success: false
 		};
 	}
+	
+	console.log("Anime: "+anime+" Body: "+body);
+	
 	try {
-		var name = exports.url2name(anime);
+
 		var date = new Date().toISOString().substring(0, 10);
-		var u = await db.query("SELECT * FROM anime WHERE name=" + db.escape(name) + " OR namejap=" + db.escape(name) + " OR ID=" + db.escape(anime));
+		var u = await db.query("SELECT * FROM anime WHERE ID =" + db.escape(anime));
 		if (u[0] && u[0][0]) {
 			var epid = await db.query("SELECT MAX(ID) AS num FROM episodes;");
-			await db.query("INSERT INTO episodes (ID, episode, name, user, anime, date, type, override) VALUES (" + db.escape(epid[0][0].num) + ", " + db.escape(body.episodenum) + ", " + db.escape(body.name) + ", " + db.escape(body.user) + ", " + db.escape(u[0][0].ID) + ", " + db.escape(date) + ", " + db.escape(body.type) + ", " + db.escape(body.override) + ")");
+			await db.query("INSERT INTO episodes (ID, episode, name, user, anime, date, type, override) VALUES (" + db.escape(epid[0][0].num + 1) + ", " + db.escape(body.episodenum) + ", " + db.escape(body.name) + ", " + db.escape(body.user) + ", " + db.escape(u[0][0].ID) + ", " + db.escape(date) + ", " + db.escape(body.type) + ", " + db.escape(body.override) + ")");
 			if (body.players) {
 				var players = JSON.parse(body.players).players;
 				if (players) {
@@ -602,6 +605,63 @@ exports.getLastNews = async page => {
 
 // NEWS SYSTEM BY HENIOOO //
 
+
+// REVIEWS SYSTEM BY HENIOOO //
+
+exports.getReviewsList = async page => {
+	var c = [];
+	var data = [];
+
+	if (page == 1) {
+		data = await db.query("SELECT * FROM reviews ORDER BY ID DESC LIMIT " + itemsPerPage);
+	} else {
+		data = await db.query("SELECT * FROM reviews ORDER BY ID DESC LIMIT " + ((page - 1) * itemsPerPage) + "," + (page * itemsPerPage));
+	}
+
+	var cnt = await db.query("SELECT COUNT(ID) AS num FROM news;");
+	var pc = Math.ceil(cnt[0][0].num / itemsPerPage);
+	if (data[0].length != 0 && pc == 0) pc = 1;
+
+	if (data[0] && cnt[0]) {
+		return {
+			reviews: data[0],
+			pagecount: pc,
+			itemcount: cnt[0][0].num
+		};
+	}
+}
+
+exports.newReview = async reviewsdata => {
+	if (reviewsdata === undefined) {
+		return {
+			success: false
+		};
+	}
+	try {
+
+		if (!reviewsdata.image) reviewsdata.image = "";
+
+		var u = await db.query("INSERT INTO reviews (title, user, content, image, yt, tags, type) VALUES"
+								+ "(" + db.escape(reviewsdata.title)
+								+ ", " + db.escape(reviewsdata.user)
+								+ ", " + db.escape(reviewsdata.content)
+								+ ", " + db.escape(reviewsdata.image)
+								+ ", " + db.escape(reviewsdata.yt)
+								+ ", " + db.escape(reviewsdata.tags)
+								+ ", " + db.escape(reviewsdata.type)+")");
+		return {
+			success: true
+		};
+	} catch (e) {
+		console.error(e.stack);
+		return {
+			success: false
+		};
+	}
+}
+
+// REVIEWS SYSTEM BY HENIOOO //
+
 exports.getUser = async user => {
 	if (user === undefined) {
 		return {
@@ -646,6 +706,30 @@ exports.getUsersByRank = async (rank, includeadmins) => {
 		return {
 			data: [],
 			error: "Nie znaleziono użytkowników"
+		};
+	}
+}
+
+exports.editUser = async userdata => {
+	if (userdata === undefined) {
+		return {
+			success: false
+		};
+	}
+	try {
+
+		var u = await db.query("UPDATE users SET name=" + db.escape(userdata.name)
+								+ ", login=" + db.escape(userdata.login)
+								+ ", email=" + db.escape(userdata.email)
+								+ ", rank=" + db.escape(userdata.rank)
+								+ " WHERE ID=" + db.escape(userdata.ID));
+		return {
+			success: true
+		};
+	} catch (e) {
+		console.error(e.stack);
+		return {
+			success: false
 		};
 	}
 }
