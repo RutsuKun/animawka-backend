@@ -681,6 +681,81 @@ exports.newReview = async reviewsdata => {
 	}
 }
 
+exports.getReview = async id => {
+	if (id === undefined) {
+		return {
+			title: "Błąd",
+			data: null,
+			episodes: [],
+			error: "Nie znaleziono recenzji"
+		};
+	}
+
+
+	var u = await db.query("SELECT * FROM reviews WHERE ID=" + db.escape(id));
+	console.log(u);
+	if (u[0] && u[0][0]) {
+
+		return {
+			title: u[0][0].title,
+			data: u[0][0],
+			error: ""
+		};
+	} else {
+		return {
+			title: "Błąd",
+			data: null,
+			error: "Nie znaleziono newsa"
+		};
+	}
+}
+
+exports.editReview = async reviewdata => {
+	if (reviewdata === undefined) {
+		return {
+			success: false
+		};
+	}
+	try {
+
+		if (!reviewdata.image) newsdata.image = "";
+
+		var u = await db.query("UPDATE reviews SET title=" + db.escape(reviewdata.title)
+								+ ", content=" + db.escape(reviewdata.content)
+								+ ", image=" + db.escape(reviewdata.image)
+								+ ", tags=" + db.escape(reviewdata.tags)
+								+ ", type=" + db.escape(reviewdata.type)
+								+ " WHERE ID = " + db.escape(reviewdata.ID));
+		return {
+			success: true
+		};
+	} catch (e) {
+		console.error(e.stack);
+		return {
+			success: false
+		};
+	}
+}
+
+exports.delReview = async review => {
+	if (review === undefined) {
+		return {
+			success: false
+		};
+	}
+	try {
+		var u = await db.query("DELETE FROM reviews WHERE ID=" + db.escape(review));
+		return {
+			success: true
+		};
+	} catch (e) {
+		console.error(e.stack);
+		return {
+			success: false
+		};
+	}
+}
+
 // REVIEWS SYSTEM BY HENIOOO //
 
 exports.getUser = async user => {

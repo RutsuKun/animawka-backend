@@ -960,6 +960,97 @@ router.post('/admin/newreview', (req, res, next) => {
 	}
 });
 
+router.get('/admin/editreview/:id', (req, res, next) => {
+	if (req.session && req.session.admin) {
+		db.getReview(req.params.id).then(review => {
+			db.getUser(review.data.user).then(async user => {
+
+				res.render('admin/editreview', {
+					theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+					themes: theme.themes,
+					title: 'Edycja recenzji',
+					page: req.params.page,
+					review: review,
+					user: user,
+					db: db, 
+					session: req.session
+				});
+			});
+		});
+	} else {
+		noPerm(req, res, next);
+	}
+});
+
+router.post('/admin/editreview/:id', (req, res, next) => {
+	if (req.session && req.session.admin) {
+		console.log(req.body);
+		if (req.body.action === "delete") {
+			db.delReview(req.params.id).then(data => {
+				if (data.success) {
+					db.getReviewsList(1).then(reviewslist => {
+						res.render('admin/reviewslist', {
+							theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+							themes: theme.themes,
+							title: 'Recenzje',
+							page: 1,
+							reviewslist: reviewslist,
+							db: db,
+							session: req.session,
+							message: "Recenzja została usunięta!"
+						});
+					});
+				} else {
+					db.getReviewsList(1).then(reviewslist => {
+						res.render('admin/reviewslist', {
+							theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+							themes: theme.themes,
+							title: 'Recenzje',
+							page: 1,
+							reviewslist: reviewslist,
+							db: db,
+							session: req.session,
+							message: "Wystąpił błąd podczas usuwania recenzji!"
+						});
+					});
+				}
+			});
+		} else if (req.body.action == "edit") {
+			db.editReview(req.body).then(data => {
+				if (data.success) {
+					db.getReviewsList(1).then(reviewslist => {
+						res.render('admin/reviewslist', {
+							theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+							themes: theme.themes,
+							title: 'Recenzje',
+							page: 1,
+							reviewslist: reviewslist,
+							db: db,
+							session: req.session,
+							message: "Zmiany zostały zapisane!"
+						});
+					});
+				} else {
+					db.getReviewsList(1).then(reviewslist => {
+						res.render('admin/newslist', {
+							theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+							themes: theme.themes,
+							title: 'Recenzje',
+							page: 1,
+							reviewslist: reviewslist,
+							db: db,
+							session: req.session,
+							message: "Wystąpił błąd podczas edytowania newsa!"
+						});
+					});
+				}
+			});
+		}
+	} else {
+		noPerm(req, res, next);
+	}
+});
+
 // REVIEWS SYSTEM BY HENIOOO//
 
 function noPerm(req, res, next) {

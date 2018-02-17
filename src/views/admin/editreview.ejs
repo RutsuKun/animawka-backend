@@ -1,0 +1,105 @@
+<% 
+locals.header_extend_js = `
+<script>
+$(document).ready(function() {
+	$('#delwarn').modal();
+});
+
+function delwarn() {
+	$('#delwarn').modal('open');
+}
+
+function confirmdel() {
+	$("#delete").submit();
+}
+
+function save() {
+	$("#save").submit();
+}
+</script>
+`
+%>
+<% extend('../layout') %>
+
+<main>
+	<div class="container">
+		<%- include('menu',{cp:"reviews"}) %>
+		<% if (review.data === null) { %>				
+			<div class="col s12 offset-m3 m6">
+				<div class="card-panel red">
+					<span class="white-text">
+						Nie ma tej recenzji w bazie!
+					</span>
+				</div>
+			</div>
+		<% } else { %>
+			<div class="col s12 m12">
+				<div class="card">
+					<div class="card-content">
+						<span class="card-title">ID <%- review.data.ID %> - <%- review.data.title %></span>
+						<form id="save" method="POST" action="/admin/editreview/<%= review.data.ID %>" class="col s12">
+							<div class="row">
+								<div class="input-field col s12 m12">
+									<input name="title" id="title" type="text" value="<%- review.data.title %>">
+									<label for="title">Tytuł</label>
+								</div>
+
+								<div class="input-field col s12 m6">
+									<input name="user" id="user" type="text" disabled value="<%= user.data.name %>">
+									<label for="user">Dodany przez</label>
+								</div>
+
+
+								<div class="input-field col s12 m6">
+									<select name="type">
+										<option <% if (review.data.type == 0) { %> selected <% } %> value="0">Anime</option>
+										<option <% if (review.data.type == 2) { %> selected <% } %> value="1">Manga</option>
+									</select>
+									<label>Typ</label>
+								</div>
+								<!--<div class="input-field col s12 m6">
+									<div id="tagselect" class="chips chips-placeholder"></div>
+								</div>-->
+								<div class="input-field col s12 m6">
+									<input name="tags" id="tags" type="text" value="<%= review.data.tags %>">
+									<label for="tags">Tagi (rozdziel "," i spacją!)</label>
+								</div>
+								<div class="input-field col s12 m12">
+									<textarea id="content" name="content" class="materialize-textarea"><%= review.data.content %></textarea>
+									<label for="content">Opis</label>
+								</div>
+								<div class="input-field col s12 m12">
+									<input name="image" id="image" type="text" value="<%= review.data.image %>">
+									<label for="image">URL obrazka</label>
+								</div>
+							</div>
+							<input type="hidden" name="ID" value="<%= review.data.ID %>"/>
+							<input type="hidden" name="action" value="edit"/>
+							<!--<input type="hidden" id="tags" name="tags" value=""/>-->
+						</form>
+					</div>
+					<div class="card-action">
+						<a class="blue-text" href="javascript:save()">Zapisz</a>
+						<a class="red-text modal-trigger" href="javascript:delwarn();">Usuń</a>
+						<a href="/admin/review">Anuluj</a>
+					</div>
+				</div>
+			</div>
+			
+			<form id="delete" method="POST" action="/admin/editreview/<%= review.data.ID %>">
+				<input type="hidden" name="action" value="delete"/>
+			</form>
+
+			<div id="delwarn" class="modal">
+				<div class="modal-content">
+					<h4>Usuń anime</h4>
+					<p>Czy na pewno chcesz usunąć recenzję <strong><%= review.data.title %></strong>?</p>
+				</div>
+				<div class="modal-footer">
+					<a href="#!" class="modal-action modal-close waves-effect waves-red btn-flat">Nie</a>
+					<a href="javascript:confirmdel()" class="modal-action modal-close waves-effect waves-green btn-flat">Tak</a>
+				</div>
+			</div>
+		<% } %>
+	</div>
+</main>

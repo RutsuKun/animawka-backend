@@ -192,7 +192,7 @@ $slider-bg-color: #FFF;
 
 </style>
 
-  <video style="width:100%; height:500px;" id="my-video" class="video-js vjs-default-skin" controls preload="auto"
+  <video id="my-video" class="video-js vjs-default-skin" controls preload="auto" style="width:auto"
   poster="<%- db.name2url(data.image) %>" data-setup="{}">
     <source src="<%= players[i].url %>" type='video/mp4'>
     <p class="vjs-no-js">
@@ -203,7 +203,7 @@ $slider-bg-color: #FFF;
   
 <script src="https://vjs.zencdn.net/6.6.3/video.js"></script>
 										<%} else {%>
-											<iframe style="width:100%; height:500px;" src="<%= players[i].url %>" frameborder="0" marginwidth="0" marginheight="0" scrolling="NO" width="1280" height="720" allowfullscreen=""></iframe>
+											<iframe style="width:100%;" src="<%= players[i].url %>" frameborder="0" marginwidth="0" marginheight="0" scrolling="NO" allowfullscreen=""></iframe>
 										<%}%>
 										</div>
 									</div>
