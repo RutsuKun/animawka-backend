@@ -13,7 +13,7 @@ exports.start = () => {
 		hostname: os.hostname(),
 		arch: os.arch()
 	}
-	console.log("Project Ayano v" + version + " // Animawka.pl backend :: created by gabixdev");
+	console.log("Project Ayano v" + version + " // Animawka.pl backend :: created by Gabixdev & Heniooo & Pixel");
 	config.loadConfig();
 	
 	process.env.NODE_ENV = config.cfg.debug ? 'development' : 'production';

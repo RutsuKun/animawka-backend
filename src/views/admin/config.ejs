@@ -1,0 +1,45 @@
+<% 
+locals.header_extend_js = `
+<script>
+$(document).ready(function() {
+	$('#delwarn').modal();
+});
+
+function delwarn() {
+	$('#delwarn').modal('open');
+}
+
+function confirmdel() {
+	$("#delete").submit();
+}
+
+function save() {
+	$("#save").submit();
+}
+</script>
+`
+%>
+<% extend('../layout') %>
+
+<main>
+	<div class="container">
+		<%- include('menu',{cp:"config"}) %>
+			<div class="col s12 offset-m3 m6">
+				<div class="card-panel green">
+					<span class="white-text">
+
+<% for (var i = 1; i < config[0].length; i++) {
+%>	
+<%= config[i].id %>
+<%
+}
+%>
+
+	</span>
+
+						
+					</span>
+				</div>
+			</div>
+	</div>
+</main>

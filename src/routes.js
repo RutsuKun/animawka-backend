@@ -3,12 +3,24 @@ const express = require('express'),
 	theme = require('./theme'),
 	server = require('./server'),
 	config = require('./config');
+var BBCodeParser = require('bbcode-parser');
+
+var parser = new BBCodeParser(BBCodeParser.defaultTags());
+var BBTag = require('bbcode-parser/bbTag');
+var bbTags = {};
+
 var router = express.Router();
+
 
 router.get('/', function(req, res, next) {
 	db.getLastEpisodes().then(eps => {
 		db.getLastNews(1).then(newslist => {
+	 	var html = parser.parseString(newslist.news[0].content);
+		console.log(newslist.news);
 			db.getUser(newslist.news[0].user).then(async user => {
+		
+//bbcode.parse('[b]text[/b]', function(content) {});
+		
 				//console.log(user);
 				if (eps === undefined) eps = [];
 				res.render('index', {
@@ -19,6 +31,7 @@ router.get('/', function(req, res, next) {
 					session: req.session, 
 					anime: eps,
 					news:newslist,
+					newscontent:html,
 					user:user
 				});
 			});
@@ -28,6 +41,7 @@ router.get('/', function(req, res, next) {
 
 router.get('/anime/:name/:episode', function(req, res, next) {
 	db.getAnimeEpisode(req.params.name, req.params.episode).then(anime => {
+			db.getUserLogin(anime.data.user).then(user => {
 		console.log(anime.title);
 		res.render('animewatch', {
 			theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
@@ -36,9 +50,11 @@ router.get('/anime/:name/:episode', function(req, res, next) {
 			data: anime.data,
 			episode: anime.episode,
 			players: anime.players,
+			user:user,
 			error: anime.error,
 			db: db, 
 			session: req.session
+		});
 		});
 	});
 });
@@ -46,6 +62,7 @@ router.get('/anime/:name/:episode', function(req, res, next) {
 router.get('/anime/:name', function(req, res, next) {
 	if (db.isInt(req.params.name)) {
 		db.getAnimeList(req.params.name).then(animelist => {
+		console.log(db.getUserLogin(1));
 			res.render('animelist', {
 				theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
 				themes: theme.themes,
@@ -58,16 +75,19 @@ router.get('/anime/:name', function(req, res, next) {
 		});
 	} else {
 		db.getAnime(req.params.name).then(anime => {
+		db.getUserLogin(anime.data.user).then(async user => {
 			res.render('animeinfo', {
 				theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
 				themes: theme.themes,
 				title: anime.title,
 				data: anime.data,
+				user:user,
 				episodes: anime.episodes,
 				error: anime.error,
 				db: db, 
 				session: req.session
 			});
+		});
 		});
 	}
 });
@@ -198,6 +218,16 @@ router.get('/regulamin', (req, res, next) => {
 			theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
 			themes: theme.themes,
 			title: 'Regulamin',
+			db: db, 
+			session: req.session
+		});
+});
+
+router.get('/casting', (req, res, next) => {
+		res.render('casting', {
+			theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+			themes: theme.themes,
+			title: 'Casting do Dubbingu Euphoria',
 			db: db, 
 			session: req.session
 		});
@@ -719,6 +749,7 @@ router.post('/admin/newepisode/:id', (req, res, next) => {
 router.get('/admin/news', (req, res, next) => {
 	if (req.session && req.session.admin) {
 		db.getNewsList(1).then(newslist => {
+		console.log(newslist);
 			res.render('admin/newslist', {
 				theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
 				themes: theme.themes,
@@ -1052,6 +1083,25 @@ router.post('/admin/editreview/:id', (req, res, next) => {
 });
 
 // REVIEWS SYSTEM BY HENIOOO//
+
+// EDIT CONFIG BY HENIOOO //
+
+router.get('/admin/config', function(req, res, next) {
+	db.getConfig().then(config => {
+	console.log(config.data.value);
+			res.render('admin/config', {
+				theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+				themes: theme.themes,
+				title: 'Konfiguracja',
+				config: config.data.value,
+				db: db, 
+				session: req.session
+			});
+		});
+
+});
+
+// EDIT CONFIG BY HENIOOO //
 
 function noPerm(req, res, next) {
 	res.render('admin/noperm', {

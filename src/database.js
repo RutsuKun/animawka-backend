@@ -10,7 +10,7 @@ var db = {};
 
 var convertPasswords = false;
 const itemsPerPage = 10; // liczba stron
-const itemsNewsPerPage = 3;
+const itemsNewsPerPage = 1;
 exports.itemsPerPage = itemsPerPage;
 exports.itemsNewsPerPage = itemsNewsPerPage;
 
@@ -270,9 +270,9 @@ exports.newAnimeEpisode = async (anime, body) => {
 			success: false
 		};
 	}
-	
+
 	console.log("Anime: "+anime+" Body: "+body);
-	
+
 	try {
 
 		var date = new Date().toISOString().substring(0, 10);
@@ -383,6 +383,7 @@ exports.delAnime = async anime => {
 }
 
 exports.editAnime = async animedata => {
+	console.log(animedata);
 	if (animedata === undefined) {
 		return {
 			success: false
@@ -405,13 +406,19 @@ exports.editAnime = async animedata => {
 
 		var u = await db.query("UPDATE anime SET name=" + db.escape(animedata.name)
 								+ ", namejap=" + db.escape(animedata.namejap)
+								+ ", nameeng=" + db.escape(animedata.nameeng)
 								+ ", episodes=" + db.escape(animedata.episodes)
-								+ ", translate=" + db.escape(translators)
-								+ ", corrector=" + db.escape(correctors)
+								+ ", translate=" + db.escape(animedata.translate)
+								+ ", corrector=" + db.escape(animedata.corrector)
 								+ ", description=" + db.escape(animedata.description)
 								+ ", image=" + db.escape(animedata.image)
 								+ ", tags=" + db.escape(animedata.tags)
 								+ ", mal=" + db.escape(animedata.mal)
+								+ ", studio=" + db.escape(animedata.studio)
+								+ ", episodelen=" + db.escape(animedata.episodelen)
+								+ ", emission=" + db.escape(animedata.emission)
+								+ ", season=" + db.escape(animedata.season)
+								+ ", seasonyear=" + db.escape(animedata.seasonyear)
 								+ ", nsfw=" + db.escape(animedata.nsfw)
 								+ ", status=" + db.escape(animedata.status)
 								+ " WHERE ID=" + db.escape(animedata.ID));
@@ -425,6 +432,7 @@ exports.editAnime = async animedata => {
 		};
 	}
 }
+
 
 exports.newAnime = async animedata => {
 	if (animedata === undefined) {
@@ -758,6 +766,33 @@ exports.delReview = async review => {
 
 // REVIEWS SYSTEM BY HENIOOO //
 
+
+// CONFIG BY HENIOOO //
+
+exports.getConfig = async () => {
+
+	var u = await db.query("SELECT * FROM settings");
+
+	if (u[0] && u[0][0]) {
+//console.log(u[0][0]);
+		return {
+			data: u[0][0],
+			debug: u[0][0],
+			error: ""
+		};
+	} else {
+		return {
+			title: "Błąd",
+			data: null,
+			episodes: [],
+			error: "Nie znaleziono anime"
+		};
+	}
+}
+
+// CONFIG BY HENIOOO //
+
+
 exports.getUser = async user => {
 	if (user === undefined) {
 		return {
@@ -780,6 +815,14 @@ exports.getUser = async user => {
 	}
 }
 
+
+exports.getUserLogin = async user => {
+
+	var u = await db.query("SELECT * FROM users WHERE ID = " + db.escape(user));
+		return u[0][0].login;
+}
+
+
 exports.getUsersByRank = async (rank, includeadmins) => {
 	if (rank === undefined) {
 		return {
@@ -788,7 +831,7 @@ exports.getUsersByRank = async (rank, includeadmins) => {
 		};
 	}
 	var u = {};
-	if (includeadmins) 
+	if (includeadmins)
 		u = await db.query("SELECT * FROM users WHERE rank=" + db.escape(rank) + " OR rank='1'");
 	else
 		u = await db.query("SELECT * FROM users WHERE rank=" + db.escape(rank));

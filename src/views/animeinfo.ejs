@@ -20,14 +20,66 @@
 						</div>
 						<div class="card-content">
 							<p>
-								<strong>Tytuł alternatywny: </strong> <%= data.namejap %><br/>
+								<% if (data.namejap != null && data.namejap != "") {%>
+								<strong>Tytuł japoński: </strong><%= data.namejap %><br/>
+								<% } %>
+								
+								<% if (data.nameeng != null && data.nameeng != "") {%>
+								<strong>Tytuł angielski: </strong><%= data.nameeng %>
+								<br/>
+								<% } %>
+								
+								<% if (data.episodes != null && data.episodes != "") {%>
 								<strong>Liczba odcinków: </strong><%= data.episodes %><br/>
+								<% } %>
+								
+								<% if (data.status != null && data.status != "") {%>
 								<strong>Status: </strong><%= db.getStatus(data.status) %><br/>
-								<strong>Data emisji: </strong><br/>
-
+								<% } %>
+								
+								<% if (data.emission != null && data.emission != "") {%>
+								<strong>Data emisji: </strong><%= data.emission %><br/>
+								<% } %>
+								
+								<% if (data.season != null && data.season != "" && data.seasonyear != null && data.seasonyear != "") {%>
+								<strong>Sezon: </strong>
+								<% if (data.season == '0'){ %>
+								Wiosna 
+								<% } %>
+								<% if (data.season == '1'){ %>
+								Lato 
+								<% } %>
+								<% if (data.season == '2'){ %>
+								Jesień 
+								<% } %>
+								<% if (data.season == '3'){ %>
+								Zima 
+								<% } %>
+								
+								<%= data.seasonyear %><br/>
+								<% } %>
+								
+								<% if (data.translate != null && data.translate != "") {%>
 								<strong>Tłumacz: </strong><%= data.translate %><br/>
+								<% } %>
+								
+								<% if (data.corrector != null && data.corrector != "") {%>
 								<strong>Korektor: </strong><%= data.corrector %><br/>
+								<% } %>
+								
+								<% if (data.date != null && data.date != "") {%>
 								<strong>Dodano: </strong><%= data.date %><br/>
+								<% } %>
+								
+								<strong>Dodał: </strong><%= user %><br/>
+
+								
+								<% if (data.episodelen != null && data.episodelen != "") {%>
+								<strong>Długość odcinka: </strong><%= data.episodelen %> min.
+								<% } %><br/>
+								<% if (data.studio != null && data.studio != "") {%>
+								<strong>Studio: </strong><%= data.studio %>
+								<% } %><br/>
 								<% if (data.mal != null && data.mal != "") {%>
 								<strong>MyAnimeList: </strong><a href="<%= data.mal %>"><%= data.mal %></a>
 								<% } %>
@@ -64,17 +116,69 @@
 								<% } %>
 								
 								<p>
-									<strong>Tytuł alternatywny: </strong> <%= data.namejap %><br/>
-									<strong>Liczba odcinków: </strong><%= data.episodes %><br/>
-									<strong>Status: </strong><%= db.getStatus(data.status) %><br/>
-									<strong>Data emisji: </strong><br/>
+								<% if (data.namejap != null && data.namejap != "") {%>
+								<strong>Tytuł japoński: </strong><%= data.namejap %><br/>
+								<% } %>
+								
+								<% if (data.nameeng != null && data.nameeng != "") {%>
+								<strong>Tytuł angielski: </strong><%= data.nameeng %>
+								<br/>
+								<% } %>
+								
+								<% if (data.episodes != null && data.episodes != "") {%>
+								<strong>Liczba odcinków: </strong><%= data.episodes %><br/>
+								<% } %>
+								
+								<% if (data.status != null && data.status != "") {%>
+								<strong>Status: </strong><%= db.getStatus(data.status) %><br/>
+								<% } %>
+								
+								<% if (data.emission != null && data.emission != "") {%>
+								<strong>Data emisji: </strong><%= data.emission %><br/>
+								<% } %>
+								
+								<% if (data.season != null && data.season != "" && data.seasonyear != null && data.seasonyear != "") {%>
+								<strong>Sezon: </strong>
+								<% if (data.season == '0'){ %>
+								Wiosna 
+								<% } %>
+								<% if (data.season == '1'){ %>
+								Lato 
+								<% } %>
+								<% if (data.season == '2'){ %>
+								Jesień 
+								<% } %>
+								<% if (data.season == '3'){ %>
+								Zima 
+								<% } %>
+								
+								<%= data.seasonyear %><br/>
+								<% } %>
+								
+								<% if (data.translate != null && data.translate != "") {%>
+								<strong>Tłumacz: </strong><%= data.translate %><br/>
+								<% } %>
+								
+								<% if (data.corrector != null && data.corrector != "") {%>
+								<strong>Korektor: </strong><%= data.corrector %><br/>
+								<% } %>
+								
+								<% if (data.date != null && data.date != "") {%>
+								<strong>Dodano: </strong><%= data.date %><br/>
+								<% } %>
+								
+								<strong>Dodał: </strong><%= user %><br/>
 
-									<strong>Tłumacz: </strong><%= data.translate %><br/>
-									<strong>Korektor: </strong><%= data.corrector %><br/>
-									<strong>Dodano: </strong><%= data.date %><br/>
-									<% if (data.mal != null && data.mal != "") {%>
-									<strong>MyAnimeList: </strong><a href="<%= data.mal %>"><%= data.mal %></a>
-									<% } %>
+								
+								<% if (data.episodelen != null && data.episodelen != "") {%>
+								<strong>Długość odcinka: </strong><%= data.episodelen %> min.
+								<% } %><br/>
+								<% if (data.studio != null && data.studio != "") {%>
+								<strong>Studio: </strong><%= data.studio %>
+								<% } %><br/>
+								<% if (data.mal != null && data.mal != "") {%>
+								<strong>MyAnimeList: </strong><a href="<%= data.mal %>"><%= data.mal %></a>
+								<% } %>
 								</p>
 							</div>
 						</div>

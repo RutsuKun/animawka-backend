@@ -121,7 +121,7 @@ function registerRoutes(cfg, app) {
 
 	app.use(compression());
 	app.use(minify({
-		cache: cfg.debug ? false : path.join(__dirname, '../cache'),
+		cache: path.join(__dirname, '../cache'),
 		uglifyJsModule: null,
 		errorHandler: null,
 		jsMatch: /javascript/,

@@ -1,5 +1,6 @@
 User-agent: *
 Disallow: /chat
+Disallow: /casting
 Disallow: /anime/dodaj
 Disallow: /anime/odtwarzacz/
 Disallow: /anime/odcinek/

@@ -1,4 +1,4 @@
-<% 
+<%
 locals.header_extend_js = `
 <script>
 $(document).ready(function() {
@@ -24,7 +24,7 @@ function save() {
 <main>
 	<div class="container">
 		<%- include('menu',{cp:"anime"}) %>
-		<% if (anime.data === null) { %>				
+		<% if (anime.data === null) { %>
 			<div class="col s12 offset-m3 m6">
 				<div class="card-panel red">
 					<span class="white-text">
@@ -43,10 +43,17 @@ function save() {
 									<input name="name" id="name" type="text" value="<%- anime.data.name %>">
 									<label for="name">Tytuł</label>
 								</div>
-								<div class="input-field col s12 m12">
+
+								<div class="input-field col s12 m6">
 									<input name="namejap" id="namejap" type="text" value="<%= anime.data.namejap %>">
-									<label for="namejap">Tytuł originalny</label>
+									<label for="namejap">Tytuł japoński</label>
 								</div>
+
+								<div class="input-field col s12 m6">
+									<input name="nameeng" id="nameeng" type="text" value="<%= anime.data.nameeng %>">
+									<label for="nameeng">Tytuł angielski</label>
+								</div>
+
 								<div class="input-field col s12 m6">
 									<input name="user" id="user" type="text" disabled value="<%= user.data.name %>">
 									<label for="user">Dodany przez</label>
@@ -55,8 +62,9 @@ function save() {
 									<input name="episodes" id="episodes" type="number" value="<%= anime.data.episodes %>">
 									<label for="episodes">Liczba odcinków</label>
 								</div>
+<!--
 								<div class="input-field col s12 m6">
-									<select name="translators" multiple>
+									<select name="translators">
 										<% for (var i = 0; i < translators.data.length; i++) { %>
 											<option value="<%= translators.data[i].login %>" <% if ((anime.data.translate.indexOf(translators.data[i].name) !== -1) || (anime.data.translate.indexOf(translators.data[i].login) !== -1)) { %> selected <% } %>><%= translators.data[i].name %> (<%= translators.data[i].login %>)</option>
 										<% } %>
@@ -64,13 +72,23 @@ function save() {
 									<label>Tłumacz</label>
 								</div>
 								<div class="input-field col s12 m6">
-									<select name="correctors" multiple>
+									<select name="correctors">
 										<% for (var i = 0; i < correctors.data.length; i++) { %>
 											<option value="<%= correctors.data[i].login %>" <% if ((anime.data.corrector.indexOf(correctors.data[i].name) !== -1) || (anime.data.corrector.indexOf(correctors.data[i].login) !== -1)) { %> selected <% } %>><%= correctors.data[i].name %> (<%= correctors.data[i].login %>)</option>
 										<% } %>
 									</select>
 									<label>Korektor</label>
 								</div>
+-->
+								<div class="input-field col s12 m6">
+									<input name="translate" id="translate" type="text" value="<%= anime.data.translate %>">
+									<label for="translate">Tłumacz</label>
+								</div>
+								<div class="input-field col s12 m6">
+									<input name="corrector" id="corrector" type="text" value="<%= anime.data.corrector %>">
+									<label for="corrector">Korektor</label>
+								</div>
+								
 								<div class="input-field col s12 m6">
 									<select name="status">
 										<option value="0">Emitowane</option>
@@ -79,16 +97,46 @@ function save() {
 									</select>
 									<label>Status</label>
 								</div>
+								
+								<div class="input-field col s12 m6">
+									<input name="emission" id="emission" type="date" value="<%= anime.data.emission %>">
+									<label for="emission">Data emisji</label>
+								</div>
+								
+								<div class="input-field col s12 m6">
+									<input name="seasonyear" id="seasonyear" type="number" value="<% if (anime.data.seasonyear != null && anime.data.seasonyear != "") {%><%= anime.data.seasonyear %><% } %>">
+									<label for="seasonyear">Sezon - Rok</label>
+								</div>
+								
+								<div class="input-field col s12 m6">
+									<select name="season">
+										<option <% if (anime.data.season == 0) { %> selected <% } %> value="0">Wiosna</option>
+										<option <% if (anime.data.season == 1) { %> selected <% } %> value="1">Lato</option>
+										<option <% if (anime.data.season == 2) { %> selected <% } %> value="2">Jesień</option>
+										<option <% if (anime.data.season == 3) { %> selected <% } %> value="3">Zima</option>
+									</select>
+									<label for="season">Sezon - Pora roku</label>
+								</div>
+								
 								<!--<div class="input-field col s12 m6">
 									<div id="tagselect" class="chips chips-placeholder"></div>
 								</div>-->
-								<div class="input-field col s12 m6">
+								
+								<div class="input-field col s12 m12">
 									<input name="tags" id="tags" type="text" value="<%= anime.data.tags %>">
 									<label for="tags">Tagi (rozdziel "," i spacją!)</label>
 								</div>
 								<div class="input-field col s12 m12">
 									<textarea id="description" name="description" class="materialize-textarea"><%= anime.data.description %></textarea>
 									<label for="description">Opis</label>
+								</div>
+								<div class="input-field col s12 m6">
+									<input name="studio" id="studio" type="text" value="<%= anime.data.studio %>">
+									<label for="studio">Studio</label>
+								</div>
+								<div class="input-field col s12 m6">
+									<input name="episodelen" id="episodelen" type="number" value="<%= anime.data.episodelen %>">
+									<label for="episodelen">Długość odcinka (w minutach)</label>
 								</div>
 								<div class="input-field col s12 m12">
 									<input name="image" id="image" type="text" value="<%= anime.data.image %>">
@@ -117,7 +165,7 @@ function save() {
 					</div>
 				</div>
 			</div>
-			
+
 			<form id="delete" method="POST" action="/admin/editanime/<%= anime.data.ID %>">
 				<input type="hidden" name="action" value="delete"/>
 			</form>
