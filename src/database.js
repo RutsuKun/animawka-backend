@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize'),
+	config = require('./config'),
 	crypto = require('crypto'),
 	scrypt = require('scryptsy'),
 	primid = require('primid');
@@ -817,9 +818,8 @@ exports.getUser = async user => {
 
 
 exports.getUserLogin = async user => {
-
 	var u = await db.query("SELECT * FROM users WHERE ID = " + db.escape(user));
-		return u[0][0].login;
+	return u[0][0].login ? u[0][0].login : null; //bo moze wyjebac ;) 
 }
 
 
@@ -922,15 +922,24 @@ exports.authenticate = async (user, pass) => {
 	if (u[0] && u[0][0]) {
 		if (u[0][0].password.length === 32) { // bo kurwa henicz uzyl jebanego MD5
 			var hash = crypto.createHash('md5').update(pass.normalize('NFKC')).digest("hex");
-			//console.log("MD5: " + hash + " (db: " + u[0][0].password + ")");
-			if (u[0][0].password == hash) return {
-				uid: u[0][0].ID,
-				success: true,
-				admin: u[0][0].rank == 1
-			};
+			console.log("MD5: " + hash + " (db: " + u[0][0].password + ")");
+
+			if (u[0][0].password == hash) {
+				if (config.cfg["convert-passwords"]) {
+					var hashnew = scrypt(pass.normalize('NFKC'), "animawka", 16384, 8, 1, 64).toString('hex');
+					var u2 = await db.query("UPDATE users SET password=" + db.escape(hashnew) + " WHERE ID = " + db.escape(u[0][0].ID));
+					console.log("update pass [" + pass + "] " + hash + " -> " + hashnew);
+				}
+
+				return {
+					uid: u[0][0].ID,
+					success: true,
+					admin: u[0][0].rank == 1
+				};
+			}
 		} else {
 			var hash = scrypt(pass.normalize('NFKC'), "animawka", 16384, 8, 1, 64).toString('hex');
-			//console.log("scrypt: " + hash + " (db: " + u[0][0].password + ")");
+			console.log("scrypt: " + hash + " (db: " + u[0][0].password + ")");
 			if (u[0][0].password == hash) return {
 				uid: u[0][0].ID,
 				success: true,

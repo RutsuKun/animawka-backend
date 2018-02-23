@@ -9,6 +9,7 @@
   "author": "gabixdev",
   "license": "ISC",
   "dependencies": {
+    "bbcode-parser": "^1.0.10",
     "body-parser": "^1.18.2",
     "compression": "^1.7.1",
     "cookie-parser": "^1.4.3",
