@@ -40,6 +40,7 @@ exports.getAnimeType = type => {
 		case 1: return "Specjalny";
 		case 2: return "OVA";
 		case 3: return "ONA";
+		case 4: return "Film";
 	}
 }
 
@@ -454,14 +455,16 @@ exports.newAnime = async animedata => {
 
 		if (!animedata.nsfw) animedata.nsfw = 0;
 		if (!animedata.image) animedata.image = "";
+		if (!animedata.translate) animedata.translate = "";
+		if (!animedata.corrector) animedata.corrector = "";
 
 		var u = await db.query("INSERT INTO anime (name, user, namejap, episodes, translate, corrector, description, image, tags, nsfw, status) VALUES"
 								+ "(" + db.escape(animedata.name)
 								+ ", " + db.escape(animedata.user)
 								+ ", " + db.escape(animedata.namejap)
 								+ ", " + db.escape(animedata.episodes)
-								+ ", " + db.escape(translators)
-								+ ", " + db.escape(correctors)
+								+ ", " + db.escape(animedata.translate)
+								+ ", " + db.escape(animedata.corrector)
 								+ ", " + db.escape(animedata.description)
 								+ ", " + db.escape(animedata.image)
 								+ ", " + db.escape(animedata.tags)

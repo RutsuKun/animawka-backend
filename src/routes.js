@@ -16,8 +16,9 @@ router.get('/', function(req, res, next) {
 	db.getLastEpisodes().then(eps => {
 		db.getLastNews(1).then(newslist => {
 	 	var html = parser.parseString(newslist.news[0].content);
-		console.log(newslist.news);
-			db.getUser(newslist.news[0].user).then(async user => {
+
+
+db.getUser(newslist.news[0].user).then(async user => {
 		
 //bbcode.parse('[b]text[/b]', function(content) {});
 		

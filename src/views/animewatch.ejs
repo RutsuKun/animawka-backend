@@ -49,10 +49,6 @@ locals.header_extend_js = `
 									<% if (episode.name != null && episode.name != "") {%>
 									<strong>Tytuł odcinka: </strong><%= episode.name %><br/>
 									<% } %>
-									<strong>Tłumacz: </strong><%= data.translate %><br/>
-									<strong>Korektor: </strong><%= data.corrector %><br/>
-									<strong>Dodano: </strong><%= data.date %>
-									
 								<% if (data.namejap != null && data.namejap != "") {%>
 								<strong>Tytuł japoński: </strong><%= data.namejap %><br/>
 								<% } %>
@@ -101,7 +97,7 @@ locals.header_extend_js = `
 								<% } %>
 								
 								<% if (data.date != null && data.date != "") {%>
-								<strong>Dodano: </strong><%= data.date %><br/>
+								<strong>Dodano: </strong><%= episode.date %><br/>
 								<% } %>
 								
 								<strong>Dodał: </strong><%= user %><br/>
