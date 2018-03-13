@@ -1,0 +1,40 @@
+{
+  "name": "animawka-backend",
+  "version": "1.0.0",
+  "description": "Nowy backend animawki (project Ayano)",
+  "main": "index.js",
+  "scripts": {
+    "test": "exit 0"
+  },
+  "author": "gabixdev",
+  "license": "ISC",
+  "dependencies": {
+    "bbcode-parser": "^1.0.10",
+    "body-parser": "^1.18.2",
+    "compression": "^1.7.1",
+    "cookie-parser": "^1.4.3",
+    "discord.js": "^11.3.0",
+    "ejs": "^2.5.7",
+    "express": "^4.16.2",
+    "express-ejs-extend": "0.0.1",
+    "express-minify": "^1.0.0",
+    "express-session": "^1.15.6",
+    "html-escape": "^2.0.0",
+    "less": "^2.7.3",
+    "lru-cache": "^4.1.1",
+    "markdown": "^0.5.0",
+    "method-override": "^2.3.10",
+    "morgan": "^1.9.0",
+    "mysql2": "^1.5.1",
+    "primid": "^1.0.5",
+    "recaptcha2": "^1.3.2",
+    "scryptsy": "^2.0.0",
+    "sequelize": "^4.32.1",
+    "sequelstore-connect": "^1.1.5",
+    "serve-favicon": "^2.4.5",
+    "session-file-store": "^1.2.0",
+    "socket.io": "^2.0.4",
+    "sqlite3": "^3.1.13",
+    "winston": "^2.4.0"
+  }
+}
