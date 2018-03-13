@@ -1,0 +1,1 @@
+{"theme_color": "#03a9f4", "short_name": "Animawka", "name": "Animawka", "gcm_sender_id": "644463137587", "icons": [{"src": "https://animawka.pl/img/icons/animawka-icon192x192.png", "type": "image/png", "sizes": "192x192"}], "gcm_user_visible_only": true, "start_url": "/?utm_source=homescreen_icon", "background_color": "#fff", "display": "standalone", "orientation": "portrait"}

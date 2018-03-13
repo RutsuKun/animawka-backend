@@ -1,6 +1,33 @@
 <% 
 locals.header_extend_js = `
+			<script>
+				$(document).ready(function() {
+					
+				});
+				$(".openPlayer").on('click', function(){
+				clearInterval(loadplayer);
+				$(".player-loader").attr("style", "width: 0%");
+				$(".player-loader").removeClass("hide");
+				$(".player").addClass("hide");
+				var data = $(this).attr("data");
+				var i = 0;
+				var loadplayer = setInterval(function (){
+				i++;
+				$(".debug").html("Załadowano w "+i+" %");
+				
+				$(".player-loader").attr("style", "width: "+i+"%");
+				
+				if(i == 100){
+				$(".player-loader").addClass("hide");
+				$(".player-loader").attr("style", "width: 0%");
+				$(".player").removeClass("hide");
+				clearInterval(loadplayer);
+				}
+				}, 50);
 
+				$(".player").attr("src", data);
+				});
+			</script>
 `
 %>
 
@@ -27,6 +54,25 @@ locals.header_extend_js = `
 					</div>
 				</div>
 			<% } else { %>
+<% if(data.ID == 8 && episode.episode == 4) { %>
+
+	<script type="application/ld+json">
+	{
+	  "@context": "http://schema.org/",
+	  "@type": "Product",
+	  "name": "<% if (episode.episode == 0) { %> <%= data.name %> - Zapowiedź <% } else {%><%= data.name %> - Odcinek <%= episode.episode %><%}%>",
+	  "image": "<%= data.image %>",
+	  "description": "<%= data.description %>",
+	  "aggregateRating": {
+	    "@type": "AggregateRating",
+	    "ratingValue": "5.0",
+	    "reviewCount": "1"
+	  }
+	}
+	</script>
+
+<% } %>
+
 				<div class="col m12 s12" itemprop="video" itemscope itemtype="http://schema.org/VideoObject">
 <meta itemprop="thumbnail" content="<%= data.image %>" />
 <meta itemprop="thumbnailUrl" content="<%= data.image %>" />
@@ -52,57 +98,57 @@ locals.header_extend_js = `
 								<% if (data.namejap != null && data.namejap != "") {%>
 								<strong>Tytuł japoński: </strong><%= data.namejap %><br/>
 								<% } %>
-								
+
 								<% if (data.nameeng != null && data.nameeng != "") {%>
 								<strong>Tytuł angielski: </strong><%= data.nameeng %>
 								<br/>
 								<% } %>
-								
+
 								<% if (data.episodes != null && data.episodes != "") {%>
 								<strong>Liczba odcinków: </strong><%= data.episodes %><br/>
 								<% } %>
-								
+
 								<% if (data.status != null && data.status != "") {%>
 								<strong>Status: </strong><%= db.getStatus(data.status) %><br/>
 								<% } %>
-								
+
 								<% if (data.emission != null && data.emission != "") {%>
 								<strong>Data emisji: </strong><%= data.emission %><br/>
 								<% } %>
-								
+
 								<% if (data.season != null && data.season != "" && data.seasonyear != null && data.seasonyear != "") {%>
 								<strong>Sezon: </strong>
 								<% if (data.season == '0'){ %>
-								Wiosna 
+								Wiosna
 								<% } %>
 								<% if (data.season == '1'){ %>
-								Lato 
+								Lato
 								<% } %>
 								<% if (data.season == '2'){ %>
-								Jesień 
+								Jesień
 								<% } %>
 								<% if (data.season == '3'){ %>
-								Zima 
+								Zima
 								<% } %>
-								
+
 								<%= data.seasonyear %><br/>
 								<% } %>
-								
+
 								<% if (data.translate != null && data.translate != "") {%>
 								<strong>Tłumacz: </strong><%= data.translate %><br/>
 								<% } %>
-								
+
 								<% if (data.corrector != null && data.corrector != "") {%>
 								<strong>Korektor: </strong><%= data.corrector %><br/>
 								<% } %>
-								
+
 								<% if (data.date != null && data.date != "") {%>
 								<strong>Dodano: </strong><%= episode.date %><br/>
 								<% } %>
-								
+
 								<strong>Dodał: </strong><%= user %><br/>
 
-								
+
 								<% if (data.episodelen != null && data.episodelen != "") {%>
 								<strong>Długość odcinka: </strong><%= data.episodelen %> min.
 								<% } %><br/>
@@ -116,13 +162,13 @@ locals.header_extend_js = `
 							</div>
 							<div class="card-reveal">
 								<span class="card-title grey-text text-darken-4">Akcje<i class="material-icons right">close</i></span>
-								
+
 									<% if (session && session.admin) { %>
 									<ul>
 										<li><a href="/admin/editepisode/<%- db.name2url(data.name) %>/<%= episode.episode %>">Edytuj odcinek</a></li>
 									</ul>
 									<% } %>
-								
+
 							</div>
 						</div>
 
@@ -145,7 +191,7 @@ locals.header_extend_js = `
 										<li><a href="/admin/editepisode/<%- db.name2url(data.name) %>/<%= episode.episode %>">Edytuj odcinek</a></li>
 									</ul>
 									<% } %>
-									
+
 									<p>
 										<% if (episode.name != null && episode.name != "") {%>
 										<strong>Tytuł odcinka: </strong><%= episode.name %><br/>
@@ -158,16 +204,44 @@ locals.header_extend_js = `
 							</div>
 						</div>
 					</div>
+
+					<style>
+					.ocen p i {
+					font-size:45px;
+					color:#ffd600;
+					}
+
+					</style>
+
+					<div class="col m12 s12 hide">
+
+					<div class="card">
+						<div class="card-content ocen center">
+							<span class="card-title">Oceń odcinek</span>
+							<p>
+
+					<i class="material-icons">star_border</i><i class="material-icons">star_border</i><i class="material-icons">star_border</i><i class="material-icons">star_border</i><i class="material-icons">star_border</i><br /><br />
+
+					<i class="material-icons">star</i><i class="material-icons">star</i><i class="material-icons">star</i><i class="material-icons">star</i><i class="material-icons">star</i><br /><br />
+
+					<i class="material-icons">star_half</i><i class="material-icons">star_half</i><i class="material-icons">star_half</i><i class="material-icons">star_half</i><i class="material-icons">star_half</i>
+
+							</p>
+						</div>
+					</div>
+       </div>
+
+
 					<div class="col m12 s12">
 						<div class="card <%= theme.accent %>">
-							<div class="card-content center white-text">
+							<div class="card-content white-text">
 								<span class="card-title">Oglądaj</span>
 							</div>
 
 							<div class="card-tabs">
 								<ul class="tabs tabs-fixed-width tabs-transparent">
 									<% for (var i = 0; i < players.length; i++) {%>
-										<li class="tab">
+										<li class="tab openPlayer" data="<%- players[i].url %>">
 											<a <% if (i == 0) {%> class="active" <% } %> href="#player<%= db.obfuscateId(i) %>">
 												<%= db.getSourceName(players[i].type) %>
 											</a>
@@ -177,102 +251,27 @@ locals.header_extend_js = `
 							</div>
 
 							<div class="card-content <%= theme.accent %> lighten-5">
-								<% for (var i = 0; i < players.length; i++) {%>
-									<div id="player<%= db.obfuscateId(i) %>">
+									<div>
 										<div class="video-container">
-										<% if (players[i].type == 7) {%>
-<style>
+										Trwa ładowanie playera
+<div class="progress">
+<div class="determinate player-loader" style="width: 0%">
+</div>
+</div>
+											<iframe class="player style="width:100%;" src="<%= players[0].url %>" frameborder="0" marginwidth="0" marginheight="0" scrolling="NO" allowfullscreen=""></iframe>
 
-$primary-foreground-color: #fff;
-
-$primary-background-color: #2B333F;
-
-$center-big-play-button: true;
-.video-js {
-  font-size: 10px;
-  color: $primary-foreground-color;
-}
-
-.vjs-default-skin .vjs-big-play-button {
-
-  font-size: 3em;
-  $big-play-width: 3em; 
-
-  $big-play-height: 1.5em;
-  line-height: $big-play-height;
-  height: $big-play-height;
-  width: $big-play-width;
-  /*border: 0.06666em solid $primary-foreground-color;*/
-  /* 0.3em = 9px default */
-  /*border-radius: 0.3em;*/
-
-  @if $center-big-play-button {
-    /* Align center */
-    left: 50%;
-    top: 50%;
-    margin-left: -($big-play-width / 1.5);
-    margin-top: -($big-play-height / 1);   
-  } @else {
-    left: 0.5em;
-    top: 0.5em;
-  }
-}
-
-
-.video-js .vjs-control-bar,
-.video-js .vjs-big-play-button,
-.video-js .vjs-menu-button .vjs-menu-content {
-  background-color: $primary-background-color;
-  background-color: #0890ce;
-}
-
-
-$slider-bg-color: #FFF;
-
-.video-js .vjs-slider {
-  background-color: $slider-bg-color;
-  background-color: rgba($slider-bg-color, 0.5);
-}
-
-
-.video-js .vjs-volume-level,
-.video-js .vjs-play-progress,
-.video-js .vjs-slider-bar {
-  background: $primary-foreground-color;
-}
-
-
-.video-js .vjs-load-progress {
-  background: lighten($slider-bg-color, 25%);
-  background: rgba($slider-bg-color, 0.5);
-}
-
-
-.video-js .vjs-load-progress div {
-  background: lighten($slider-bg-color, 50%);
-  background: rgba($slider-bg-color, 0.75);
-}
-
-
-</style>
-
-  <video id="my-video" class="video-js vjs-default-skin" controls preload="auto" style="width:auto"
-  poster="<%- db.name2url(data.image) %>" data-setup="{}">
-    <source src="<%= players[i].url %>" type='video/mp4'>
-    <p class="vjs-no-js">
-      To view this video please enable JavaScript, and consider upgrading to a web browser that
-      <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-    </p>
-  </video>
-  
-<script src="https://vjs.zencdn.net/6.6.3/video.js"></script>
-										<%} else {%>
-											<iframe style="width:100%;" src="<%= players[i].url %>" frameborder="0" marginwidth="0" marginheight="0" scrolling="NO" allowfullscreen=""></iframe>
-										<%}%>
 										</div>
 									</div>
-								<%}%>
 							</div>
+						</div>
+
+						<div class="card-panel red">
+							<span class="white-text">
+								<strong>Player Debug: </strong>
+								<div class="debug">
+								
+								</div>
+							</span>
 						</div>
 
 						<div class="card-panel red">

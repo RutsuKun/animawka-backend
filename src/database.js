@@ -10,8 +10,8 @@ var exports = module.exports = {};
 var db = {};
 
 var convertPasswords = false;
-const itemsPerPage = 10; // liczba stron
-const itemsNewsPerPage = 1;
+const itemsPerPage = 30; // liczba stron
+const itemsNewsPerPage = 2;
 exports.itemsPerPage = itemsPerPage;
 exports.itemsNewsPerPage = itemsNewsPerPage;
 
@@ -549,7 +549,6 @@ exports.getNews = async id => {
 
 
 	var u = await db.query("SELECT * FROM news WHERE ID=" + db.escape(id));
-	console.log(u);
 	if (u[0] && u[0][0]) {
 
 		return {

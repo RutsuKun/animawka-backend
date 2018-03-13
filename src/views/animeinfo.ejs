@@ -12,6 +12,37 @@
 					</div>
 				</div>
 			<% } else { %>
+<!--<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@id": "https://shinden.pl/series/49218-no-game-no-life-zero",
+    "@type": "TVSeries",
+    "name": "No Game No Life - Zero-",
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://shinden.pl/res/images/genuine/205155.jpg"
+    },
+    "thumbnailUrl": "https://shinden.pl/res/images/225x350/205155.jpg",
+    "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "9.07",
+        "bestRating": "10",
+        "reviewCount": 320
+    }
+}</script> -->
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@id": "https://animawka.pl/anime/<%- db.name2url(data.name) %>",
+    "@type": "TVSeries",
+    "name": "<%= data.name %>",
+    "image": {
+        "@type": "ImageObject",
+        "url": "<%= data.image %>"
+    },
+    "thumbnailUrl": "<%= data.image %>"
+}</script>
 				<div class="col s12">
 					<div class="card medium hide-on-large-only">
 						<div class="card-image waves-effect waves-block waves-light">

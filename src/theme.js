@@ -115,6 +115,6 @@ exports.getTheme = id => {
 	} else {
 		if (id > themes.length || id < 0) id = 0;
 	}
-	
+
 	return themes[id];
 }

@@ -4,11 +4,11 @@
 <% } %>
 <script>(function(a,s,y,n,c,h,i,d,e){s.className+=' '+y;h.start=1*new Date; h.end=i=function(){s.className=s.className.replace(RegExp(' ?'+y),'')}; (a[n]=a[n]||[]).hide=h;setTimeout(function(){i();h.end=null},c);h.timeout=c; })(window,document.documentElement,'async-hide','dataLayer',4000, {'GTM-TBWC67Z':true});</script>
 
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NQBT6QH"
-	height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-	<!-- End Google Tag Manager (noscript) -->
-	<div class="nav-header center animawka-header" style="height:auto">
+
+	
+
+	<div itemscope itemtype="http://schema.org/WPHeader" class="nav-header center animawka-header" style="height:auto" >
+<div itemprop="name" class="hide">✢ ANIMAWKA.PL ✢ ODCINKI ANIME ONLINE ✢</div>
 		<div class="container">
 			<div class="row right">
 				<a class='themebtn dropdown-button btn btn-floating btn-large <%= theme.primary %>' href='#'data-constrainWidth="false" data-activates='themes'><i class="material-icons">brush</i></a>
@@ -42,31 +42,34 @@ window.location.replace("https://animawka.pl");
 	</div>
 
 	<div class="nav-wrapper container">
-		<ul class="left hide-on-med-and-down">
-			<li class="site-nav--active">
-				<a href="/" class="site-nav__link"><i class="material-icons left">home</i> Strona główna</a>
+		<ul itemscope itemtype="http://www.schema.org/SiteNavigationElement" class="left hide-on-med-and-down">
+			<li itemprop="name" class="site-nav--active">
+				<a itemprop="url" href="/" class="site-nav__link"><i class="material-icons left">&#xE88A;</i> Strona główna</a>
 			</li>
-			<li>
-				<a href="/anime" class="site-nav__link"><i class="material-icons left">list</i> Lista anime</a>
+			<li itemprop="name">
+				<a href="/anime" class="site-nav__link"><i class="material-icons left">&#xE896;</i> Lista anime</a>
+			</li>
+			<li itemprop="name">
+				<a href="https://blog.animawka.pl" class="site-nav__link">Blog</a>
 			</li>
 			<li class="site-nav--has-submenu">
 				<a href="#" class="site-nav__link dropdown-button" data-activates="more-dropdown" data-belowOrigin="true" data-constrainWidth="false" data-hover="true">
-					Więcej <i class="material-icons right">arrow_drop_down</i>
+					Więcej <i class="material-icons right">&#xE5C5;</i>
 				</a>
-				<ul id="more-dropdown" class="site-nav__submenu dropdown-content">
-					<li>
-						<a href="/regulamin" class="site-nav__link">Regulamin</a>
+				<ul itemscope itemtype="http://www.schema.org/SiteNavigationElement" id="more-dropdown" class="site-nav__submenu dropdown-content">
+					<li itemprop="name">
+						<a itemprop="url" href="/regulamin" class="site-nav__link">Regulamin</a>
 					</li>
-					<li>
-						<a href="https://www.paypal.com/pools/c/80UJveVpu9" class="site-nav__link">
+					<li itemprop="name">
+						<a itemprop="url" href="https://www.paypal.com/pools/c/80UJveVpu9" class="site-nav__link">
 							Darowizna
 						</a>
 					</li>
-					<li>
-						<a href="https://www.facebook.com/groups/jedyna.prawdziwa.animawka/" class="site-nav__link">Grupa</a>
+					<li itemprop="name">
+						<a itemprop="url" href="https://www.facebook.com/groups/jedyna.prawdziwa.animawka/" class="site-nav__link">Grupa</a>
 					</li>
-					<li>
-						<a href="https://discord.gg/xzstqa2" class="site-nav__link">Discord</a>
+					<li itemprop="name">
+						<a itemprop="url" href="https://discord.gg/xzstqa2" class="site-nav__link">Discord</a>
 					</li>
 				</ul>
 			</li>
@@ -99,8 +102,22 @@ window.location.replace("https://animawka.pl");
 				</ul>
 			</li>
 			<% if (session && session.admin) { %>
-			<li>
-				<a href="/admin" class="site-nav__link"><i class="material-icons left">dashboard</i> Admin</a>
+			
+			<li class="site-nav--has-submenu">
+				<a href="/admin" class="site-nav__link dropdown-button" data-activates="admin-dropdown" data-belowOrigin="true" data-constrainWidth="false" data-hover="true">
+					<i class="material-icons left">dashboard</i> Admin <i class="material-icons right">&#xE5C5;</i>
+				</a>
+				<ul id="admin-dropdown" class="site-nav__submenu dropdown-content">
+					<li>
+						<a href="/admin/newanime" class="site-nav__link">Dodaj anime</a>
+					</li>
+					<li>
+						<a href="/admin/newnews" class="site-nav__link">Dodaj newsa</a>
+					</li>
+					<li>
+						<a href="/admin/newreview" class="site-nav__link">Dodaj recenzje</a>
+					</li>
+				</ul>
 			</li>
 			<% } %>
 

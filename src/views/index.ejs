@@ -14,10 +14,19 @@
 `%>
 <% extend('layout') %>
 
-<main role="main" id="MainContent">
+<main role="main" id="MainContent" itemscope itemprop="mainContentOfPage">
 	<div class="container">
 		<div class="row">
-			<div class="col s12 m12 l3 xl3 left hide-on-small-only">				
+		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Animawka Długi Baner -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-8567176078866941"
+     data-ad-slot="5827173182"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+			<div class="col s12 m12 l3 xl3 left hide-on-small-only">
 				<div class="card <%= theme.accent %> <%= theme.modifiers.infocards %> <%= theme.modifiers.text %>">
 					<div class="card-content">
 						<span class="card-title">Polecamy</span>
@@ -25,11 +34,14 @@
 							<a href="https://discord.gg/wB3kEGQ" title="Dołącz do Anime Poland"><img src="/img/recommends/animePolandBaner.png" alt="Anime Poland Discord" class="responsive-img"/></a>
 						</p>
 						<p>
+							<a href="https://discord.gg/NUYuAag" title="Dołącz do Asian Culture"><img src="/img/recommends/asianCultureBaner.png" alt="Asian Culture Discord" class="responsive-img"/></a>
+						</p>
+						<p>
 							Chcesz nawiązać współpracę? <br/>Napisz na <a href="mailto:animawka2.0@gmail.com" class="red-text">animawka2.0@gmail.com</a> <br/> (Tytuł maila: Współpraca Animawka)
 						</p>
 					</div>
 				</div>
-				
+
 				<div class="card <%= theme.accent %> <%= theme.modifiers.infocards %> <%= theme.modifiers.text %>">
 					<div class="card-content">
 							<span class="card-title">Facebook</span>
@@ -45,7 +57,7 @@
 								}(document, 'script', 'facebook-jssdk'));
 							</script>
 						<script src="https://rtbnowads.com/publisher/emit.php?page_id=68615&id=3"></script>
-					</div>					
+					</div>
 				</div>
 			</div>
 
@@ -65,22 +77,30 @@ Za każde odpowiedzi serdecznie dziękujemy
 
 				<div class="row">
 					<h5 class="<%= theme.modifiers.text %>" style="padding-left:10px">Aktualności</h5>
-					
+
 					<% for (var i = 0; i < news.news.length; i++) { %>
-					<div class="col s12 m12">
+					<a href="/news/<%= news.news[i].ID %>" rel="nofollow">
+					<div class="col s12 m6">
 						<div class="card medium">
 							<div class="card-image">
 								<img src="<%= news.news[i].image %>">
 								<span class="card-title"><%= news.news[i].title %></span>
 							</div>
-							<div class="card-content">
-								<p>Autor: <%= user.data.login %></p>
-								<p><%- newscontent %></p>
+							<div class="card-content hide">
+								<p>Autor: <span>
+<a rel="nofollow" href="/uzytkownik/<%= user.data.login %>">
+<span>
+								<%= user.data.login %>
+</span>
+</a>
+</span> Data: <time datetime="<%= news.news[i].date %> %>"><%= news.news[i].date %></time></p>
+								<p><%- news.news[i].content %></p>
 							</div>
 						</div>
 					</div>
+					</a>
 					<% } %>
-					
+
 				</div>
 
 				<div class="row">
@@ -96,7 +116,7 @@ Za każde odpowiedzi serdecznie dziękujemy
 								<p style="text-overflow:ellipsis;overflow: hidden;white-space:nowrap;"><strong><%= anime[i].name %></strong></p>
 								<% if (anime[i].episode == 0) { %> <p>Zapowiedź</p> <% } else {%>
 								<p>Odcinek <%= anime[i].episode %></p>
-								
+
 								<%
 								}
 								%>
@@ -119,12 +139,12 @@ Za każde odpowiedzi serdecznie dziękujemy
 							</div>
 						</div>
 					</div>-->
-					
+
 					<div class="col s12 m6">
 						<div class="card <%= theme.accent %> <%= theme.modifiers.infocards %> <%= theme.modifiers.text %>">
 							<div class="card-content">
 								<span class="card-title">Legalność serwisu</span>
-								
+
 
 								<p>Nasz serwis nie hostuje odcinków, lecz gromadzi linki do zewnętrznych uploadów umieszczonych przez użytkowników strony - wszelkie roszczenia dotyczące praw autorskich powinny być kierowane do nich.</p>
 								<p>Opieramy się na ustawie z dnia 4 lutego 1994 r. o prawie autorskim i prawach pokrewnych (tekst jednolity: Dz. U. 2000 r. Nr 80 poz. 904), Art. 71. W swoim orzeczeniu Sąd Najwyższy – Izba Cywilna, z dnia 23 stycznia 2003 r. II CKN 1399/2000 stwierdził, że dokonanie tłumaczenia warstwy słownej utworu audiowizualnego nie stanowi jego opracowania jako całości.</p>
@@ -134,15 +154,20 @@ Za każde odpowiedzi serdecznie dziękujemy
 						</div>
 					</div>
 
-					
+
 				<div class="col s12 m6">
 					<div class="card <%= theme.accent %> <%= theme.modifiers.infocards %>">
 						<div class="card-content white-text">
-<script src="https://rtbnowads.com/publisher/emit.php?page_id=68615&id=17"></script>
-
-<a href="https://rtbnow.com/status?ref=4beef546-0a95-11e8-81d5-0cc47a454eac" target="_blank">
-<img src="https://rtbnow.com/uploads/user/2017/03/29/10/44/SSk1Wk9gObYvGraj.jpg"/>
-</a>
+							<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+							<!-- Animawka Index -->
+							<ins class="adsbygoogle"
+								 style="display:block"
+								 data-ad-client="ca-pub-8567176078866941"
+								 data-ad-slot="1521575593"
+								 data-ad-format="auto"></ins>
+							<script>
+							(adsbygoogle = window.adsbygoogle || []).push({});
+							</script>
 						</div>
 					</div>
 				</div>

@@ -1,5 +1,6 @@
 const express = require('express'),
 	db = require('./database'),
+	push = require('./push'),
 	theme = require('./theme'),
 	server = require('./server'),
 	config = require('./config');
@@ -13,13 +14,15 @@ var router = express.Router();
 
 
 router.get('/', function(req, res, next) {
+
+push.pushNotification("Ktoś wszedł na Animawke").then(push => {});
+
 	db.getLastEpisodes().then(eps => {
 		db.getLastNews(1).then(newslist => {
-	 	var html = parser.parseString(newslist.news[0].content);
-
+	 	
 
 db.getUser(newslist.news[0].user).then(async user => {
-		
+
 //bbcode.parse('[b]text[/b]', function(content) {});
 		
 				//console.log(user);
@@ -32,7 +35,6 @@ db.getUser(newslist.news[0].user).then(async user => {
 					session: req.session, 
 					anime: eps,
 					news:newslist,
-					newscontent:html,
 					user:user
 				});
 			});
@@ -42,6 +44,8 @@ db.getUser(newslist.news[0].user).then(async user => {
 
 router.get('/anime/:name/:episode', function(req, res, next) {
 	db.getAnimeEpisode(req.params.name, req.params.episode).then(anime => {
+
+push.pushNotification("Ktoś wszedł na odcinek "+req.params.episode+" \nAnime "+req.params.name).then(push => {});
 			db.getUserLogin(anime.data.user).then(user => {
 		console.log(anime.title);
 		res.render('animewatch', {
@@ -63,6 +67,8 @@ router.get('/anime/:name/:episode', function(req, res, next) {
 router.get('/anime/:name', function(req, res, next) {
 	if (db.isInt(req.params.name)) {
 		db.getAnimeList(req.params.name).then(animelist => {
+		
+		
 		console.log(db.getUserLogin(1));
 			res.render('animelist', {
 				theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
@@ -76,6 +82,9 @@ router.get('/anime/:name', function(req, res, next) {
 		});
 	} else {
 		db.getAnime(req.params.name).then(anime => {
+		
+		push.pushNotification("Ktoś wszedł na Anime: "+req.params.name).then(push => {});
+		
 		db.getUserLogin(anime.data.user).then(async user => {
 			res.render('animeinfo', {
 				theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
@@ -233,6 +242,31 @@ router.get('/casting', (req, res, next) => {
 			session: req.session
 		});
 });
+
+router.get('/szukaj', (req, res, next) => {
+		res.render('search', {
+			theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+			themes: theme.themes,
+			title: 'Wyszukiwarka',
+			db: db,
+			search:"",
+			session: req.session
+		});
+});
+
+
+router.get('/szukaj/:q', (req, res, next) => {
+		res.render('search', {
+			theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+			themes: theme.themes,
+			title: 'Wyszukiwarka',
+			db: db,
+			search:req.params.q,
+			session: req.session
+		});
+});
+
+
 
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -746,6 +780,24 @@ router.post('/admin/newepisode/:id', (req, res, next) => {
 });
 
 // NEWS SYSTEM BY HENIOOO//
+
+router.get('/news/:id', (req, res, next) => {
+		db.getNews(req.params.id).then(news => {
+			db.getUser(news.data.user).then(async user => {
+
+				res.render('viewnews', {
+					theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
+					themes: theme.themes,
+					title: news.data.title,
+					page: req.params.page,
+					news: news,
+					user: user,
+					db: db, 
+					session: req.session
+				});
+			});
+		});
+});
 
 router.get('/admin/news', (req, res, next) => {
 	if (req.session && req.session.admin) {
