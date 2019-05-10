@@ -1,6 +1,5 @@
 const express = require('express'),
 	db = require('./database'),
-	push = require('./push'),
 	theme = require('./theme'),
 	server = require('./server'),
 	config = require('./config');
@@ -14,8 +13,6 @@ var router = express.Router();
 
 
 router.get('/', function(req, res, next) {
-
-push.pushNotification("Ktoś wszedł na Animawke").then(push => {});
 
 	db.getLastEpisodes().then(eps => {
 		db.getLastNews(1).then(newslist => {
@@ -45,7 +42,6 @@ db.getUser(newslist.news[0].user).then(async user => {
 router.get('/anime/:name/:episode', function(req, res, next) {
 	db.getAnimeEpisode(req.params.name, req.params.episode).then(anime => {
 
-push.pushNotification("Ktoś wszedł na odcinek "+req.params.episode+" \nAnime "+req.params.name).then(push => {});
 			db.getUserLogin(anime.data.user).then(user => {
 		console.log(anime.title);
 		res.render('animewatch', {
@@ -83,7 +79,6 @@ router.get('/anime/:name', function(req, res, next) {
 	} else {
 		db.getAnime(req.params.name).then(anime => {
 		
-		push.pushNotification("Ktoś wszedł na Anime: "+req.params.name).then(push => {});
 		
 		db.getUserLogin(anime.data.user).then(async user => {
 			res.render('animeinfo', {
