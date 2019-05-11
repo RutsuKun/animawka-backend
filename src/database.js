@@ -956,6 +956,35 @@ exports.authenticate = async (user, pass) => {
 	};
 };
 
+exports.register = async (user, email, pass, pass2) => {
+	var u = await db.query("SELECT * FROM users WHERE email=" + db.escape(user) + " OR login="+ db.escape(user));
+	console.log(u);
+	if (u[0] && u[0][0]) {
+
+		return {
+			success: false			
+		};
+	
+	} else {
+		var passhash = scrypt(pass.normalize('NFKC'), "animawka", 16384, 8, 1, 64).toString('hex');
+		
+		var u = await db.query("INSERT INTO users (login, email, password, rank, avatar) VALUES"
+									+ "(" + db.escape(user)
+									+ ", " + db.escape(email)
+									+ ", " + db.escape(passhash)
+									+ ", " + db.escape("0")
+									+ ", " + db.escape("https://vignette2.wikia.nocookie.net/konosuba/images/6/69/6ItDIsj.png/revision/latest?cb=20160210105329")+")");
+
+		console.log("Registred [" + user + "] " + passhash);
+		return {
+			success: true
+		};
+	}
+	return {
+		success: false
+	};
+};
+
 // utilsy
 
 exports.getStatus = status => {
