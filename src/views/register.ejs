@@ -4,16 +4,65 @@
 	<div class="container">
 		<div class="row">
 			<div class="col s12 offset-m3 m6">
+				<% if (register && success) { %>
 				<div class="card-panel teal">
 					<span class="white-text">
-						Rejestracja tymczasowo wyłączona
+						Zostałeś zarejestrowany.
 					</span>
 					<script>
 						setTimeout(function() {
-							window.location.href = "/";
-						}, 5000);
+							window.location.href = "/zaloguj?action=registred";
+						}, 1000);
 					</script>
 				</div>
+				<% } else { %>
+					<% if (register && !success) { 
+						if (captcha) { %>
+						<div class="card-panel red">
+							<span class="white-text">
+								Proszę wypełnić CAPTCHĘ.
+							</span>
+						</div>
+						<% } else { %>
+						<div class="card-panel red">
+							<span class="white-text">
+								Nieprawidłowy login lub hasło
+							</span>
+						</div>
+					<%	} 
+					} %>
+				<form action="/zarejestruj" id="reg" method="post">
+					<div class="card">
+						<div class="card-content">
+							<span class="card-title">Rejestracja w serwisie</span>
+							<div class="input-field">
+								<label for="username">Nazwa użytkownika</label>
+								<input type="text" id="username" name="login" value="" />
+							</div>
+							<div class="input-field">
+								<label for="username">Adres email</label>
+								<input type="text" id="email" name="email" value="" />
+							</div>
+							<div class="input-field">
+								<label for="password">Hasło</label>
+								<input type="password" id="password" name="password" />
+							</div>
+							<div class="input-field">
+								<label for="password">Powtórz hasło</label>
+								<input type="password" id="password" name="password" />
+							</div>
+							<% if (enableCaptcha) { %>
+							<div class="input-field">
+								<div class="g-recaptcha" data-sitekey="6Ld3mUAUAAAAAAq0nkoOXJ01XFw4neIv-LAai4Mk"></div>
+							</div>
+							<% } %>
+						</div>
+						<div class="card-action">
+							<a href='javascript:$("#reg").submit()'>Zarejestruj</a>
+						</div>
+					</div>
+				</form>
+			<% } %>
 			</div>
 		</div>
 	</div>
