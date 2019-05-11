@@ -1,6 +1,8 @@
 # smieci
 animawka.db
 config.json
+cache/
+sessions/
 
 # Logs
 logs
