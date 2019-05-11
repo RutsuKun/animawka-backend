@@ -1,144 +1,104 @@
-<% locals.header_extend_css = `
-	<script type="application/ld+json">
-		{
-			"@context": "http://schema.org",
-			"@type": "WebSite",
-			"url": "https://animawka.pl",
-			"potentialAction": {
-				"@type": "SearchAction",
-				"target": "https://animawka.pl/szukaj/{search_term_string}",
-				"query-input": "required name=search_term_string"
-			}
-		}
-	</script>
-`%>
+
 <% extend('layout') %>
 
 <main role="main" id="MainContent" itemscope itemprop="mainContentOfPage">
 	<div class="container">
 		<div class="row">
-		<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<!-- Animawka Długi Baner -->
-<ins class="adsbygoogle"
-     style="display:inline-block;width:728px;height:90px"
-     data-ad-client="ca-pub-8567176078866941"
-     data-ad-slot="5827173182"></ins>
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-			<div class="col s12 m12 l3 xl3 left hide-on-small-only">
-				<div class="card <%= theme.accent %> <%= theme.modifiers.infocards %> <%= theme.modifiers.text %>">
+			<div class="col s12 m12 l9 xl9 left hide">
+				<div class="card <%= theme.primary %> <%= theme.modifiers.infocards %> <%= theme.modifiers.text %>">
 					<div class="card-content">
-						<span class="card-title">Polecamy</span>
-						<p>
-							<a href="https://discord.gg/wB3kEGQ" title="Dołącz do Anime Poland"><img src="/img/recommends/animePolandBaner.png" alt="Anime Poland Discord" class="responsive-img"/></a>
-						</p>
-						<p>
-							<a href="https://discord.gg/NUYuAag" title="Dołącz do Asian Culture"><img src="/img/recommends/asianCultureBaner.png" alt="Asian Culture Discord" class="responsive-img"/></a>
-						</p>
-						<p>
-							Chcesz nawiązać współpracę? <br/>Napisz na <a href="mailto:animawka2.0@gmail.com" class="red-text">animawka2.0@gmail.com</a> <br/> (Tytuł maila: Współpraca Animawka)
-						</p>
-					</div>
-				</div>
-
-				<div class="card <%= theme.accent %> <%= theme.modifiers.infocards %> <%= theme.modifiers.text %>">
-					<div class="card-content">
-							<span class="card-title">Facebook</span>
-							<div style="width:100%; margin-bottom:25px;" class="fb-page" data-href="https://www.facebook.com/JakbedziewAnime/" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true" data-show-posts="true"><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/JakbedziewAnime/"><a href="https://www.facebook.com/JakbedziewAnime/">animawka.pl</a></blockquote></div></div>
-							<div id="fb-root"></div>
-							<script>
-								(function(d, s, id) {
-									var js, fjs = d.getElementsByTagName(s)[0];
-									if (d.getElementById(id)) return;
-									js = d.createElement(s); js.id = id;
-									js.src = "//connect.facebook.net/pl_PL/sdk.js#xfbml=1&version=v2.5&appId=202375610098345";
-									fjs.parentNode.insertBefore(js, fjs);
-								}(document, 'script', 'facebook-jssdk'));
-							</script>
-						<script src="https://rtbnowads.com/publisher/emit.php?page_id=68615&id=3"></script>
+						<span class="card-title">Informacja</span>
+						<p>Serwis jest tylko demonstracją skryptu, kod zródłowy znajdziesz <a href="https://github.com/HenioooDEV/animawka-backend">tutaj</a> Pamiętaj! Uważnie przeczytaj plik <strong>README.md</strong></p>
 					</div>
 				</div>
 			</div>
 
-			<div class="col s12 m12 l9 xl9 left">
-				<div class="row">
-					<div class="col s12">
-						<div class="card <%= theme.accent %> <%= theme.modifiers.infocards %> <%= theme.modifiers.text %>">
-							<div class="card-content">
-								<span class="card-title">Oceń naszą strone</span>
-								<p>Oceń nową wersje strony Animawka.pl w ankiecie dostępnej pod adresem <a href="https://goo.gl/forms/bYPuRct4QUYVQgzZ2">https://goo.gl/forms/bYPuRct4QUYVQgzZ2</a>.<br />
-Za każde odpowiedzi serdecznie dziękujemy
-								</p>
-							</div>
-						</div>
-					</div>
-				</div>
-
+			<div class="col s12 m12 l12 xl12 left">
 				<div class="row">
 					<h5 class="<%= theme.modifiers.text %>" style="padding-left:10px">Aktualności</h5>
-
-					<% for (var i = 0; i < news.news.length; i++) { %>
-					<a href="/news/<%= news.news[i].ID %>" rel="nofollow">
-					<div class="col s12 m6">
-						<div class="card medium">
-							<div class="card-image">
-								<img src="<%= news.news[i].image %>">
-								<span class="card-title"><%= news.news[i].title %></span>
-							</div>
-							<div class="card-content hide">
-								<p>Autor: <span>
-<a rel="nofollow" href="/uzytkownik/<%= user.data.login %>">
-<span>
-								<%= user.data.login %>
-</span>
-</a>
-</span> Data: <time datetime="<%= news.news[i].date %> %>"><%= news.news[i].date %></time></p>
-								<p><%- news.news[i].content %></p>
+					<% if(news.news.length > 0){ %>
+						<% for (var i = 0; i < news.news.length; i++) { %>
+							<a href="/news/<%= news.news[i].ID %>" rel="nofollow">
+								<div class="col s12 m6">
+									<div class="card medium">
+										<div class="card-image">
+											<img src="<%= news.news[i].image %>">
+											<span class="card-title"><%= news.news[i].title %></span>
+										</div>
+									</div>
+								</div>
+							</a>
+						<% } %>
+					<% } else { %>
+						<div class="card <%= theme.primary %> <%= theme.modifiers.infocards %> <%= theme.modifiers.text %>">
+							<div class="card-content">
+								<span class="card-title">Brak aktualności</span>
 							</div>
 						</div>
-					</div>
-					</a>
-					<% } %>
+				<% } %>
 
 				</div>
 
 				<div class="row">
-					<h5 class="<%= theme.modifiers.text %>" style="padding-left:10px">Najnowsze odcinki</h5>
-					<% for (var i = 0; i < anime.length; i++) { %>
-					<a href="/anime/<%= db.name2url(anime[i].name) %>/<%= anime[i].episode %>">
-					<div class="col s12 m4">
-						<div class="card medium">
-							<div class="card-image">
-								<img src="<%= anime[i].image %>">
-							</div>
-							<div class="card-content">
-								<p style="text-overflow:ellipsis;overflow: hidden;white-space:nowrap;"><strong><%= anime[i].name %></strong></p>
-								<% if (anime[i].episode == 0) { %> <p>Zapowiedź</p> <% } else {%>
-								<p>Odcinek <%= anime[i].episode %></p>
+					<h5 class="<%= theme.modifiers.text %>" style="padding-left:10px">Najnowsze dodane odcinki</h5>
+					<% if(anime.length > 0){ %>
+						<% for (var i = 0; i < anime.length; i++) { %>
+							<a href="/anime/<%= db.name2url(anime[i].name) %>/<%= anime[i].episode %>">
+								<div class="col s12 m4">
+									<div class="card medium">
+										<div class="card-image">
+											<img src="<%= anime[i].image %>">
+										</div>
+										<div class="card-content">
+											<p style="text-overflow:ellipsis;overflow: hidden;white-space:nowrap;"><strong><%= anime[i].name %></strong></p>
+											<% if (anime[i].episode == 0) { %> <p>Zapowiedź</p> <% } else {%>
+											<p>Odcinek <%= anime[i].episode %></p>
 
-								<%
-								}
-								%>
+										<%
+										}
+										%>
+										</div>
+									</div>
+								</div>
+							</a>
+						<% } %>
+					<% } else { %>
+						<div class="card <%= theme.primary %> <%= theme.modifiers.infocards %> <%= theme.modifiers.text %>">
+							<div class="card-content">
+								<span class="card-title">Nie ma dodanych odcinków</span>
 							</div>
+						</div>
+				
+					<% } %>
+				</div>
+			</div>
+			
+			<div class="row">
+				<h5 class="<%= theme.modifiers.text %>" style="padding-left:10px">Ostatnio dodane anime</h5>
+				<% if(animelast.length > 0){ %>
+					<% for (var i = 0; i < animelast.length; i++) { %>
+						<a href="/anime/<%= db.name2url(animelast[i].name) %>">
+							<div class="col s12 m4">
+								<div class="card medium">
+									<div class="card-image">
+										<img src="<%= animelast[i].image %>">
+									</div>
+									<div class="card-content">
+										<p style="text-overflow:ellipsis;overflow: hidden;white-space:nowrap;"><strong><%= animelast[i].name %></strong></p>
+									</div>
+								</div>
+							</div>
+						</a>
+					<% } %>
+				<% } else { %>
+					<div class="card <%= theme.primary %> <%= theme.modifiers.infocards %> <%= theme.modifiers.text %>">
+						<div class="card-content">
+							<span class="card-title">Nie ma dodanych anime</span>
 						</div>
 					</div>
-					</a>
-					<% } %>
-<!--
-					<div class="col s12">
-						<div class="card blue-grey darken-4">
-							<div class="card-content white-text">
-								<span class="card-title">Czat</span>
-								<iframe style="border: 0px none;width:100%; height:500px;overflow:hidden;" src="/chat">
-									Trochę stara przeglądarka, nie? :p
-								</iframe>
-							</div>
-							<div class="card-action">
-							  <a href="https://discord.gg/wB3kEGQ">Dołącz do discorda AnimePolska</a>
-							</div>
-						</div>
-					</div>-->
+			
+				<% } %>
+			</div>
 
 					<div class="col s12 m6">
 						<div class="card <%= theme.accent %> <%= theme.modifiers.infocards %> <%= theme.modifiers.text %>">
@@ -155,26 +115,7 @@ Za każde odpowiedzi serdecznie dziękujemy
 					</div>
 
 
-				<div class="col s12 m6">
-					<div class="card <%= theme.accent %> <%= theme.modifiers.infocards %>">
-						<div class="card-content white-text">
-							<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-							<!-- Animawka Index -->
-							<ins class="adsbygoogle"
-								 style="display:block"
-								 data-ad-client="ca-pub-8567176078866941"
-								 data-ad-slot="1521575593"
-								 data-ad-format="auto"></ins>
-							<script>
-							(adsbygoogle = window.adsbygoogle || []).push({});
-							</script>
-						</div>
-					</div>
-				</div>
-
-				</div>
-
-			</div>
+			
 		</div>
 	</div>
 </main>

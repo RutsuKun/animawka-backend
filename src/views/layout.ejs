@@ -33,50 +33,17 @@
 
 <link rel="manifest" href="/manifest.json">
 
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-112020649-1"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
 
-  gtag('config', 'UA-112020649-1');
-</script>
-
-
-<script src="https://www.gstatic.com/firebasejs/4.10.0/firebase.js"></script>
-<script>
-  // Initialize Firebase
-  var config = {
-    apiKey: "AIzaSyBtKwIQP1PQUCqUD4Vlm5MxdIqfLNeRcBw",
-    authDomain: "animawka-2018.firebaseapp.com",
-    databaseURL: "https://animawka-2018.firebaseio.com",
-    projectId: "animawka-2018",
-    storageBucket: "",
-    messagingSenderId: "644463137587"
-  };
-  firebase.initializeApp(config);
-</script>
 
   <link href="https://vjs.zencdn.net/6.6.3/video-js.css" rel="stylesheet">
   <!-- If you'd like to support IE8 -->
   <script src="https://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
-<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({
-          google_ad_client: "ca-pub-8567176078866941",
-          enable_page_level_ads: true
-     });
-</script>
+
 	</head>
 	<body itemscope itemtype="http://schema.org/WebPage" class="<%= theme.primary %> <%= theme.modifiers.bg %>">
 		<%- include('header') %>
 		<%- content %>
 		<%- include('footer') %>
-		<% if (!debug) { %>
-		<script> (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){ (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o), m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m) })(window,document,'script','https://www.google-analytics.com/analytics.js','ga'); ga('create', 'UA-112020649-1', 'auto'); ga('require', 'GTM-TBWC67Z'); ga('send', 'pageview'); </script>
-		<% } %>
-
 		<%- (locals.header_extend_js) ? locals.header_extend_js : ""; %>
 	</body>
 </html>

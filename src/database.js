@@ -341,6 +341,19 @@ exports.getAnime = async page => {
 	}
 }
 
+exports.getLastAnime = async () => {
+	var data = await db.query("SELECT * FROM anime ORDER BY ID DESC LIMIT 6");
+	var animes = [];
+
+	for (var i = 0; i < data[0].length; i++) {
+		var anime = await db.query("SELECT * FROM anime WHERE ID = '" + db.escape(data[0][i].ID) + "'");
+		if (anime[0] && anime[0][0]) {
+			animes.push(anime[0][0]);
+		}
+	}
+	return animes;
+};
+
 // https://mariadb.com/kb/en/library/pagination-optimization/
 exports.getAnimeList = async page => {
 	var c = [];
