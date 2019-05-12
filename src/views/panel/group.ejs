@@ -1,0 +1,162 @@
+<% 
+locals.header_extend_js = `
+<script>
+
+function save() {
+	$("#save").submit();
+}
+</script>
+`
+%>
+
+<% extend('../layout') %>
+
+<main>
+	<div class="container">
+			<div class="row">
+				<div class="col s12">
+					<nav>
+						<div class="nav-wrapper">
+							<div class="col s12 <%= theme.primary %> <%= theme.modifiers.nav %>">
+								<a href="/" class="breadcrumb">strona główna</a>
+								<a href="/panel" class="breadcrumb">panel uploadera</a>
+								<a href="/panel/group" class="breadcrumb">grupa suberska</a>
+							</div>
+						</div>
+					</nav>
+				</div>
+			</div>
+		<%- include('menu',{cp:"group"}) %>
+		<div class="row">
+			<div class="col s12">
+					
+
+				<nav class="nav-extended <%= theme.primary %> <%= theme.modifiers.nav %>">
+					<div class="nav-content">
+						<ul class="tabs tabs-transparent">
+							<li class="tab"><a class="active" href="#groupinfo">Info</a></li>
+							<li class="tab"><a href="#test2">Członkowie</a></li>
+							<li class="tab"><a href="#anime">Lista serii</a></li>
+							<li class="tab"><a href="#settings">Ustawienia</a></li>
+						</ul>
+					</div>
+				</nav>
+
+			</div>
+			
+			  <div id="groupinfo" class="col s12">
+			  
+				<div class="card">
+					<div class="card-content">
+						<span class="card-title">Informacja o grupie suberskiej</span>
+						<p><strong>Nazwa grupy: <%= group.data.name %></strong></p>
+						<p><strong>Liczba członków: <%= grouparray.length %></strong></p>
+						<p><strong>Liczba dodanych serii: <%= anime.animes.length %></strong></p>
+					</div>
+				</div>
+			  
+			  </div>
+			  <div id="test2" class="col s12">
+			  
+				<% for (var i = 0; i < grouparray.length; i++) {%>		
+						<div class="card horizontal">
+							<div class="card-image waves-effect waves-block waves-light">
+								<img class="activator" width="100px" height="100px" src="<%= grouparray[i].member_avatar %>">
+							</div>
+							<div class="card-stacked">
+								<div class="card-content">
+									<span class="card-title grey-text text-darken-4"><%= grouparray[i].member_login %></span>
+									<span class="grey-text text-darken-4">
+<% if(grouparray[i].member_rank == 1){ %>
+Admin
+<% } %>
+<% if(grouparray[i].member_rank == 2){ %>
+Uploader
+<% } %>
+</span>
+								</div>
+<% if(grouparray[i].member_rank == 1){ %>
+								<div class="card-action">
+									<a href="/panel/group/delete_user/<%= grouparray[i].member_id %>">usuń z grupy</a>
+								</div>
+<% } %>
+							</div>
+						</div>
+				<% } %>
+			 
+			  
+			  
+			  </div>
+			  <div id="anime" class="col s12">
+
+			<% if (anime.animes.length == 0) { %>
+	
+					<div class="card-panel red">
+						<span class="white-text">
+							Nie ma żadnych anime w bazie danych!
+						</span>
+					</div>
+
+			<% } else {%>
+
+
+				<% for (var i = 0; i < anime.animes.length; i++) {%>		
+						<div class="card horizontal">
+							<div class="card-image waves-effect waves-block waves-light">
+								<img class="activator" width="100px" src="<%= anime.animes[i].image %>">
+							</div>
+							<div class="card-stacked">
+								<div class="card-content">
+									<span class="card-title grey-text text-darken-4"><%= anime.animes[i].name %></span>
+
+								</div>
+								<div class="card-action">
+									<a href="/panel/group/delete_user/<%= anime.animes[i].ID %>">usuń anime</a>
+								</div>
+							</div>
+						</div>
+				<% } %>
+			 <% } %>
+			  </div>
+			  <div id="settings" class="col s12">
+			  
+				<div class="card">
+					<div class="card-content">
+						<span class="card-title">Ustawienia grupy suberskiej</span>
+
+						<form id="save" method="POST" action="/admin/editgroup/<%= group.data.ID %>" class="">
+							<div class="row">
+								<div class="input-field col s12 m12">
+									<input name="name" id="name" type="text" value="<%- group.data.name %>">
+									<label for="name">Nazwa grupy</label>
+								</div>
+
+								<div class="input-field col s12 m12">
+									<textarea id="description" name="description" class="materialize-textarea"><%= group.data.description %></textarea>
+									<label for="description">Opis</label>
+								</div>
+								<div class="input-field col s12 m12">
+									<input name="avatar" id="avatar" type="text" value="<%= group.data.avatar %>">
+									<label for="avatar">URL obrazka avatara</label>
+								</div>
+							</div>
+							<input type="hidden" name="ID" value="<%= group.data.ID %>"/>
+							<input type="hidden" name="action" value="edit"/>
+						</form>
+
+					</div>
+
+       <div class="card-action">
+						<a class="blue-text" href="javascript:save()">Zapisz</a>
+						<a class="red-text modal-trigger" href="javascript:delwarn();">Usuń</a>
+						<a href="/admin/group">Anuluj</a>
+					</div>
+
+				</div>
+			  
+			  </div>
+					
+	
+		</div>
+	</div>
+</main>

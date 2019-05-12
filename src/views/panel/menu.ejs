@@ -1,0 +1,9 @@
+<div class="row">
+	<div class="col s12 m12">
+		<ul class="tabs tabs-transparent <%= theme.primary %> <%= theme.modifiers.nav %>">
+			<li class="tab"><a <% if (cp === "home") { %>class="active"<% } %> target="_self" href="/panel">Strona główna</a></li>
+			<li class="tab"><a <% if (cp === "group") { %>class="active"<% } %> target="_self" href="/panel/group">Grupa</a></li>
+			<li class="tab"><a <% if (cp === "anime") { %>class="active"<% } %> target="_self" href="/panel/anime">Anime</a></li>
+		</ul>
+	</div>
+</div>

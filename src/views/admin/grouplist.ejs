@@ -1,0 +1,64 @@
+<% extend('../layout') %>
+
+<main>
+	<div class="container">
+		<%- include('menu',{cp:"group"}) %>
+		<div class="row">
+			<% if (grouplist.groups.length == 0) { %>
+				<% if (page == 1) { %>
+				<div class="col s12 offset-m3 m6">
+					<div class="card-panel red">
+						<span class="white-text">
+							Nie ma grup w bazie danych!
+						</span>
+					</div>
+				</div>
+				<% } else { %>
+				<div class="col s12 offset-m3 m6">
+					<div class="card-panel red">
+						<span class="white-text">
+							Nieprawidlowy numer strony!
+						</span>
+					</div>
+				</div>
+				<% } %>
+			<% } else {%>
+				<% if (message) { %>
+				<div class="col s12 offset-m3 m6">
+					<div class="card-panel red">
+						<span class="white-text">
+							<%- message %>
+						</span>
+					</div>
+				</div>
+				<% } %>
+				<div class="col s12 m12">
+					<a class="waves-effect waves-light btn <%- theme.accent %>" href="/admin/newgroup">
+						<i class="material-icons left">add</i>Dodaj grupe
+					</a>
+				</div>
+			</div>
+			<div class="row">
+				<% for (var i = 0; i < grouplist.groups.length; i++) {%>		
+					<div class="col s12">
+
+						<div class="card horizontal">
+							<div class="card-image waves-effect waves-block waves-light">
+								<img class="activator" width="128px" height="240px" src="<%= grouplist.groups[i].image %>" style="display:none;">
+							</div>
+							<div class="card-stacked">
+								<div class="card-content">
+									<span class="card-title activator grey-text text-darken-4"><%= grouplist.groups[i].name %><i class="material-icons right">more_vert</i></span>
+								</div>
+								<div class="card-action">
+									<a href="/admin/editgroup/<%= db.name2url(grouplist.groups[i].name) %>">Edytuj</a>
+									<a href="/admin/listuploaders/<%= db.name2url(grouplist.groups[i].name) %>">Uploaderzy</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				<%}%>
+			<%}%>
+		</div>
+	</div>
+</main>

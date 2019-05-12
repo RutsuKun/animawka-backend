@@ -497,7 +497,7 @@ exports.newAnime = async animedata => {
 
 // https://mariadb.com/kb/en/library/pagination-optimization/
 
-// NEWS SYSTEM BY HENIOOO //
+// NEWS SYSTEM BY RUTSUKUN //
 
 exports.getNewsList = async page => {
 	var c = [];
@@ -648,10 +648,10 @@ exports.getLastNews = async page => {
 	}
 }
 
-// NEWS SYSTEM BY HENIOOO //
+// NEWS SYSTEM BY RUTSUKUN //
 
 
-// REVIEWS SYSTEM BY HENIOOO //
+// REVIEWS SYSTEM BY RUTSUKUN //
 
 exports.getReviewsList = async page => {
 	var c = [];
@@ -780,10 +780,178 @@ exports.delReview = async review => {
 	}
 }
 
-// REVIEWS SYSTEM BY HENIOOO //
+// REVIEWS SYSTEM BY RUTSUKUN //
+
+// GROUPS SYSTEM BY RUTSUKUN //
+
+exports.newGroup = async groupdata => {
+	if (groupdata === undefined) {
+		return {
+			success: false
+		};
+	}
+	try {
+
+		if (!groupdata.avatar) groupdata.avatar = "";
+
+		
+		var date = new Date().toISOString().substring(0, 10);
+		
+		var u = await db.query("INSERT INTO groups (name, avatar, date, created_date, created_time, created_user, description) VALUES"
+								+ "(" + db.escape(groupdata.name)
+								+ ", " + db.escape(groupdata.avatar)
+								+ ", " + db.escape(date)
+								+ ", " + db.escape(date)
+								+ ", " + db.escape("")
+								+ ", " + db.escape(groupdata.user)
+								+ ", " + db.escape(groupdata.description)
+								+")");
+		return {
+			success: true
+		};
+	} catch (e) {
+		console.error(e.stack);
+		return {
+			success: false
+		};
+	}
+}
+
+exports.getGroupList = async page => {
+	var c = [];
+	var data = [];
+
+	if (page == 1) {
+		data = await db.query("SELECT * FROM groups ORDER BY ID ASC LIMIT " + itemsPerPage);
+	} else {
+		data = await db.query("SELECT * FROM groups ORDER BY ID ASC LIMIT " + ((page - 1) * itemsPerPage) + "," + (page * itemsPerPage));
+	}
+
+	var cnt = await db.query("SELECT COUNT(ID) AS num FROM groups;");
+	var pc = Math.ceil(cnt[0][0].num / itemsPerPage);
+	if (data[0].length != 0 && pc == 0) pc = 1;
+
+	if (data[0] && cnt[0]) {
+		return {
+			groups: data[0],
+			pagecount: pc,
+			itemcount: cnt[0][0].num
+		};
+	}
+}
+
+exports.getGroupByName = async name => {
+	var name = exports.url2name(name);
+	if (name === undefined) {
+		return {
+			title: "Błąd",
+			data: null,
+			episodes: [],
+			error: "Nie znaleziono grupy"
+		};
+	}
 
 
-// CONFIG BY HENIOOO //
+	var u = await db.query("SELECT * FROM groups WHERE name = " + db.escape(name));
+	if (u[0] && u[0][0]) {
+
+		return {
+			name: u[0][0].name,
+			data: u[0][0],
+			error: ""
+		};
+	} else {
+		return {
+			title: "Błąd",
+			data: null,
+			episodes: [],
+			error: "Nie znaleziono grupy"
+		};
+	}
+}
+
+exports.delGroup = async id => {
+	if (id === undefined) {
+		return {
+			success: false
+		};
+	}
+	try {
+		var u = await db.query("DELETE FROM groups WHERE ID = " + db.escape(id));
+		return {
+			success: true
+		};
+	} catch (e) {
+		console.error(e.stack);
+		return {
+			success: false
+		};
+	}
+}
+
+exports.editGroup = async groupdata => {
+	console.log(groupdata);
+	if (groupdata === undefined) {
+		return {
+			success: false
+		};
+	}
+	try {
+
+		if (!groupdata.avatar) groupdata.avatar = "";
+
+		var u = await db.query("UPDATE groups SET name=" + db.escape(groupdata.name)
+								+ ", description=" + db.escape(groupdata.description)
+								+ ", avatar=" + db.escape(groupdata.avatar)
+								+ " WHERE ID=" + db.escape(groupdata.ID));
+		return {
+			success: true
+		};
+	} catch (e) {
+		console.error(e.stack);
+		return {
+			success: false
+		};
+	}
+}
+
+exports.getGroup = async id => {
+	if (id === undefined) {
+		return {
+			data: null,
+			error: "Nie znaleziono grupy"
+		};
+	}
+
+	var u = await db.query("SELECT * FROM groups WHERE ID=" + db.escape(id));
+	if (u[0] && u[0][0]) {
+		return {
+			data: u[0][0],
+			error: ""
+		};
+	} else {
+		return {
+			data: null,
+			error: "Nie znaleziono użytkownika"
+		};
+	}
+}
+
+exports.getGroupAnimeList = async group => {
+	var data = [];
+	data = await db.query("SELECT * FROM anime WHERE subgroup = " +group + " ORDER BY ID DESC");
+
+	if (data[0]) {
+		return {
+			animes: data[0]
+		};
+	}
+}
+
+
+// GROUPS SYSTEM BY RUTSUKUN //
+
+// CONFIG BY RUTSUKUN //
 
 exports.getConfig = async () => {
 
@@ -801,12 +969,12 @@ exports.getConfig = async () => {
 			title: "Błąd",
 			data: null,
 			episodes: [],
-			error: "Nie znaleziono anime"
+			error: "Nie znaleziono ustawień"
 		};
 	}
 }
 
-// CONFIG BY HENIOOO //
+// CONFIG BY RUTSUKUN //
 
 
 exports.getUser = async user => {
@@ -831,6 +999,31 @@ exports.getUser = async user => {
 	}
 }
 
+
+exports.getUserGroup = async (user, group_member_id, member_rank) => {
+	if (user === undefined) {
+		return {
+			data: null,
+			error: "Nie znaleziono użytkownika"
+		};
+	}
+
+	var u = await db.query("SELECT * FROM users WHERE ID=" + db.escape(user));
+	if (u[0] && u[0][0]) {
+		return {
+			data: u[0][0],
+			login: u[0][0].login,
+			group_member_id:group_member_id,
+			member_rank:member_rank,
+			error: ""
+		};
+	} else {
+		return {
+			data: null,
+			error: "Nie znaleziono użytkownika"
+		};
+	}
+}
 
 exports.getUserLogin = async user => {
 	var u = await db.query("SELECT * FROM users WHERE ID = " + db.escape(user));
@@ -933,7 +1126,7 @@ exports.getUserList = async page => {
 
 exports.authenticate = async (user, pass) => {
 	var u = await db.query("SELECT * FROM users WHERE email=" + db.escape(user) + " OR login="+ db.escape(user));
-	//console.log(u);
+	console.log(u);
 	if (u[0] && u[0][0]) {
 		if (u[0][0].password.length === 32) { // bo kurwa henicz uzyl jebanego MD5
 			var hash = crypto.createHash('md5').update(pass.normalize('NFKC')).digest("hex");
@@ -958,14 +1151,16 @@ exports.authenticate = async (user, pass) => {
 			if (u[0][0].password == hash) return {
 				uid: u[0][0].ID,
 				success: true,
-				admin: u[0][0].rank == 1
+				admin: u[0][0].rank == 1,
+				group: u[0][0].subgroup
 			};
 		}
 	}
 	return {
 		uid: -1,
 		success: false,
-		admin: false
+		admin: false,
+		group:false
 	};
 };
 

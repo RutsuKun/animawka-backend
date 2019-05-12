@@ -25,10 +25,16 @@ require('./routes/news')(router, theme, db);
 require('./routes/admin/admin')(router, theme, db, noperm);
 require('./routes/admin/accounts')(router, theme, db, noperm);
 require('./routes/admin/anime')(router, theme, db, noperm);
+require('./routes/admin/group')(router, theme, db, noperm);
 require('./routes/admin/news')(router, theme, db, noperm);
 require('./routes/admin/reviews')(router, theme, db, noperm);
 require('./routes/admin/settings')(router, theme, db, noperm);
 // ADMIN //
 
+// PANEL //
+
+require('./routes/panel/panel')(router, theme, db, noperm);
+
+// PANEL //
 
 module.exports = router;

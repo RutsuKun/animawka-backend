@@ -47,6 +47,7 @@ app.post('/zaloguj', async function(req, res, next) {
 	if (ss.success) {
 		req.session.authorized = true;
 		req.session.uid = ss.uid;
+		req.session.group = ss.group;
 		req.session.admin = ss.admin;
 		var time = 2592000000;
 		req.session.cookie.expires = new Date(Date.now() + time);
