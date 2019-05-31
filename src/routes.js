@@ -21,6 +21,12 @@ require('./routes/rules')(router, theme, db);
 require('./routes/search')(router, theme, db);
 require('./routes/news')(router, theme, db);
 
+// GROUPS //
+
+require('./routes/groups/groups')(router, theme, db);
+
+// GROUPS //
+
 // ADMIN //
 require('./routes/admin/admin')(router, theme, db, noperm);
 require('./routes/admin/accounts')(router, theme, db, noperm);

@@ -1,0 +1,55 @@
+<% extend('../layout') %>
+
+<main>
+	<div class="container">
+		<div class="row">
+			<% if (grouplist.groups.length == 0) { %>
+				<% if (page == 1) { %>
+				<div class="col s12 offset-m3 m6">
+					<div class="card-panel red">
+						<span class="white-text">
+							Nie ma grup w bazie danych!
+						</span>
+					</div>
+				</div>
+				<% } else { %>
+				<div class="col s12 offset-m3 m6">
+					<div class="card-panel red">
+						<span class="white-text">
+							Nieprawidlowy numer strony!
+						</span>
+					</div>
+				</div>
+				<% } %>
+			<% } else {%>
+				<div class="col s12 m12">
+					<a class="waves-effect waves-light btn <%- theme.accent %>" href="/admin/newgroup">
+						<i class="material-icons left">add</i>Dodaj grupe
+					</a>
+				</div>
+			</div>
+			<div class="row">
+
+    <h4 class="white-text" style="padding-left:10px">Grupy Suberskie</h4>
+				<% for (var i = 0; i < grouplist.groups.length; i++) {%>		
+					<div class="col s12">
+
+						<div class="card horizontal">
+							<div class="card-image waves-effect waves-block waves-light">
+								<img class="activator" width="auto" height="180px" src="<%= grouplist.groups[i].avatar %>" style="display:block;">
+							</div>
+							<div class="card-stacked">
+								<div class="card-content">
+									<span class="card-title activator grey-text text-darken-4"><%= grouplist.groups[i].name %></span>
+								</div>
+								<div class="card-action">
+									<a href="/groups/view/<%= db.name2url(grouplist.groups[i].name) %>">Zobacz</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				<%}%>
+			<%}%>
+		</div>
+	</div>
+</main>

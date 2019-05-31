@@ -1,11 +1,2 @@
 User-agent: *
-Disallow: /chat
-Disallow: /casting
-Disallow: /anime/dodaj
-Disallow: /anime/odtwarzacz/
-Disallow: /anime/odcinek/
-Disallow: /socket.io/
-Disallow: /mdl/
-Disallow: /home/members
-Disallow: /home/groups
-Sitemap: https://animawka.pl/sitemap.php
+Disallow: /

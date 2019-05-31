@@ -2,6 +2,21 @@ var exports = module.exports = {};
 
 const themes = [
 	{
+		name: "Animawka Theme",
+		id: "animawka",
+		color: "#5B3A2E",
+		primary: "animawka-blue",
+		accent: "brown",
+		logo: "asuna",
+		light: false,
+		modifiers: {
+			bg: "animawka-bg",
+			nav: "",
+			infocards: "white-text",
+			text: "white-text"
+		}
+	},
+	{
 		name: "Niebieski (Konosuba - Aqua)",
 		id: "blue",
 		color: "#03a9f4",
