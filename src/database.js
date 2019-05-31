@@ -903,6 +903,7 @@ exports.editGroup = async groupdata => {
 		var u = await db.query("UPDATE groups SET name=" + db.escape(groupdata.name)
 								+ ", description=" + db.escape(groupdata.description)
 								+ ", avatar=" + db.escape(groupdata.avatar)
+				       				+ ", paypal=" + db.escape(groupdata.paypal)
 								+ " WHERE ID=" + db.escape(groupdata.ID));
 		return {
 			success: true
