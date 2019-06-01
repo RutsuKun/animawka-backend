@@ -11,7 +11,7 @@ var db = {};
 
 var convertPasswords = false;
 const itemsPerPage = 30; // liczba stron
-const itemsNewsPerPage = 2;
+const itemsNewsPerPage = 5;
 exports.itemsPerPage = itemsPerPage;
 exports.itemsNewsPerPage = itemsNewsPerPage;
 

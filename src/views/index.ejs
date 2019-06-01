@@ -13,13 +13,13 @@
 				</div>
 			</div>
 
-			<div class="col s12 m12 l12 xl12 left">
+			<div class="col s12 m12 l4 xl4 left">
 				<div class="row">
 					<h5 class="<%= theme.modifiers.text %>" style="padding-left:10px">Aktualności</h5>
 					<% if(news.news.length > 0){ %>
 						<% for (var i = 0; i < news.news.length; i++) { %>
 							<a href="/news/<%= news.news[i].ID %>" rel="nofollow">
-								<div class="col s12 m6">
+								<div class="col s12 m12">
 									<div class="card medium">
 										<div class="card-image">
 											<img src="<%= news.news[i].image %>">
@@ -38,25 +38,21 @@
 				<% } %>
 
 				</div>
-
+			</div>
+			
+			<div class="col s12 m12 l8 xl8 right">
 				<div class="row">
-					<h5 class="<%= theme.modifiers.text %>" style="padding-left:10px">Najnowsze dodane odcinki</h5>
-					<% if(anime.length > 0){ %>
-						<% for (var i = 0; i < anime.length; i++) { %>
-							<a href="/anime/<%= db.name2url(anime[i].name) %>/<%= anime[i].episode %>">
+					<h5 class="<%= theme.modifiers.text %>" style="padding-left:10px">Ostatnio dodane anime</h5>
+					<% if(animelast.length > 0){ %>
+						<% for (var i = 0; i < animelast.length; i++) { %>
+							<a href="/anime/<%= db.name2url(animelast[i].name) %>">
 								<div class="col s12 m4">
 									<div class="card medium">
 										<div class="card-image">
-											<img src="<%= anime[i].image %>">
+											<img src="<%= animelast[i].image %>">
 										</div>
 										<div class="card-content">
-											<p style="text-overflow:ellipsis;overflow: hidden;white-space:nowrap;"><strong><%= anime[i].name %></strong></p>
-											<% if (anime[i].episode == 0) { %> <p>Zapowiedź</p> <% } else {%>
-											<p>Odcinek <%= anime[i].episode %></p>
-
-										<%
-										}
-										%>
+											<p style="text-overflow:ellipsis;overflow: hidden;white-space:nowrap;"><strong><%= animelast[i].name %></strong></p>
 										</div>
 									</div>
 								</div>
@@ -65,42 +61,43 @@
 					<% } else { %>
 						<div class="card <%= theme.primary %> <%= theme.modifiers.infocards %> <%= theme.modifiers.text %>">
 							<div class="card-content">
-								<span class="card-title">Nie ma dodanych odcinków</span>
+								<span class="card-title">Nie ma dodanych anime</span>
 							</div>
 						</div>
 				
 					<% } %>
-				</div>
-			</div>
-			
-			<div class="row">
-				<h5 class="<%= theme.modifiers.text %>" style="padding-left:10px">Ostatnio dodane anime</h5>
-				<% if(animelast.length > 0){ %>
-					<% for (var i = 0; i < animelast.length; i++) { %>
-						<a href="/anime/<%= db.name2url(animelast[i].name) %>">
-							<div class="col s12 m4">
-								<div class="card medium">
-									<div class="card-image">
-										<img src="<%= animelast[i].image %>">
+						<h5 class="<%= theme.modifiers.text %>" style="padding-left:10px">Najnowsze dodane odcinki</h5>
+						<% if(anime.length > 0){ %>
+							<% for (var i = 0; i < anime.length; i++) { %>
+								<a href="/anime/<%= db.name2url(anime[i].name) %>/<%= anime[i].episode %>">
+									<div class="col s12 m4">
+										<div class="card medium">
+											<div class="card-image">
+												<img src="<%= anime[i].image %>">
+											</div>
+											<div class="card-content">
+												<p style="text-overflow:ellipsis;overflow: hidden;white-space:nowrap;"><strong><%= anime[i].name %></strong></p>
+												<% if (anime[i].episode == 0) { %> <p>Zapowiedź</p> <% } else {%>
+												<p>Odcinek <%= anime[i].episode %></p>
+
+											<%
+											}
+											%>
+											</div>
+										</div>
 									</div>
-									<div class="card-content">
-										<p style="text-overflow:ellipsis;overflow: hidden;white-space:nowrap;"><strong><%= animelast[i].name %></strong></p>
-									</div>
+								</a>
+							<% } %>
+						<% } else { %>
+							<div class="card <%= theme.primary %> <%= theme.modifiers.infocards %> <%= theme.modifiers.text %>">
+								<div class="card-content">
+									<span class="card-title">Nie ma dodanych odcinków</span>
 								</div>
 							</div>
-						</a>
-					<% } %>
-				<% } else { %>
-					<div class="card <%= theme.primary %> <%= theme.modifiers.infocards %> <%= theme.modifiers.text %>">
-						<div class="card-content">
-							<span class="card-title">Nie ma dodanych anime</span>
-						</div>
-					</div>
-			
-				<% } %>
-			</div>
-			<div class="col s12 m6">
-				<div class="card <%= theme.accent %> <%= theme.modifiers.infocards %> <%= theme.modifiers.text %>">
+					
+						<% } %>
+				</div>
+				<div class="card <%= theme.primary %> <%= theme.modifiers.infocards %> <%= theme.modifiers.text %>">
 					<div class="card-content">
 						<span class="card-title">Legalność serwisu</span>
 						<p>Nasz serwis nie hostuje odcinków, lecz gromadzi linki do zewnętrznych uploadów umieszczonych przez użytkowników strony - wszelkie roszczenia dotyczące praw autorskich powinny być kierowane do nich.</p>

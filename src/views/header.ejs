@@ -12,14 +12,20 @@
 		<div class="container">
 			<div class="row right">
 				<a class='themebtn dropdown-button btn btn-floating btn-large <%= theme.primary %>' href='#'data-constrainWidth="false" data-activates='themes'><i class="material-icons">brush</i></a>
-				<ul id='themes' class='seltheme dropdown-content'>
+				<ul id='themes' class='seltheme dropdown-content <%= theme.primary %>'>
 					<% for (var i = 0; i < themes.length; i++) {%>
 						<li><a href="javascript:{document.cookie='theme=<%= i %>;path=/';location.reload();}"><%= themes[i].name %></a></li>
 					<%}%>
 				</ul>
 			</div>
 			<div class="row" style="margin-bottom:0;">
-				<a href="/"><img class="center" src="/img/logo/<%= theme.logo %>.png" style="height:300px;margin-top:20px; margin-bottom: -10px;"/></a>
+				<a href="/"><img class="center" src="/img/AnimawkaLogoHeader.png" /></a>
+				<div class="headerLinks hide-on-small-only" style="float:right; margin-right:50px;">
+					<ul>
+						<li><a href="/polecamy">polecamy</a></li>
+						<li><a href="/anime">anime</a></li>
+					</ul>
+				</div>
 			</div>
 			<!--<img src="/img/daily/KurisuCzwartek.png" style="width:300px;margin-bottom:-8px"/>-->
 		</div>
@@ -50,13 +56,13 @@ window.location.replace("https://animawka.pl");
 				<a href="/anime" class="site-nav__link"><i class="material-icons left">&#xE896;</i> Lista anime</a>
 			</li>
 			<li itemprop="name">
-				<a href="https://blog.animawka.pl" class="site-nav__link">Blog</a>
+				<a href="/groups" class="site-nav__link"><i class="material-icons left">people</i>Grupy suberskie</a>
 			</li>
 			<li class="site-nav--has-submenu">
 				<a href="#" class="site-nav__link dropdown-button" data-activates="more-dropdown" data-belowOrigin="true" data-constrainWidth="false" data-hover="true">
 					Więcej <i class="material-icons right">&#xE5C5;</i>
 				</a>
-				<ul itemscope itemtype="http://www.schema.org/SiteNavigationElement" id="more-dropdown" class="site-nav__submenu dropdown-content">
+				<ul itemscope itemtype="http://www.schema.org/SiteNavigationElement" id="more-dropdown" class="site-nav__submenu dropdown-content <%= theme.primary %>">
 					<li itemprop="name">
 						<a itemprop="url" href="/regulamin" class="site-nav__link">Regulamin</a>
 					</li>
@@ -78,11 +84,11 @@ window.location.replace("https://animawka.pl");
 		<ul class="right hide-on-med-and-down">
 			<li class="site-nav--has-submenu">
 				<a href="#" class="site-nav__link dropdown-button" data-activates="account-dropdown" data-belowOrigin="true" data-constrainWidth="false" data-hover="true">
-					<i class="material-icons left">people</i>
+					<i class="material-icons left">account_circle</i>
 					Konto
 					<i class="material-icons right">arrow_drop_down</i>
 				</a>
-				<ul id="account-dropdown" class="site-nav__submenu dropdown-content">
+				<ul id="account-dropdown" class="site-nav__submenu dropdown-content <%= theme.primary %>">
 					<% if (!session || !session.authorized) { %>
 						<li>
 							<a href="/zaloguj" class="site-nav__link">Zaloguj</a>
@@ -107,9 +113,9 @@ window.location.replace("https://animawka.pl");
 				<a href="/admin" class="site-nav__link dropdown-button" data-activates="admin-dropdown" data-belowOrigin="true" data-constrainWidth="false" data-hover="true">
 					<i class="material-icons left">dashboard</i> Admin <i class="material-icons right">&#xE5C5;</i>
 				</a>
-				<ul id="admin-dropdown" class="site-nav__submenu dropdown-content">
+				<ul id="admin-dropdown" class="site-nav__submenu dropdown-content <%= theme.primary %>">
 					<li>
-						<a href="/admin/newanime" class="site-nav__link">Dodaj anime</a>
+						<a href="/admin/newanime" class="site-nav__link ">Dodaj anime</a>
 					</li>
 					<li>
 						<a href="/admin/newnews" class="site-nav__link">Dodaj newsa</a>
@@ -121,7 +127,7 @@ window.location.replace("https://animawka.pl");
 			</li>
 			<% } %>
 
-			<li>
+			<li class="hide">
 				<a href="/szukaj">
 					<i class="material-icons">search</i>
 				</a>
@@ -144,12 +150,15 @@ window.location.replace("https://animawka.pl");
 		<a href="/anime" class="site-nav__link"><i class="material-icons">list</i> Lista anime</a>
 	</li>
 	<li>
+		<a href="/groups" class="site-nav__link"><i class="material-icons">people</i> Grupy suberskie</a>
+	</li>
+	<li>
 		<a href="https://www.paypal.com/pools/c/80UJveVpu9" class="site-nav__link"><i class="material-icons">attach_money</i> Wesprzyj nas</a>
 	</li>
 	<li>
 		<a href="/regulamin" class="site-nav__link"><i class="material-icons">bookmark</i> Regulamin</a>
 	</li>
-	<li>
+	<li class="hide">
 		<a href="/szukaj"><i class="material-icons">search</i>Szukaj</a>
 	</li>
 
