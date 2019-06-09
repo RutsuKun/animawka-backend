@@ -11,7 +11,7 @@
 					</span>
 					<script>
 						setTimeout(function() {
-							window.location.href = "/";
+							window.location.href = "<%= r %>";
 						}, 1000);
 					</script>
 				</div>
@@ -42,6 +42,10 @@
 							<div class="input-field">
 								<label for="password">Hasło</label>
 								<input type="password" id="password" name="password" />
+							</div>
+							<div class="input-field hide">
+								<label for="username">r</label>
+								<input type="text" id="r" name="r" value="<%= r %>" />
 							</div>
 							<% if (enableCaptcha) { %>
 							<div class="input-field">

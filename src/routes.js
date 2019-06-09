@@ -16,6 +16,7 @@ require('./routes/anime')(router, theme, db);
 require('./routes/login')(router, theme, db, server, config);
 require('./routes/register')(router, theme, db, server,  config);
 require('./routes/logout')(router, theme, db);
+require('./routes/account')(router, theme, db);
 require('./routes/contact')(router, theme, db);
 require('./routes/rules')(router, theme, db);
 require('./routes/search')(router, theme, db);
