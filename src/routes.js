@@ -22,6 +22,8 @@ require('./routes/rules')(router, theme, db);
 require('./routes/search')(router, theme, db);
 require('./routes/news')(router, theme, db);
 
+
+require('./routes/chat')(router, theme, db, server);
 // GROUPS //
 
 require('./routes/groups/groups')(router, theme, db);

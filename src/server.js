@@ -38,34 +38,18 @@ exports.start = cfg => {
 	exports.io = require('socket.io')(exports.server);
 
 	registerRoutes(cfg, exports.app);
-	if (cfg.discord.enable) {
-		var client = new Discord.Client();
-   
-		client.on('ready', () => {
-			console.log('Bot is ready!');
-			client.user.setActivity('Animawka.pl');
-		});
+	if (cfg.discord.enable) {	
+var client = new Discord.Client(); 		
+client.on('ready', () => {	
+console.log('Bot is ready!');	
+});
 
-		client.on('error', error => {
-			console.log(error);
-		})
+exports.io.on('connection', function(socket){		
+console.log('User connected.');		
+socket.on('disconnect', function(){				console.log('User disconnected.');			});		});	client.on('message', message => {
+console.log(message);			if (message.content != "") {				if (message.channel.id == cfg.discord.channelid) {					if (exports.messages.length == 25) exports.messages.shift();					var data = {						name: message.author.username,						content: processForHTML(message.cleanContent),						id: message.author.id,						rolecolor: message.member.displayHexColor,						avatar: message.author.avatar					}					//var html = util.format(template, message.author.username, message.author.id, message.author.avatar, message.member.displayHexColor, message.author.username, processForHTML(message.cleanContent));	
+	exports.io.emit('message', JSON.stringify(data), { for: 'everyone' });					exports.messages.push(data);					console.log("[Discord Chat] " + message.author.username + ": " + message.cleanContent);				}			}		}); 		client.login(cfg.discord.token);	}
 
-		client.on('message', message => {
-    const testchan = client.channels.get('420255910460653599');
-
-
-		 if (message.content = "siema") {
-        testchan.send('Nya~');
-		 }
-		
-		
-		});
-
-		client.login(cfg.discord.token).catch(e => {
-			console.error("Nie można połączyć się z Discordem!");
-			console.error(e);
-		});
-	}
 
 	exports.server.listen(cfg.port, () => {
 		console.log("Serwer WWW otwarty na porcie :" + cfg.port);
