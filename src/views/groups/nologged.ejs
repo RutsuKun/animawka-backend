@@ -1,0 +1,20 @@
+<% extend('../layout') %>
+
+<main>
+	<div class="container">
+		<div class="row">
+			<div class="col s12 offset-m3 m6">
+				<div class="card-panel red">
+					<span class="white-text">
+						Nie jesteś zalogowany, zaloguj się aby utworzyć grupę suberską
+					</span>
+					<script>
+						setTimeout(function() {
+							window.location.href = "/zaloguj?r=/groups/register";
+						}, 3000);
+					</script>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>

@@ -1,6 +1,11 @@
 module.exports = function(app, theme, db, server, config){
 
-app.get('/zaloguj', function(req, res, next) {	
+app.get('/zaloguj', function(req, res, next) {
+
+console.log(req.query);
+
+
+
 	res.render('login', {
 		theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
 		title: 'Logowanie',
@@ -10,8 +15,12 @@ app.get('/zaloguj', function(req, res, next) {
 		login: false,
 		success: false,
 		captcha: false,
-		enableCaptcha: config.cfg.recaptcha.enable
+		enableCaptcha: config.cfg.recaptcha.enable,
+  r:!req.query.r ? '/' : req.query.r
 	});
+
+
+
 });
 
 app.post('/zaloguj', async function(req, res, next) {
@@ -63,7 +72,8 @@ app.post('/zaloguj', async function(req, res, next) {
 		login: true,
 		success: ss.success,
 		captcha: captcha,
-		enableCaptcha: config.cfg.recaptcha.enable
+		enableCaptcha: config.cfg.recaptcha.enable,
+  r:!req.body.r ? '/' : req.body.r
 	});
 });
 
