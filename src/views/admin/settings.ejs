@@ -1,0 +1,130 @@
+<% 
+locals.header_extend_js = `
+<script>
+
+function save() {
+	$("#save").submit();
+}
+</script>
+`
+%>
+
+<% extend('../layout') %>
+
+<main>
+	<div class="container">
+		<div class="row">
+			<div class="col s12">
+		<%- include('menu',{cp:"config"}) %>
+  </div>
+ </div>
+			<div class="row">
+				<div class="col s12">
+					<nav>
+						<div class="nav-wrapper">
+							<div class="col s12 <%= theme.primary %> <%= theme.modifiers.nav %>">
+								<a href="/" class="breadcrumb">strona główna</a>
+								<a href="/admin" class="breadcrumb">panel admina</a>
+								<a href="/admin/settings" class="breadcrumb">konfiguracja</a>
+							</div>
+						</div>
+					</nav>
+				</div>
+			</div>
+
+		<div class="row">
+			<div class="col s12">
+					
+
+				<nav class="nav-extended <%= theme.primary %> <%= theme.modifiers.nav %>">
+					<div class="nav-content">
+						<ul class="tabs tabs-transparent">
+							<li class="tab"><a class="active" href="#groupinfo">Info</a></li>
+							<li class="tab"><a href="#maintenance">Konserwacja</a></li>
+							<li class="tab"><a href="#settings">Ustawienia</a></li>
+						</ul>
+					</div>
+				</nav>
+
+			</div>
+			
+			  <div id="groupinfo" class="col s12">
+			  
+				<div class="card">
+					<div class="card-content">
+						<span class="card-title">Informacja o stronie</span>
+						<p><strong>Nazwa grupy: Animawka</strong></p>
+					</div>
+				</div>
+			  
+			  </div>
+			  <div id="maintenance" class="col s12">
+			  
+
+	
+		
+				<div class="card">
+					<div class="card-content">
+						<span class="card-title">Konserwacja</span>
+    <div class="row">
+
+      <form id="save" method="POST" action="/admin/settings/maintenance" class="col s12">
+
+								<div class="input-field col s12 m6">
+									<select name="maintenance">
+										<option value="0">Strona aktywna</option>
+										<option <% if (maintenance == 1) { %> selected <% } %> value="1">Konserwacja</option>
+									</select>
+									<label>Status</label>
+								</div>
+
+								<div class="input-field col s12 m12">
+									<input name="maintenance_text" id="maintenance_text" type="text" value="<%- maintenance_text %>">
+									<label for="maintenance_text">Tekst wyświetlany</label>
+								</div>
+
+								<div class="input-field col s12 m12">
+									<input name="maintenance_time" id="maintenance_time" type="datetime-local" value="<%- maintenance_time %>">
+									<label class="active" for="maintenance_time">Czas zakończenia konserwacji</label>
+								</div>
+
+      </div>
+
+    </div>
+					<div class="card-action">
+						<a class="blue-text" href="javascript:save()">Zapisz</a>
+						<a href="/admin/settings">Anuluj</a>
+					</div>
+					</div>
+
+
+				</div>
+
+			  
+			  </div>
+			  <div id="anime" class="col s12">
+
+
+			  </div>
+			  <div id="settings" class="col s12">
+			  
+				<div class="card">
+					<div class="card-content">
+						<span class="card-title">Ustawienia strony</span>
+
+					</div>
+
+       <div class="card-action">
+						<a class="blue-text" href="javascript:save()">Zapisz</a>
+
+						<a href="/admin/settings">Anuluj</a>
+					</div>
+
+				</div>
+			  
+			  </div>
+					
+	
+		</div>
+	</div>
+</main>

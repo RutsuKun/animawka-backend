@@ -34,6 +34,8 @@ exports.getSourceName = source => {
 	}
 }
 
+
+
 exports.getAnimeType = type => {
 	if (type == null || type == undefined) return "";
 	switch (type) {
@@ -47,13 +49,15 @@ exports.getAnimeType = type => {
 
 exports.loadData = async () => {
 	try {
-		var data = await db.query("SELECT * FROM settings WHERE name = 'sources'");
-		exports.sources = JSON.parse(data[0][0].value).players;
+		var sourcesData = await db.query("SELECT * FROM settings WHERE name = 'sources'");
+		exports.sources = JSON.parse(sourcesData[0][0].value).players;
 	} catch (e) {
 		console.error("Wystapił błąd podczas ładowania ustawień!");
 		console.error(e.stack);
 	}
 }
+
+
 
 exports.dbConnect = cfg => {
 	try {
@@ -957,11 +961,16 @@ exports.getGroupAnimeList = async group => {
 exports.getConfig = async () => {
 
 	var u = await db.query("SELECT * FROM settings");
-
+//console.log("x");
+//console.log(u[0][4]);
+//console.log("x");
 	if (u[0] && u[0][0]) {
 //console.log(u[0][0]);
 		return {
 			data: u[0][0],
+  maintenance: u[0][4],
+  maintenance_text:u[0][5],
+maintenance_time:u[0][6],
 			debug: u[0][0],
 			error: ""
 		};
@@ -971,6 +980,28 @@ exports.getConfig = async () => {
 			data: null,
 			episodes: [],
 			error: "Nie znaleziono ustawień"
+		};
+	}
+}
+
+exports.editSettingsMaintenance = async data => {
+	if (data === undefined) {
+		return {
+			success: false
+		};
+	}
+	try {
+
+		var status = await db.query("UPDATE settings SET value=" + db.escape(data.maintenance) + " WHERE name='maintenance'");
+  var text = await db.query("UPDATE settings SET value=" + db.escape(data.maintenance_text) + " WHERE name='maintenance_text'");
+  var time = await db.query("UPDATE settings SET value=" + db.escape(data.maintenance_time) + " WHERE name='maintenance_time'");
+		return {
+			success: true
+		};
+	} catch (e) {
+		console.error(e.stack);
+		return {
+			success: false
 		};
 	}
 }
@@ -1206,6 +1237,9 @@ exports.getStatus = status => {
 			return "Emitowane";
 	}
 }
+
+
+
 
 exports.obfuscateId = x => {
 	return generator.encode(x);

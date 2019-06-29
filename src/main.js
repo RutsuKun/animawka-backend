@@ -15,7 +15,6 @@ exports.start = () => {
 	}
 	console.log("Project Ayano v" + version + " // Animawka.pl backend :: created by Gabixdev & Heniooo & Pixel");
 	config.loadConfig();
-	
 	process.env.NODE_ENV = config.cfg.debug ? 'development' : 'production';
 	
 	debug = config.cfg.debug; // wyrzucamy to na global

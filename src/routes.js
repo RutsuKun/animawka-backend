@@ -11,6 +11,7 @@ var noperm = require('./routes/admin/noperm')
 var bbTags = {};
 var router = express.Router();
 
+
 require('./routes/home')(router, theme, db);
 require('./routes/anime')(router, theme, db);
 require('./routes/login')(router, theme, db, server, config);
@@ -30,6 +31,14 @@ require('./routes/groups/groups')(router, theme, db);
 
 // GROUPS //
 
+
+
+// PANEL //
+
+require('./routes/panel/panel')(router, theme, db, noperm);
+
+// PANEL //
+
 // ADMIN //
 require('./routes/admin/admin')(router, theme, db, noperm);
 require('./routes/admin/accounts')(router, theme, db, noperm);
@@ -39,11 +48,5 @@ require('./routes/admin/news')(router, theme, db, noperm);
 require('./routes/admin/reviews')(router, theme, db, noperm);
 require('./routes/admin/settings')(router, theme, db, noperm);
 // ADMIN //
-
-// PANEL //
-
-require('./routes/panel/panel')(router, theme, db, noperm);
-
-// PANEL //
 
 module.exports = router;
