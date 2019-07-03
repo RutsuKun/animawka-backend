@@ -4,13 +4,20 @@ const express = require('express'),
 	server = require('./server'),
 	config = require('./config'),
  BBCodeParser = require('bbcode-parser'),
- parser = new BBCodeParser(BBCodeParser.defaultTags()),
+ Discord = require('discord.js'), parser = new BBCodeParser(BBCodeParser.defaultTags()),
  BBTag = require('bbcode-parser/bbTag');
-
+var client = new Discord.Client();
 var noperm = require('./routes/admin/noperm')
 var bbTags = {};
 var router = express.Router();
 
+client.on('ready', () => {
+console.log("Animawka Discord Bot is ready!");
+client.user.setStatus('Online');
+client.user.setGame('Animawka Backend', 'https://twitch.tv/Animawka');
+});
+
+client.login(config.cfg.discord.token);
 
 require('./routes/home')(router, theme, db);
 require('./routes/anime')(router, theme, db);
@@ -46,7 +53,8 @@ require('./routes/admin/anime')(router, theme, db, noperm);
 require('./routes/admin/group')(router, theme, db, noperm);
 require('./routes/admin/news')(router, theme, db, noperm);
 require('./routes/admin/reviews')(router, theme, db, noperm);
-require('./routes/admin/settings')(router, theme, db, noperm);
+require('./routes/admin/settings')(router, theme, db, noperm, client);
 // ADMIN //
+
 
 module.exports = router;
