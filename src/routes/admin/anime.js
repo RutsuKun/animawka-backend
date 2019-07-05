@@ -1,4 +1,4 @@
-module.exports = function(app, theme, db, noperm){
+module.exports = function(app, theme, db, noperm, client){
 
 app.get('/admin/anime', (req, res, next) => {
 	if (req.session && req.session.admin) {
@@ -64,7 +64,29 @@ app.post('/admin/newanime', (req, res, next) => {
 	if (req.session && req.session.admin) {
 		console.log(req.body);
 		db.newAnime(req.body).then(data => {
+			console.log(req.body);
 			if (data.success) {
+				
+client.channels.get(`489945603942645780`).send({embed: {
+	color: 3447003,
+	author: {
+		name: client.user.username,
+		icon_url: client.user.avatarURL
+	},
+	title: req.body.name,
+	url: "https://animawka.pl",
+	description: req.body.description,
+	timestamp: new Date(),
+	footer: {
+		icon_url: client.user.avatarURL,
+		text: "Copyright © 2019 Animawka Backend"
+	},
+	image: {
+		url: req.body.image
+	}
+}
+});
+				
 				db.getAnimeList(1).then(animelist => {
 					res.render('admin/animelist', {
 						theme: theme.getTheme(!req.cookies.theme ? 0 : req.cookies.theme),
