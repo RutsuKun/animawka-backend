@@ -19,8 +19,8 @@ client.login(config.cfg.discord.token);
 var transporter = nodemailer.createTransport({
 	service: 'gmail',
 	auth: {
-	  user: 'henicz19@gmail.com',
-	  pass: 'tecyghzxtxhobmgc'
+	  user: config.cfg.gmail.email,
+	  pass: config.cfg.gmail.password
 	}
   });
 

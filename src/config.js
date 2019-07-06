@@ -19,6 +19,11 @@ exports.loadConfig = () => {
 				site: c.recaptcha.site || "",
 				secret: c.recaptcha.secret || ""
 			},
+			gmail: {
+				enable: c.gmail.enable || false,
+				email: c.gmail.email || "",
+				password: c.gmail.password || ""
+			},
 			'session-secret': c['session-secret'] || 'cd18c21a37cc65adecb5e2021867a37e0aa3b5dd9a6e87ffdf299773b2ebc0ba5dddde08121591cf0da0fd43040a0325c153beed46b9eec39d7b43a393a64bed',
 			database: {
 				type: c.database.type || "sqlite",
