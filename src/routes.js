@@ -4,8 +4,7 @@ const express = require('express'),
 	server = require('./server'),
 	config = require('./config'),
  BBCodeParser = require('bbcode-parser'),
- Discord = require('discord.js'), parser = new BBCodeParser(BBCodeParser.defaultTags()),
- BBTag = require('bbcode-parser/bbTag');
+ Discord = require('discord.js'), parser = new BBCodeParser(BBCodeParser.defaultTags()), BBTag = require('bbcode-parser/bbTag'), nodemailer = require('nodemailer');
 var client = new Discord.Client();
 var noperm = require('./routes/admin/noperm')
 var bbTags = {};
@@ -16,15 +15,22 @@ console.log("Animawka Discord Bot is ready!");
 client.user.setStatus('Online');
 client.user.setGame('Animawka Backend', 'https://twitch.tv/Animawka');
 });
-
 client.login(config.cfg.discord.token);
+var transporter = nodemailer.createTransport({
+	service: 'gmail',
+	auth: {
+	  user: 'henicz19@gmail.com',
+	  pass: 'tecyghzxtxhobmgc'
+	}
+  });
+
 
 require('./routes/home')(router, theme, db);
 require('./routes/anime')(router, theme, db);
 require('./routes/login')(router, theme, db, server, config);
 require('./routes/register')(router, theme, db, server,  config);
 require('./routes/logout')(router, theme, db);
-require('./routes/account')(router, theme, db);
+require('./routes/account')(router, theme, db, transporter);
 require('./routes/contact')(router, theme, db);
 require('./routes/rules')(router, theme, db);
 require('./routes/search')(router, theme, db);

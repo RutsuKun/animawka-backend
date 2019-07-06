@@ -4,7 +4,7 @@
 	"convert-passwords": false,
 	"discord": {
 		"enable": true,
-		"token": "NDIzMjE3NDQ0NDcyMjI1Nzky.XQDpoQ.lvAqxBsllfjlfNPFzQ1FJbi7LYo",
+		"token": "NDIzMjE3NDQ0NDcyMjI1Nzky.XQDpoQ.lvAqxBsllfjlfNPFzQ1FJbi7LY",
 		"channelid": "401809619200114688"
 	},
 	"recaptcha": {

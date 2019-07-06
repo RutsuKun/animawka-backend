@@ -1113,6 +1113,68 @@ exports.editUser = async userdata => {
 	}
 }
 
+exports.editUserAvatar = async (avatar, userID) => {
+	if (avatar === undefined) {
+		return {
+			success: false
+		};
+	}
+	try {
+
+		var u = await db.query("UPDATE users SET avatar=" + db.escape(avatar)
+								+ " WHERE ID=" + db.escape(userID));
+		return {
+			success: true
+		};
+	} catch (e) {
+		console.error(e.stack);
+		return {
+			success: false
+		};
+	}
+}
+
+exports.userSendActivateEmail = async (userID, token) => {
+	if (userID === undefined) {
+		return {
+			success: false
+		};
+	}
+	try {
+
+		var u = await db.query("UPDATE users SET token=" + db.escape(token)
+								+ " WHERE ID=" + db.escape(userID));
+		return {
+			success: true
+		};
+	} catch (e) {
+		console.error(e.stack);
+		return {
+			success: false
+		};
+	}
+}
+
+exports.userActivateAccount = async (token) => {
+	if (token === undefined) {
+		return {
+			success: false
+		};
+	}
+	try {
+
+		var u = await db.query("UPDATE users SET active='1', token='' WHERE token=" + db.escape(token));
+		return {
+			success: true
+		};
+	} catch (e) {
+		console.error(e.stack);
+		return {
+			success: false
+		};
+	}
+}
+
 exports.delUser = async user => {
 	if (user === undefined) {
 		return {
