@@ -3,7 +3,7 @@ animawka.db
 config.json
 cache/
 sessions/
-
+/public/user-data/avatars/*.png
 # Logs
 logs
 *.log
