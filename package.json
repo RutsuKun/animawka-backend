@@ -20,6 +20,7 @@
     "express-fileupload": "^1.1.5",
     "express-minify": "^1.0.0",
     "express-session": "^1.15.6",
+    "express-status-monitor": "^1.2.6",
     "html-escape": "^2.0.0",
     "less": "^3.9.0",
     "lru-cache": "^4.1.1",
