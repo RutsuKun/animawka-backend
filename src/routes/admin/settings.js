@@ -2,25 +2,25 @@ module.exports = function(app, theme, db, noperm, client){
 
 app.get('/admin/settings', function(req, res, next) {
 
-client.channels.get(`595985346941157389`).send({embed: {
-color: 3447003,
-author: {
-name: client.user.username,
-icon_url: client.user.avatarURL
-},
-title: "RutsuKun wszedł w konfiguracje",
-url: "https://animawka.pl",
-description: "Tak jest!",
-timestamp: new Date(),
-footer: {
-icon_url: client.user.avatarURL,
-text: "Copyright © 2019 Animawka Backend"
-},
-image: {
-url: "https://beta.animawka.pl/img/AnimawkaLogoBlackBackground.jpg"
-}
-}
-});
+// client.channels.get(`595985346941157389`).send({embed: {
+// color: 3447003,
+// author: {
+// name: client.user.username,
+// icon_url: client.user.avatarURL
+// },
+// title: "RutsuKun wszedł w konfiguracje",
+// url: "https://animawka.pl",
+// description: "Tak jest!",
+// timestamp: new Date(),
+// footer: {
+// icon_url: client.user.avatarURL,
+// text: "Copyright © 2019 Animawka Backend"
+// },
+// image: {
+// url: "https://beta.animawka.pl/img/AnimawkaLogoBlackBackground.jpg"
+// }
+// }
+// });
 
 
 

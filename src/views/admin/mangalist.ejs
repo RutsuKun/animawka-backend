@@ -1,0 +1,102 @@
+<% extend('../layout') %>
+
+<main>
+	<div class="container">
+		<%- include('menu',{cp:"manga"}) %>
+		<div class="row">
+			<% if (mangalist.manga.length == 0) { %>
+				<% if (page == 1) { %>
+				<div class="col s12 offset-m3 m6">
+					<div class="card-panel red">
+						<span class="white-text">
+							Nie ma mang w bazie danych!
+						</span>
+					</div>
+				</div>
+				<% } else { %>
+				<div class="col s12 offset-m3 m6">
+					<div class="card-panel red">
+						<span class="white-text">
+							Nieprawidlowy numer strony!
+						</span>
+					</div>
+				</div>
+				<% } %>
+			<% } else {%>
+				<% if (message) { %>
+				<div class="col s12 offset-m3 m6">
+					<div class="card-panel red">
+						<span class="white-text">
+							<%- message %>
+						</span>
+					</div>
+				</div>
+                <% } %>
+                <br>
+				<div class="col s12 m12">
+					<a class="waves-effect waves-light btn <%- theme.accent %>" href="/admin/newmanga">
+						<i class="material-icons left">add</i>Dodaj mange
+					</a>
+				</div>
+			</div>
+			<div class="row">
+				<% for (var i = 0; i < mangalist.manga.length; i++) {%>		
+					<div class="col s12">
+						<div class="card medium hide-on-large-only">
+							<div class="card-image waves-effect waves-block waves-light">
+								<img class="activator" src="<%= mangalist.manga[i].image %>">
+								<span class="card-title boldtitle activator"><%= mangalist.manga[i].name %></span>
+							</div>
+							<div class="card-content">
+								<p><strong>Liczba odcinków: </strong><%= mangalist.manga[i].episodes %><br/><strong>Tłumacz: </strong><%= mangalist.manga[i].translate %><br/><strong>Korektor: </strong><%= mangalist.manga[i].corrector %></p>
+							</div>
+							<div class="card-action">
+								<a href="/admin/editmanga/<%= db.name2url(mangalist.manga[i].name) %>">Edytuj</a>
+								<a href="/admin/listpages/<%= db.name2url(mangalist.manga[i].name) %>">Odcinki</a>
+							</div>
+							<div class="card-reveal">
+								<span class="card-title grey-text text-darken-4"><%= mangalist.manga[i].name %><i class="material-icons right">close</i></span>
+								<p><%- db.nl2br(mangalist.manga[i].description) %></p>
+							</div>
+						</div>
+
+						<div class="card horizontal hide-on-med-and-down">
+							<div class="card-image waves-effect waves-block waves-light">
+								<img class="activator" width="128px" height="240px" src="<%= mangalist.manga[i].image %>">
+							</div>
+							<div class="card-stacked">
+								<div class="card-content">
+									<span class="card-title activator grey-text text-darken-4"><%= mangalist.manga[i].name %><i class="material-icons right">more_vert</i></span>
+								</div>
+								<div class="card-action">
+									<a href="/admin/editmanga/<%= db.name2url(mangalist.manga[i].name) %>">Edytuj</a>
+									<a href="/admin/listpages/<%= db.name2url(mangalist.manga[i].name) %>">Odcinki</a>
+								</div>
+							</div>
+
+							<div class="card-reveal">
+								<span class="card-title grey-text text-darken-4"><%= mangalist.manga[i].name %><i class="material-icons right">close</i></span>
+								<p><%- db.nl2br(mangalist.manga[i].description) %></p>
+							</div>
+						</div>
+					</div>
+				<%}%>
+
+				<div class="col s12">
+					<ul class="pagination">
+						<li <% if (page == 1) {%>class="disabled"><a href="#!"><% } else { %>class="waves-effect"><a href="/admin/manga/<%= page - 1 %>"><% } %><i class="material-icons">chevron_left</i></a></li>
+						<% for (var pc = 1; pc <= mangalist.pagecount; pc++) { %>
+							<% if (pc == page) { %>
+								<li class="active"><a href="/admin/manga/<%= pc %>"><%= pc %></a></li>
+							<% } else { %>
+								<li class="waves-effect"><a href="/admin/manga/<%= pc %>"><%= pc %></a></li>
+							<% } %>
+						<% } %>
+						
+						<li <% if (page == mangalist.pagecount) {%>class="disabled"><a href="#!"><% } else { %>class="waves-effect"><a href="/admin/anime/<%= page + 1 %>"><% } %><i class="material-icons">chevron_right</i></a></li>
+					</ul>
+				</div>
+			<%}%>
+		</div>
+	</div>
+</main>

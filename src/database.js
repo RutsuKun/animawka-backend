@@ -76,6 +76,8 @@ exports.dbConnect = cfg => {
 				break;
 			case "mysql":
 				db = new Sequelize(cfg.database.mysql.database, cfg.database.mysql.username, cfg.database.mysql.password, {
+					port:cfg.database.mysql.port,
+					host:cfg.database.mysql.host,
 					dialect: "mysql",
 					pool: {
 						max: 5,
@@ -86,18 +88,18 @@ exports.dbConnect = cfg => {
 				});
 				break;
 			default:
-				throw new Error("Nieznany typ bazy danych!");
+				throw new Error("database type error");
 		}
 		db.authenticate()
 			.then(() => {
-				console.log("Połączono z bazą danych!");
+				console.log("Connected to database successful");
 				exports.loadData();
 			})
 			.catch(err => {
 				throw err;
 			});
 	} catch (e) {
-		console.error("Wystapił błąd podczas łączenia się z bazą danych!");
+		console.error("Connected to database unsuccessful");
 		console.error(e);
 		process.exit(1);
 	}
@@ -1286,6 +1288,57 @@ exports.register = async (user, email, pass, pass2) => {
 		success: false
 	};
 };
+
+// Manga in Animawka Script by RutsuKun //
+
+exports.getMangaList = async page => {
+	var c = [];
+	var data = [];
+
+	if (page == 1) {
+		data = await db.query("SELECT * FROM manga ORDER BY name ASC LIMIT " + itemsPerPage);
+	} else {
+		data = await db.query("SELECT * FROM manga ORDER BY name ASC LIMIT " + ((page - 1) * itemsPerPage) + "," + (page * itemsPerPage));
+	}
+
+	var cnt = await db.query("SELECT COUNT(ID) AS num FROM manga;");
+	var pc = Math.ceil(cnt[0][0].num / itemsPerPage);
+	if (data[0].length != 0 && pc == 0) pc = 1;
+
+	if (data[0] && cnt[0]) {
+		return {
+			manga: data[0],
+			pagecount: pc,
+			itemcount: cnt[0][0].num
+		};
+	}
+}
+
+exports.newManga = async mangadata => {
+	if (mangadata === undefined) {
+		return {
+			success: false
+		};
+	}
+	try {
+
+
+		var u = await db.query("INSERT INTO manga (name, user, description, image) VALUES"
+								+ "(" + db.escape(mangadata.name)
+								+ ", " + db.escape(mangadata.user)
+								+ ", " + db.escape(mangadata.description)
+								+ ", " + db.escape(mangadata.image)
+								+ ")");
+		return {
+			success: true
+		};
+	} catch (e) {
+		console.error(e.stack);
+		return {
+			success: false
+		};
+	}
+}
 
 // utilsy
 

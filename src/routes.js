@@ -5,17 +5,29 @@ const express = require('express'),
 	config = require('./config'),
  BBCodeParser = require('bbcode-parser'),
  Discord = require('discord.js'), parser = new BBCodeParser(BBCodeParser.defaultTags()), BBTag = require('bbcode-parser/bbTag'), nodemailer = require('nodemailer');
-var client = new Discord.Client();
+ var client = new Discord.Client();
 var noperm = require('./routes/admin/noperm')
 var bbTags = {};
 var router = express.Router();
+
+var discordbot = require("./discordbot");
+
+
+if(config.cfg.discord.enable = true) {
 
 client.on('ready', () => {
 console.log("Animawka Discord Bot is ready!");
 client.user.setStatus('Online');
 client.user.setGame('Animawka Backend', 'https://twitch.tv/Animawka');
+
+
+
+
 });
+
 client.login(config.cfg.discord.token);
+}
+
 var transporter = nodemailer.createTransport({
 	service: 'gmail',
 	auth: {
@@ -23,6 +35,9 @@ var transporter = nodemailer.createTransport({
 	  pass: config.cfg.gmail.password
 	}
   });
+
+  
+
 
 
 require('./routes/home')(router, theme, db);
@@ -53,9 +68,10 @@ require('./routes/panel/panel')(router, theme, db, noperm);
 // PANEL //
 
 // ADMIN //
-require('./routes/admin/admin')(router, theme, db, noperm);
+require('./routes/admin/admin')(router, theme, db, noperm, client);
 require('./routes/admin/accounts')(router, theme, db, noperm);
 require('./routes/admin/anime')(router, theme, db, noperm, client);
+require('./routes/admin/manga')(router, theme, db, noperm, client);
 require('./routes/admin/group')(router, theme, db, noperm);
 require('./routes/admin/news')(router, theme, db, noperm);
 require('./routes/admin/reviews')(router, theme, db, noperm);
